@@ -4,7 +4,6 @@ import {
   Building2,
   MapPin,
   Phone,
-  FileText,
   Send,
   CheckCircle2,
   ArrowLeft,
@@ -12,12 +11,12 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { adminService } from '../services/adminService';
-import type { PengajuanFormData, PengajuanFormState, Kecamatan, KelurahanDesa } from '../types';
+import type { PengajuanFormState, Kecamatan, KelurahanDesa } from '../types';
 
 const initialForm: PengajuanFormState = {
-  nama_masjid: '',
-  alamat_masjid: '',
-  nohp_masjid: '',
+  nama_upz_desa: '',
+  alamat_upz_desa: '',
+  nohp_upz_desa: '',
   id_provinsi: '',
   id_kabupaten_kota: '',
   id_kecamatan: '',
@@ -25,8 +24,8 @@ const initialForm: PengajuanFormState = {
   keterangan: '',
 };
 
-export default function AjukanMasjidPage() {
-  const [form, setForm] = useState<PengajuanFormState>(initialForm);
+export default function AjukanUpzDesaPage() {
+  const [upzDesaForm, setUpzDesaForm] = useState<PengajuanFormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof PengajuanFormState, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -58,13 +57,13 @@ export default function AjukanMasjidPage() {
 
   // Load kabupaten/kota when provinsi changes
   useEffect(() => {
-    if (!form.id_provinsi) {
+    if (!upzDesaForm.id_provinsi) {
       setKabkotList([]);
       return;
     }
     const loadKabkot = async () => {
       try {
-        const res = await adminService.getKabupatenKota(Number(form.id_provinsi));
+        const res = await adminService.getKabupatenKota(Number(upzDesaForm.id_provinsi));
         if (res.status && Array.isArray(res.data)) {
           setKabkotList(res.data);
         }
@@ -73,20 +72,20 @@ export default function AjukanMasjidPage() {
       }
     };
     loadKabkot();
-    setForm((prev) => ({ ...prev, id_kabupaten_kota: '', id_kecamatan: '', id_kelurahan_desa: '' }));
+    setUpzDesaForm((prev) => ({ ...prev, id_kabupaten_kota: '', id_kecamatan: '', id_kelurahan_desa: '' }));
     setKecamatanList([]);
     setKelurahanList([]);
-  }, [form.id_provinsi]);
+  }, [upzDesaForm.id_provinsi]);
 
   // Load kecamatan when kab/kota changes
   useEffect(() => {
-    if (!form.id_kabupaten_kota) {
+    if (!upzDesaForm.id_kabupaten_kota) {
       setKecamatanList([]);
       return;
     }
     const loadKecamatan = async () => {
       try {
-        const res = await adminService.getKecamatan(Number(form.id_kabupaten_kota));
+        const res = await adminService.getKecamatan(Number(upzDesaForm.id_kabupaten_kota));
         if (res.status && Array.isArray(res.data)) {
           setKecamatanList(res.data);
         }
@@ -95,19 +94,19 @@ export default function AjukanMasjidPage() {
       }
     };
     loadKecamatan();
-    setForm((prev) => ({ ...prev, id_kecamatan: '', id_kelurahan_desa: '' }));
+    setUpzDesaForm((prev) => ({ ...prev, id_kecamatan: '', id_kelurahan_desa: '' }));
     setKelurahanList([]);
-  }, [form.id_kabupaten_kota]);
+  }, [upzDesaForm.id_kabupaten_kota]);
 
   // Load kelurahan/desa when kecamatan changes
   useEffect(() => {
-    if (!form.id_kecamatan) {
+    if (!upzDesaForm.id_kecamatan) {
       setKelurahanList([]);
       return;
     }
     const loadKelurahan = async () => {
       try {
-        const res = await adminService.getKelurahanDesa(Number(form.id_kecamatan));
+        const res = await adminService.getKelurahanDesa(Number(upzDesaForm.id_kecamatan));
         if (res.status && Array.isArray(res.data)) {
           setKelurahanList(res.data);
         }
@@ -116,21 +115,21 @@ export default function AjukanMasjidPage() {
       }
     };
     loadKelurahan();
-    setForm((prev) => ({ ...prev, id_kelurahan_desa: '' }));
-  }, [form.id_kecamatan]);
+    setUpzDesaForm((prev) => ({ ...prev, id_kelurahan_desa: '' }));
+  }, [upzDesaForm.id_kecamatan]);
 
   const validate = useCallback((): boolean => {
     const newErrors: typeof errors = {};
-    if (!form.nama_masjid.trim()) newErrors.nama_masjid = 'Nama masjid wajib diisi';
-    if (!form.alamat_masjid.trim()) newErrors.alamat_masjid = 'Alamat masjid wajib diisi';
-    if (!form.nohp_masjid.trim()) newErrors.nohp_masjid = 'Nomor HP wajib diisi';
-    else if (!/^0[0-9]{8,12}$/.test(form.nohp_masjid.replace(/[\s-]/g, '')))
-      newErrors.nohp_masjid = 'Format nomor HP tidak valid (contoh: 08123456789)';
-    if (!form.id_provinsi) newErrors.id_provinsi = 'Pilih provinsi';
-    if (!form.id_kabupaten_kota) newErrors.id_kabupaten_kota = 'Pilih kabupaten/kota';
+    if (!upzDesaForm.nama_upz_desa.trim()) newErrors.nama_upz_desa = 'Nama UPZ Desa wajib diisi';
+    if (!upzDesaForm.alamat_upz_desa.trim()) newErrors.alamat_upz_desa = 'Alamat UPZ Desa wajib diisi';
+    if (!upzDesaForm.nohp_upz_desa.trim()) newErrors.nohp_upz_desa = 'Nomor HP wajib diisi';
+    else if (!/^0[0-9]{8,12}$/.test(upzDesaForm.nohp_upz_desa.replace(/[\s-]/g, '')))
+      newErrors.nohp_upz_desa = 'Format nomor HP tidak valid (contoh: 08123456789)';
+    if (!upzDesaForm.id_provinsi) newErrors.id_provinsi = 'Pilih provinsi';
+    if (!upzDesaForm.id_kabupaten_kota) newErrors.id_kabupaten_kota = 'Pilih kabupaten/kota';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [form]);
+  }, [upzDesaForm]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,13 +140,16 @@ export default function AjukanMasjidPage() {
 
     try {
       await adminService.submitPengajuan({
-        ...form,
-        id_provinsi: Number(form.id_provinsi),
-        id_kabupaten_kota: Number(form.id_kabupaten_kota),
-        id_kecamatan: form.id_kecamatan ? Number(form.id_kecamatan) : undefined,
-        id_kelurahan_desa: form.id_kelurahan_desa ? Number(form.id_kelurahan_desa) : undefined,
+        nama_upz_desa: upzDesaForm.nama_upz_desa,
+        alamat_upz_desa: upzDesaForm.alamat_upz_desa,
+        nohp_upz_desa: upzDesaForm.nohp_upz_desa,
+        id_provinsi: Number(upzDesaForm.id_provinsi),
+        id_kabupaten_kota: Number(upzDesaForm.id_kabupaten_kota),
+        id_kecamatan: upzDesaForm.id_kecamatan ? Number(upzDesaForm.id_kecamatan) : undefined,
+        id_kelurahan_desa: upzDesaForm.id_kelurahan_desa ? Number(upzDesaForm.id_kelurahan_desa) : undefined,
+        keterangan: upzDesaForm.keterangan,
       });
-      setForm(initialForm);
+      setUpzDesaForm(initialForm);
       setSubmitted(true);
     } catch (err: any) {
       const msg = err?.response?.data?.message || err?.message || 'Gagal mengirim pengajuan. Silakan coba lagi.';
@@ -158,7 +160,7 @@ export default function AjukanMasjidPage() {
   };
 
   const handleChange = (field: keyof PengajuanFormState, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setUpzDesaForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
@@ -168,8 +170,8 @@ export default function AjukanMasjidPage() {
       <div className="min-h-screen bg-[#FAFAFA] pt-20">
         <div className="max-w-lg mx-auto px-4 py-12">
           <div className="bg-white rounded-2xl border border-[#F0F4F8] p-8 text-center">
-            <div className="w-16 h-16 bg-[#EAF6E8] rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 size={32} className="text-[#28A71A]" />
+            <div className="w-16 h-16 bg-[#FEF9E7] rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 size={32} className="text-[#EFB100]" />
             </div>
             <h2
               className="text-xl font-semibold text-[#303030] mb-2"
@@ -181,11 +183,11 @@ export default function AjukanMasjidPage() {
               className="text-sm text-text-gray mb-6"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              Terima kasih! Pengajuan masjid Anda telah diterima dan akan diproses oleh tim BAZNAS. Kami akan menghubungi Anda melalui nomor yang didaftarkan.
+              Terima kasih! Pengajuan UPZ Desa Anda telah diterima dan akan diproses oleh tim BAZNAS. Kami akan menghubungi Anda melalui nomor yang didaftarkan.
             </p>
             <Link
               to="/"
-              className="inline-flex items-center gap-2 py-2.5 px-6 bg-[#28A71A] text-white rounded-lg text-sm font-medium hover:bg-[#1C7712] transition-colors"
+              className="inline-flex items-center gap-2 py-2.5 px-6 bg-[#EFB100] text-white rounded-lg text-sm font-medium hover:bg-[#C99400] transition-colors"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <ArrowLeft size={16} />
@@ -203,7 +205,7 @@ export default function AjukanMasjidPage() {
         {/* Back button */}
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm text-text-gray hover:text-[#28A71A] transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-text-gray hover:text-[#EFB100] transition-colors mb-6"
           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
         >
           <ArrowLeft size={16} />
@@ -213,21 +215,21 @@ export default function AjukanMasjidPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-              <Building2 size={20} className="text-[#28A71A]" />
+            <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+              <Building2 size={20} className="text-[#EFB100]" />
             </div>
             <div>
               <h1
                 className="text-xl font-semibold text-[#303030]"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Ajukan Masjid Baru
+                Ajukan UPZ Desa Baru
               </h1>
               <p
                 className="text-sm text-text-gray"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Daftarkan masjid Anda ke platform MENARA Masjid BAZNAS
+                Daftarkan UPZ Desa Anda ke platform UPZ Desa BAZNAS
               </p>
             </div>
           </div>
@@ -236,40 +238,40 @@ export default function AjukanMasjidPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white rounded-2xl border border-[#F0F4F8] p-6 space-y-5">
-            {/* Nama Masjid */}
+            {/* Nama UPZ Desa */}
             <div>
               <label className="block text-sm font-medium text-[#303030] mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Nama Masjid <span className="text-red-500">*</span>
+                Nama UPZ Desa <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                value={form.nama_masjid}
-                onChange={(e) => handleChange('nama_masjid', e.target.value)}
-                placeholder="Masukkan nama masjid"
-                className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all placeholder:text-[#B0B0B0] ${
-                  errors.nama_masjid ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'
+                value={upzDesaForm.nama_upz_desa}
+                onChange={(e) => handleChange('nama_upz_desa', e.target.value)}
+                placeholder="Masukkan nama UPZ Desa"
+                className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all placeholder:text-[#B0B0B0] ${
+                  errors.nama_upz_desa ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'
                 }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               />
-              {errors.nama_masjid && <p className="text-xs text-red-500 mt-1">{errors.nama_masjid}</p>}
+              {errors.nama_upz_desa && <p className="text-xs text-red-500 mt-1">{errors.nama_upz_desa}</p>}
             </div>
 
             {/* Alamat */}
             <div>
               <label className="block text-sm font-medium text-[#303030] mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Alamat Masjid <span className="text-red-500">*</span>
+                Alamat UPZ Desa <span className="text-red-500">*</span>
               </label>
               <textarea
-                value={form.alamat_masjid}
-                onChange={(e) => handleChange('alamat_masjid', e.target.value)}
-                placeholder="Masukkan alamat lengkap masjid"
+                value={upzDesaForm.alamat_upz_desa}
+                onChange={(e) => handleChange('alamat_upz_desa', e.target.value)}
+                placeholder="Masukkan alamat lengkap UPZ Desa"
                 rows={3}
-                className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all placeholder:text-[#B0B0B0] resize-none ${
-                  errors.alamat_masjid ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'
+                className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all placeholder:text-[#B0B0B0] resize-none ${
+                  errors.alamat_upz_desa ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'
                 }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               />
-              {errors.alamat_masjid && <p className="text-xs text-red-500 mt-1">{errors.alamat_masjid}</p>}
+              {errors.alamat_upz_desa && <p className="text-xs text-red-500 mt-1">{errors.alamat_upz_desa}</p>}
             </div>
 
             {/* No HP */}
@@ -281,16 +283,16 @@ export default function AjukanMasjidPage() {
                 <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0B0B0]" />
                 <input
                   type="tel"
-                  value={form.nohp_masjid}
-                  onChange={(e) => handleChange('nohp_masjid', e.target.value)}
+                  value={upzDesaForm.nohp_upz_desa}
+                  onChange={(e) => handleChange('nohp_upz_desa', e.target.value)}
                   placeholder="08123456789"
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all placeholder:text-[#B0B0B0] ${
-                    errors.nohp_masjid ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'
+                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all placeholder:text-[#B0B0B0] ${
+                    errors.nohp_upz_desa ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 />
               </div>
-              {errors.nohp_masjid && <p className="text-xs text-red-500 mt-1">{errors.nohp_masjid}</p>}
+              {errors.nohp_upz_desa && <p className="text-xs text-red-500 mt-1">{errors.nohp_upz_desa}</p>}
             </div>
 
             {/* Wilayah - 4 dropdown cascading */}
@@ -302,12 +304,12 @@ export default function AjukanMasjidPage() {
                 <div className="relative">
                   <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0B0B0]" />
                   <select
-                    value={form.id_provinsi}
+                    value={upzDesaForm.id_provinsi}
                     onChange={(e) => handleChange('id_provinsi', e.target.value)}
                     disabled={loadingWilayah}
-                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all appearance-none bg-white ${
-                      errors.id_provinsi ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'
-                    } ${!form.id_provinsi ? 'text-[#B0B0B0]' : 'text-[#303030]'}`}
+                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all appearance-none bg-white ${
+                      errors.id_provinsi ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'
+                    } ${!upzDesaForm.id_provinsi ? 'text-[#B0B0B0]' : 'text-[#303030]'}`}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">Pilih Provinsi</option>
@@ -328,12 +330,12 @@ export default function AjukanMasjidPage() {
                 <div className="relative">
                   <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0B0B0]" />
                   <select
-                    value={form.id_kabupaten_kota}
+                    value={upzDesaForm.id_kabupaten_kota}
                     onChange={(e) => handleChange('id_kabupaten_kota', e.target.value)}
-                    disabled={!form.id_provinsi}
-                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all appearance-none bg-white ${
-                      errors.id_kabupaten_kota ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'
-                    } ${!form.id_kabupaten_kota ? 'text-[#B0B0B0]' : 'text-[#303030]'}`}
+                    disabled={!upzDesaForm.id_provinsi}
+                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all appearance-none bg-white ${
+                      errors.id_kabupaten_kota ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'
+                    } ${!upzDesaForm.id_kabupaten_kota ? 'text-[#B0B0B0]' : 'text-[#303030]'}`}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">Pilih Kab/Kota</option>
@@ -354,12 +356,12 @@ export default function AjukanMasjidPage() {
                 <div className="relative">
                   <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0B0B0]" />
                   <select
-                    value={form.id_kecamatan}
+                    value={upzDesaForm.id_kecamatan}
                     onChange={(e) => handleChange('id_kecamatan', e.target.value)}
-                    disabled={!form.id_kabupaten_kota}
-                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all appearance-none bg-white ${
-                      !form.id_kabupaten_kota ? 'text-[#B0B0B0]' : 'text-[#303030]'
-                    } border-[#D4D4D4] focus:border-[#28A71A]`}
+                    disabled={!upzDesaForm.id_kabupaten_kota}
+                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all appearance-none bg-white ${
+                      !upzDesaForm.id_kabupaten_kota ? 'text-[#B0B0B0]' : 'text-[#303030]'
+                    } border-[#D4D4D4] focus:border-[#EFB100]`}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">Pilih Kecamatan</option>
@@ -379,12 +381,12 @@ export default function AjukanMasjidPage() {
                 <div className="relative">
                   <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0B0B0]" />
                   <select
-                    value={form.id_kelurahan_desa}
+                    value={upzDesaForm.id_kelurahan_desa}
                     onChange={(e) => handleChange('id_kelurahan_desa', e.target.value)}
-                    disabled={!form.id_kecamatan}
-                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all appearance-none bg-white ${
-                      !form.id_kecamatan ? 'text-[#B0B0B0]' : 'text-[#303030]'
-                    } border-[#D4D4D4] focus:border-[#28A71A]`}
+                    disabled={!upzDesaForm.id_kecamatan}
+                    className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all appearance-none bg-white ${
+                      !upzDesaForm.id_kecamatan ? 'text-[#B0B0B0]' : 'text-[#303030]'
+                    } border-[#D4D4D4] focus:border-[#EFB100]`}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">Pilih Kelurahan/Desa</option>
@@ -404,11 +406,11 @@ export default function AjukanMasjidPage() {
                 Keterangan Tambahan
               </label>
               <textarea
-                value={form.keterangan}
+                value={upzDesaForm.keterangan}
                 onChange={(e) => handleChange('keterangan', e.target.value)}
-                placeholder="Informasi tambahan tentang masjid (misal: status tanah, luas bangunan, dll.)"
+                placeholder="Informasi tambahan tentang UPZ desa (misal: wilayah operasional, kontak pembina, dll.)"
                 rows={3}
-                className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all placeholder:text-[#B0B0B0] resize-none"
+                className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all placeholder:text-[#B0B0B0] resize-none"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               />
             </div>
@@ -424,24 +426,22 @@ export default function AjukanMasjidPage() {
             </div>
           )}
 
-          {/* Submit Button */}
-          <button
+          {/* Submit Button */}              <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-[#B0B0B0] disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#28A71A]/20"
+            className="w-full py-3 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-[#B0B0B0] disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#EFB100]/20"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             {submitting ? (
               <Loader2 size={18} className="animate-spin" />
             ) : (
               <Send size={18} />
-            )}
-            {submitting ? 'Mengirim...' : 'Ajukan Masjid'}
+            )}                {submitting ? 'Mengirim...' : 'Ajukan UPZ Desa'}
           </button>
 
           <p className="text-xs text-center text-[#B0B0B0]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Dengan mengirimkan formulir ini, Anda menyetujui{' '}
-            <Link to="#" className="text-[#28A71A] hover:underline">Syarat & Ketentuan</Link> yang berlaku.
+            <Link to="#" className="text-[#EFB100] hover:underline">Syarat & Ketentuan</Link> yang berlaku.
           </p>
         </form>
       </div>

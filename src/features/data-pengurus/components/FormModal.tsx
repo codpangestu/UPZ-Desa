@@ -88,7 +88,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
               type="text"
               {...register('nama')}
               placeholder="Nama pengurus"
-              className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all ${errors.nama ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'}`}
+              className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all ${errors.nama ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'}`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
             {errors.nama && <p className="text-xs text-red-500 mt-1">{errors.nama.message}</p>}
@@ -101,7 +101,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
             </label>
             <select
               {...register('jabatan')}
-              className={`w-full px-4 py-2.5 border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all ${errors.jabatan ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'}`}
+              className={`w-full px-4 py-2.5 border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all ${errors.jabatan ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'}`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <option value="">Pilih Jabatan</option>
@@ -122,7 +122,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
                 type="text"
                 {...register('nohp')}
                 placeholder="08123456789"
-                className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all ${errors.nohp ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'}`}
+                className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all ${errors.nohp ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'}`}
               />
               {errors.nohp && <p className="text-xs text-red-500 mt-1">{errors.nohp.message}</p>}
             </div>
@@ -132,7 +132,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
               </label>
               <select
                 {...register('jenis_kelamin')}
-                className={`w-full px-4 py-2.5 border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all ${errors.jenis_kelamin ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'}`}
+                className={`w-full px-4 py-2.5 border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all ${errors.jenis_kelamin ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'}`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 <option value="">Pilih</option>
@@ -153,7 +153,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
               {...register('alamat')}
               placeholder="Alamat lengkap"
               rows={2}
-              className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all resize-none ${errors.alamat ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#28A71A]'}`}
+              className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all resize-none ${errors.alamat ? 'border-red-300' : 'border-[#D4D4D4] focus:border-[#EFB100]'}`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
             {errors.alamat && <p className="text-xs text-red-500 mt-1">{errors.alamat.message}</p>}
@@ -168,7 +168,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
               <input
                 type="date"
                 {...register('masa_jabatan_mulai')}
-                className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all"
+                className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all"
               />
             </div>
             <div>
@@ -178,7 +178,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
               <input
                 type="date"
                 {...register('masa_jabatan_selesai')}
-                className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all"
+                className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all"
               />
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
               {...register('keterangan')}
               placeholder="Catatan tambahan..."
               rows={2}
-              className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all placeholder:text-[#B0B0B0] resize-none"
+              className="w-full px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all placeholder:text-[#B0B0B0] resize-none"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             />
           </div>
@@ -210,7 +210,7 @@ export default function FormModal({ open, onClose, onSubmit, submitting, editIte
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 py-2.5 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-[#B0B0B0] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+              className="flex-1 py-2.5 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-[#B0B0B0] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               {submitting ? <Loader2 size={16} className="animate-spin" /> : null}

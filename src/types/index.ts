@@ -17,30 +17,30 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   pagination: PaginationMeta;
 }
 
-// Masjid Types
-export interface Masjid {
-  id_masjid: string;
-  nama_masjid: string;
-  alamat_masjid: string;
-  jenis_masjid?: string;
+// UPZ Desa Types
+export interface UpzDesa {
+  id_upz_desa: string;
+  nama_upz_desa: string;
+  alamat_upz_desa: string;
+  jenis_upz_desa?: string;
   id_provinsi?: number | string;
   id_kabupaten_kota?: number | string;
   id_kecamatan?: number;
   id_kelurahan_desa?: number;
   kode_pos?: string;
-  nohp_masjid?: string;
-  email_masjid?: string;
+  nohp_upz_desa?: string;
+  email_upz_desa?: string;
   latitude?: string;
   longitude?: string;
   status_aktif?: number;
-  /** Kode BAZNAS (kode_org_baznas) & slug — ada di response masjid/list */
+  /** Kode BAZNAS (kode_org_baznas) & slug — ada di response upz_desa/list */
   kode_org_baznas?: string;
-  slug_masjid?: string;
+  slug_upz_desa?: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface MasjidDetail extends Masjid {
+export interface UpzDesaDetail extends UpzDesa {
   fasilitas?: Fasilitas[];
   bank?: BankInfo[];
   medsos?: Medsos[];
@@ -101,9 +101,9 @@ export interface Donasi extends ContentItem {
 }
 
 // Wilayah Types
-// Catatan: response backend wilayah (Masjid Service) memakai kolom `id` (kode BPS),
+// Catatan: response backend wilayah (UPZ Desa Service) memakai kolom `id` (kode BPS),
 // bukan `id_provinsi`/`id_kabupaten_kota` — field dengan prefix `id_*` adalah kolom
-// FK di tabel entitas lain (masjid, pengajuan), bukan di response wilayah.
+// FK di tabel entitas lain (upz_desa, pengajuan), bukan di response wilayah.
 export interface Provinsi {
   id: number | string; // kode BPS provinsi (mis. "11")
   nama_provinsi: string;
@@ -128,15 +128,15 @@ export interface KelurahanDesa {
 }
 
 // Auth Types
-// 5 role: Admin Masjid & Admin BAZNAS, + 3 role ber-scope wilayah
+// 5 role: Admin UPZ Desa & Admin BAZNAS, + 3 role ber-scope wilayah
 // (Admin Daerah=provinsi, Admin Kab=kabupaten/kota, Admin KUA=kecamatan).
-// Dropdown login = 3 opsi: Admin Masjid, Admin BAZNAS, Admin KUA.
+// Dropdown login = 3 opsi: Admin UPZ Desa, Admin BAZNAS, Admin KUA.
 // Admin KUA kini punya opsi + endpoint sendiri (`/login/admin-kua`, id_level
 // 13) dan TIDAK lagi bisa login lewat opsi "Admin BAZNAS" (ditolak backend).
 // Admin Daerah (11) & Admin Kab (12) tetap lewat opsi "Admin BAZNAS", lalu
 // di-infer dari id_level (lihat `inferRoleFromUser` di bawah).
 export type UserRole =
-  | 'admin-masjid'
+  | 'admin-upz-desa'
   | 'admin-baznas'
   | 'admin-daerah'
   | 'admin-kab'
@@ -163,10 +163,10 @@ export interface UserProfile {
   id_user: number;
   nama: string;
   email: string;
-  jalur_akses?: string; // 'Masjid' | 'Pusat' | dst.
-  id_jalur_akses?: string; // id masjid untuk user masjid
+  jalur_akses?: string; // 'UPZ Desa' | 'Pusat' | dst.
+  id_jalur_akses?: string; // id upz_desa untuk user upz_desa
   avatar?: string;
-  id_level?: number; // 1=Admin Pusat, 2=Admin Masjid, 3=Petugas, 11=Admin Daerah, 12=Admin Kab, 13=Admin KUA (seed; id 4/5/6 SUDAH dipakai data legacy lain — jangan dipakai ulang)
+  id_level?: number; // 1=Admin Pusat, 2=Admin UPZ Desa, 3=Petugas, 11=Admin Daerah, 12=Admin Kab, 13=Admin KUA (seed; id 4/5/6 SUDAH dipakai data legacy lain — jangan dipakai ulang)
   id_labels?: number; // 1 = Admin, 2 = Petugas, 3 = Jamaah (seed)
   nohp?: string;
   jk?: string;
@@ -179,15 +179,15 @@ export interface UserProfile {
   id_kecamatan?: number;
   // Backward compat (beberapa kode lama membaca field ini)
   role?: UserRole;
-  id_masjid?: string;
-  nama_masjid?: string;
+  id_upz_desa?: string;
+  nama_upz_desa?: string;
   foto_profil?: string;
   level?: string;
 }
 
 /**
  * Register User (publik) — `POST /api/v1/register/user`.
- * Catatan: backend TIDAK menerima password; password default 'menara23'.
+ * Catatan: backend TIDAK menerima password; password default 'upzdesa23'.
  * `id_labels` default 3 (Jamaah).
  */
 export interface RegisterRequest {
@@ -197,7 +197,7 @@ export interface RegisterRequest {
   alamat: string;
   email: string;
   nohp?: string;
-  /** Kode masjid (kode_org_baznas) — WAJIB untuk daftar Admin Masjid. Masjid harus sudah disetujui Admin BAZNAS. */
+  /** Kode UPZ Desa (kode_org_baznas) — WAJIB untuk daftar Admin UPZ Desa. UPZ Desa harus sudah disetujui Admin BAZNAS. */
   kode_org_baznas?: string;
   id_labels?: number;
   catatan?: string;
@@ -212,13 +212,13 @@ export interface RegisterResponse {
 /** Infer role pengguna dari data profile yang dikirim backend (tanpa field role). */
 export function inferRoleFromUser(user: Partial<UserProfile> | null | undefined): UserRole {
   if (!user) {
-    return 'admin-masjid';
+    return 'admin-upz-desa';
   }
   // Backward compat jika suatu saat backend mengirim field role — tapi tolak
   // nilai lama (mis. 'petugas'/'admin-pusat' dari localStorage sesi lama) agar
   // tidak menghasilkan role invalid yang membuat redirect/guard rusak.
   const KNOWN_ROLES: UserRole[] = [
-    'admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua',
+    'admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua',
   ];
   if (user.role && KNOWN_ROLES.includes(user.role)) {
     return user.role;
@@ -229,17 +229,17 @@ export function inferRoleFromUser(user: Partial<UserProfile> | null | undefined)
     // (`GET /me`) dan sesi lama tetap menghasilkan role yang benar.
     // id 11/12/13 mengikuti baris `levels` legacy yang sudah ada di DB
     // (Admin BAZNAS Provinsi/Kabupaten Kota) — JANGAN diubah ke 4/5/6, id itu
-    // sudah dipakai data legacy lain (Anggota/Admin Masjid/Admin Monitor Masjid).
+    // sudah dipakai data legacy lain (Anggota/Admin UPZ Desa/Admin Monitor UPZ Desa).
     if (user.id_level === 11) return 'admin-daerah';
     if (user.id_level === 12) return 'admin-kab';
     if (user.id_level === 13) return 'admin-kua';
     return 'admin-baznas';
   }
-  // Semua akun dengan jalur Masjid (level 2/3) kini dipetakan sebagai Admin Masjid
-  if (user.jalur_akses === 'Masjid') {
-    return 'admin-masjid';
+  // Semua akun dengan jalur UPZ Desa (level 2/3) kini dipetakan sebagai Admin UPZ Desa
+  if (user.jalur_akses === 'UPZ Desa') {
+    return 'admin-upz-desa';
   }
-  return 'admin-masjid';
+  return 'admin-upz-desa';
 }
 
 /**
@@ -255,7 +255,7 @@ export interface UpdateUserResponse {
 
 /**
  * Item user dari `GET /api/v1/users/list` (Auth Service).
- * Sudah join dengan Levels, Labels, dan Masjid (nama_masjid/alamat_masjid).
+ * Sudah join dengan Levels, Labels, dan UPZ Desa (nama_upz_desa/alamat_upz_desa).
  */
 export interface UserListItem {
   id_user: number;
@@ -265,28 +265,28 @@ export interface UserListItem {
   jk?: string;
   kode_org_baznas?: string;
   id_jalur_akses?: string;
-  id_level?: number; // 1 = Admin Pusat, 2 = Admin Masjid, 3 = Petugas
+  id_level?: number; // 1 = Admin Pusat, 2 = Admin UPZ Desa, 3 = Petugas
   id_labels?: number;
   status_aktif?: number;
   created_at?: string;
   nama_level?: string;
   nama_labels?: string;
-  nama_masjid?: string;
-  alamat_masjid?: string;
-  id_masjid?: string;
+  nama_upz_desa?: string;
+  alamat_upz_desa?: string;
+  id_upz_desa?: string;
 }
 
-/** Item minimal daftar masjid untuk dropdown `GET /api/v1/masjid/list`. */
-export interface MasjidOption {
-  id_masjid: string;
-  nama_masjid: string;
+/** Item minimal daftar UPZ Desa untuk dropdown `GET /api/v1/masjid/list` (nama path backend). */
+export interface UpzDesaOption {
+  id_upz_desa: string;
+  nama_upz_desa: string;
   kode_org_baznas?: string;
-  jenis_masjid?: string;
-  alamat_masjid?: string;
+  jenis_upz_desa?: string;
+  alamat_upz_desa?: string;
 }
 
 export const ROLE_LABELS: Record<UserRole, string> = {
-  'admin-masjid': 'Admin Masjid',
+  'admin-upz-desa': 'Admin UPZ Desa',
   'admin-baznas': 'Admin BAZNAS',
   'admin-daerah': 'Admin Daerah',
   'admin-kab': 'Admin Kab',
@@ -294,7 +294,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 };
 
 export const ROLE_DASHBOARD_ROUTES: Record<UserRole, string> = {
-  'admin-masjid': '/dashboard',
+  'admin-upz-desa': '/dashboard',
   'admin-baznas': '/dashboard-baznas',
   'admin-daerah': '/dashboard-daerah',
   'admin-kab': '/dashboard-kab',
@@ -324,16 +324,16 @@ export interface RekapPengeluaran {
   jumlah_transaksi?: number;
 }
 
-/** Response `GET /api/v1/rekap/by-masjid/{id_masjid}` — rekap per masjid. */
-export interface RekapByMasjid {
-  id_masjid: string;
+/** Response `GET /api/v1/rekap/by-masjid/{id}` (nama path backend) — rekap per UPZ Desa. */
+export interface RekapByUpzDesa {
+  id_upz_desa: string;
   total_penerimaan?: number;
   total_donatur?: number;
   total_pengeluaran?: number;
   total_penerima_manfaat?: number;
 }
 
-/** Satu baris bulanan pada response `GET /api/v1/rekap/bulanan/{id_masjid}` (FR-2.5). */
+/** Satu baris bulanan pada response `GET /api/v1/rekap/bulanan/{id_upz_desa}` (FR-2.5). */
 export interface RekapBulananItem {
   /** 'YYYY-MM' */
   periode: string;
@@ -341,9 +341,9 @@ export interface RekapBulananItem {
   pengeluaran: number;
 }
 
-/** Response `GET /api/v1/rekap/bulanan/{id_masjid}` — rekap penerimaan vs pengeluaran per bulan. */
+/** Response `GET /api/v1/rekap/bulanan/{id_upz_desa}` — rekap penerimaan vs pengeluaran per bulan. */
 export interface RekapBulanan {
-  id_masjid: string;
+  id_upz_desa: string;
   start_date: string;
   end_date: string;
   bulanan: RekapBulananItem[];
@@ -361,23 +361,24 @@ export interface ChangePasswordResponse {
   status: string;
 }
 
-// Pengajuan Masjid Types
+// Pengajuan UPZ Desa Types
 export type StatusPengajuan = 'pending' | 'disetujui' | 'ditolak';
 
-export interface PengajuanMasjid {
+export interface PengajuanUpzDesa {
   id: number;
-  nama_masjid: string;
-  alamat_masjid: string;
-  nohp_masjid: string;
+  id_pengajuan?: number;
+  nama_upz_desa: string;
+  alamat_upz_desa: string;
+  nohp_upz_desa: string;
   id_provinsi: number;
   id_kabupaten_kota: number;
   nama_provinsi?: string;
   nama_kabupaten_kota?: string;
   keterangan?: string;
   status_pengajuan: StatusPengajuan;
-  /** Kode masjid (kode_org_baznas) — diterbitkan langsung saat pengajuan dibuat. */
+  /** Kode UPZ Desa (kode_org_baznas) — diterbitkan langsung saat pengajuan dibuat. */
   kode_org_baznas?: string;
-  slug_masjid?: string;
+  slug_upz_desa?: string;
   nama_pemohon?: string;
   email_pemohon?: string;
   jk_pemohon?: string;
@@ -388,23 +389,23 @@ export interface PengajuanMasjid {
 }
 
 export interface PengajuanFormData {
-  nama_masjid: string;
-  alamat_masjid: string;
-  nohp_masjid: string;
+  nama_upz_desa: string;
+  alamat_upz_desa: string;
+  nohp_upz_desa: string;
   id_provinsi: number;
   id_kabupaten_kota: number;
   id_kecamatan?: number;
   id_kelurahan_desa?: number;
   keterangan: string;
-  /** Data admin pemohon (nama & email) — daftar masjid sekaligus admin-nya. */
+  /** Data admin pemohon (nama & email) — daftar UPZ Desa sekaligus admin-nya. */
   nama_pemohon?: string;
   email_pemohon?: string;
 }
 
 export interface PengajuanFormState {
-  nama_masjid: string;
-  alamat_masjid: string;
-  nohp_masjid: string;
+  nama_upz_desa: string;
+  alamat_upz_desa: string;
+  nohp_upz_desa: string;
   id_provinsi: string;
   id_kabupaten_kota: string;
   id_kecamatan: string;

@@ -52,7 +52,7 @@ export default function Footer() {
               style={{
                 width: 30,
                 height: 30,
-                background: '#28A71A',
+                background: '#EFB100',
                 borderRadius: 8,
                 display: 'flex',
                 alignItems: 'center',
@@ -72,7 +72,7 @@ export default function Footer() {
                 color: '#FFFFFF',
               }}
             >
-              Menara Masjid
+              UPZ Desa
             </span>
           </div>
 
@@ -88,7 +88,7 @@ export default function Footer() {
               maxWidth: 319,
             }}
           >
-            Platform digital untuk menghubungkan seluruh masjid dan musholla di Indonesia melalui teknologi modern.
+            Platform digital untuk menghubungkan seluruh Unit Pelaksana Zakat desa di Indonesia melalui teknologi modern.
           </p>
         </div>
 
@@ -114,7 +114,7 @@ export default function Footer() {
           >
             Menu Navigasi
           </span>
-          {['Beranda', 'Tentang Kami', 'Masjid', 'Publikasi', 'Microfinance'].map((item, i) => (
+          {['Beranda', 'Tentang Kami', 'UPZ Desa', 'Publikasi', 'Microfinance'].map((item, i) => (
             <Link
               key={i}
               to={i === 0 ? '/' : `/${item.toLowerCase().replace(/\s+/g, '-')}`}
@@ -416,7 +416,7 @@ export default function Footer() {
             color: '#FFFFFF',
           }}
         >
-          &copy; 2024 Menara Masjid. Semua hak cipta dilindungi undang-undang.
+          &copy; 2024 UPZ Desa. Semua hak cipta dilindungi undang-undang.
         </span>
       </div>
     </footer>

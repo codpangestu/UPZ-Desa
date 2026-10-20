@@ -23,7 +23,7 @@ export const KONDISI_OPTIONS = [
 ];
 
 export const KONDISI_COLOR: Record<string, string> = {
-  baik: 'bg-[#E6F9F0] text-[#006844]',
+  baik: 'bg-[#FDF3C0] text-[#7D5A00]',
   'rusak-ringan': 'bg-amber-50 text-amber-700',
   'rusak-berat': 'bg-red-50 text-red-600',
 };

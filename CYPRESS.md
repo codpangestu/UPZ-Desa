@@ -1,4 +1,4 @@
-# 🧪 Panduan E2E Testing — Cypress (Frontend MENARA Masjid)
+# 🧪 Panduan E2E Testing — Cypress (Frontend UPZ Desa)
 
 > Dibuat: 1 Okt 2026 — lihat CONTEXT.md Fix History #44 (setup), #45 (test login), #46 (test dashboard), #47 (test Microfinance), #48 (halaman publik data asli), #49 (CRUD publikasi).
 > Status saat ini: **33 test / 6 spec, semua PASS**.
@@ -58,15 +58,15 @@ npm run test:e2e
 npx cypress run --spec "cypress/e2e/login.cy.ts"
 ```
 
-## 👤 Akun Uji (DB lokal `menara_masjid_revamp`)
+## 👤 Akun Uji (DB lokal `upzdesa_revamp`)
 
-Password semua akun: **`menara23`**
+Password semua akun: **`upzdesa23`** (atau `menara23`)
 
 | Opsi dropdown login | Email | Role ter-infer | Redirect ke |
 |---------------------|-------|----------------|-------------|
-| Admin Masjid | `pangestuakbar939@gmail.com` | admin-masjid | `/dashboard` |
-| Admin BAZNAS | `baznas-provinsi@menara.masjid` | admin-daerah (id_level=11) | `/dashboard-daerah` |
-| Admin KUA | `admin.kua@menara.masjid` | admin-kua | `/dashboard-kua` |
+| Admin Masjid / UPZ | `pangestuakbar939@gmail.com` | admin-masjid | `/dashboard` |
+| Admin BAZNAS | `baznas-provinsi@upzdesa.baznas.go.id` | admin-daerah (id_level=11) | `/dashboard-daerah` |
+| Admin KUA | `admin.kua@upzdesa.baznas.go.id` | admin-kua | `/dashboard-kua` |
 | Admin Masjid BMM (khusus spec `microfinance.cy.ts`) | `dkmalhidayah0107@gmail.com` | admin-masjid (data seed BMM) | `/dashboard` |
 
 > Catatan: akun "Admin BAZNAS" di atas sebenarnya akun **Admin Daerah** (provinsi) — sesuai desain Fix #40/#12, Admin Daerah & Admin Kab login lewat opsi "Admin BAZNAS" (endpoint `/login/admin-pusat`), role final di-infer dari `id_level`.

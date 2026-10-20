@@ -14,23 +14,23 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { adminService } from '../../services/adminService';
-import { masjidService } from '../../services/masjidService';
-import type { UserListItem, Masjid, Provinsi, KabupatenKota, Kecamatan } from '../../types';
+import { upzDesaService } from '../../services/upzDesaService';
+import type { UserListItem, UpzDesa, Provinsi, KabupatenKota, Kecamatan } from '../../types';
 
 type LevelFilter =
-  | 'all' | 'admin-baznas' | 'admin-masjid' | 'admin-daerah' | 'admin-kab' | 'admin-kua' | 'pengguna';
+  | 'all' | 'admin-baznas' | 'admin-upz-desa' | 'admin-daerah' | 'admin-kab' | 'admin-kua' | 'pengguna';
 
 // "Anak" Admin BAZNAS yang scope-nya dipersempit ke wilayah tertentu.
 // id 11/12/13 mengikuti baris `levels` LEGACY yang sudah ada di DB (10=Admin
 // BAZNAS Pusat, 11=Admin BAZNAS Provinsi, 12=Admin BAZNAS Kabupaten Kota; 13
 // sebelumnya placeholder tanpa user, dipakai utk Admin KUA/kecamatan).
 // JANGAN pakai id 4/5/6 — sudah dipakai data legacy lain (Anggota/Admin
-// Masjid/Admin Monitor Masjid) dengan user asli.
+// UPZ Desa/Admin Monitor UPZ Desa) dengan user asli.
 const SCOPED_ADMIN_LEVELS = [11, 12, 13];
 
 const LEVEL_LABEL: Record<number, string> = {
   1: 'Admin BAZNAS',
-  2: 'Admin Masjid',
+  2: 'Admin UPZ Desa',
   3: 'Pengguna',
   11: 'Admin Daerah',
   12: 'Admin Kab',
@@ -39,7 +39,7 @@ const LEVEL_LABEL: Record<number, string> = {
 
 const LEVEL_BADGE: Record<number, string> = {
   1: 'bg-[#F3E8FF] text-[#7C3AED]',
-  2: 'bg-[#E6F9F0] text-[#006844]',
+  2: 'bg-[#FDF3C0] text-[#7D5A00]',
   3: 'bg-[#EAF2FF] text-[#2B7FFF]',
   11: 'bg-[#E0F2FE] text-[#0369A1]',
   12: 'bg-[#FEF3C7] text-[#B45309]',
@@ -49,7 +49,7 @@ const LEVEL_BADGE: Record<number, string> = {
 function matchesLevelFilter(user: UserListItem, filter: LevelFilter): boolean {
   if (filter === 'all') return true;
   if (filter === 'admin-baznas') return user.id_level === 1;
-  if (filter === 'admin-masjid') return user.id_level === 2;
+  if (filter === 'admin-upz-desa') return user.id_level === 2;
   if (filter === 'admin-daerah') return user.id_level === 11;
   if (filter === 'admin-kab') return user.id_level === 12;
   if (filter === 'admin-kua') return user.id_level === 13;
@@ -59,7 +59,7 @@ function matchesLevelFilter(user: UserListItem, filter: LevelFilter): boolean {
 
 export default function KelolaPenggunaPage() {
   const [users, setUsers] = useState<UserListItem[]>([]);
-  const [masjids, setMasjids] = useState<Masjid[]>([]);
+  const [upzDesas, setUpzDesas] = useState<UpzDesa[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [levelFilter, setLevelFilter] = useState<LevelFilter>('all');
@@ -70,13 +70,13 @@ export default function KelolaPenggunaPage() {
   const [kabFilter, setKabFilter] = useState('');
   const [provinsiList, setProvinsiList] = useState<Provinsi[]>([]);
   const [kabList, setKabList] = useState<KabupatenKota[]>([]);
-  const [masjidRegionMap, setMasjidRegionMap] = useState<Map<string, { id_provinsi?: number | string; id_kabupaten_kota?: number | string }>>(new Map());
+  const [upzDesaRegionMap, setUpzDesaRegionMap] = useState<Map<string, { id_provinsi?: number | string; id_kabupaten_kota?: number | string }>>(new Map());
 
   // Modal promosi
   const [promoteTarget, setPromoteTarget] = useState<UserListItem | null>(null);
   const [promoteLevel, setPromoteLevel] = useState(2);
   const [promoteRoleChoice, setPromoteRoleChoice] = useState<Record<number, number>>({});
-  const [selectedMasjid, setSelectedMasjid] = useState('');
+  const [selectedUpzDesa, setSelectedUpzDesa] = useState('');
   const [promoteLoading, setPromoteLoading] = useState(false);
 
   // Dropdown wilayah cascading KHUSUS modal promosi (terpisah dari filter di atas)
@@ -88,7 +88,7 @@ export default function KelolaPenggunaPage() {
 
   useEffect(() => {
     if (modalProvinsi) {
-      masjidService.getKabupatenKota(Number(modalProvinsi)).then((res) => {
+      upzDesaService.getKabupatenKota(Number(modalProvinsi)).then((res) => {
         if (res?.data) setModalKabList(res.data);
       });
     } else {
@@ -99,7 +99,7 @@ export default function KelolaPenggunaPage() {
 
   useEffect(() => {
     if (modalKab) {
-      masjidService.getKecamatan(Number(modalKab)).then((res) => {
+      upzDesaService.getKecamatan(Number(modalKab)).then((res) => {
         if (res?.data) setModalKecList(res.data);
       });
     } else {
@@ -110,7 +110,7 @@ export default function KelolaPenggunaPage() {
 
   // Fetch provinsi on mount
   useEffect(() => {
-    masjidService.getProvinsi().then((res) => {
+    upzDesaService.getProvinsi().then((res) => {
       if (res?.data) setProvinsiList(res.data);
     });
   }, []);
@@ -118,7 +118,7 @@ export default function KelolaPenggunaPage() {
   // Fetch kab/kota when provinsi changes
   useEffect(() => {
     if (provinsiFilter) {
-      masjidService.getKabupatenKota(Number(provinsiFilter)).then((res) => {
+      upzDesaService.getKabupatenKota(Number(provinsiFilter)).then((res) => {
         if (res?.data) setKabList(res.data);
       });
     } else {
@@ -129,15 +129,15 @@ export default function KelolaPenggunaPage() {
 
   // Reset page-like behavior: region filter changes reset kab filter (handled above)
 
-  /** Fetch ALL masjid by paginating through backend (max per_page=100). */
-  const fetchAllMasjid = async (): Promise<Masjid[]> => {
-    const ALL: Masjid[] = [];
+  /** Fetch ALL UPZ Desa by paginating through backend (max per_page=100). */
+  const fetchAllUpzDesa = async (): Promise<UpzDesa[]> => {
+    const ALL: UpzDesa[] = [];
     let pg = 1;
     const PER = 100;
     while (true) {
       try {
-        const res = await masjidService.getMasjidList(pg, PER);
-        const batch = Array.isArray(res?.data) ? (res.data as Masjid[]) : [];
+        const res = await upzDesaService.getUpzDesaList(pg, PER);
+        const batch = Array.isArray(res?.data) ? (res.data as UpzDesa[]) : [];
         ALL.push(...batch);
         if (batch.length < PER) break;
         pg++;
@@ -161,22 +161,22 @@ export default function KelolaPenggunaPage() {
       toast.error('Gagal memuat data pengguna');
     }
 
-    // Fetch all masjid for region filter (non-critical)
+    // Fetch all UPZ Desa for region filter (non-critical)
     try {
-      const masjidList = await fetchAllMasjid();
-      if (masjidList.length > 0) {
-        setMasjids(masjidList);
+      const upzDesaList = await fetchAllUpzDesa();
+      if (upzDesaList.length > 0) {
+        setUpzDesas(upzDesaList);
         const regionMap = new Map<string, { id_provinsi?: number | string; id_kabupaten_kota?: number | string }>();
-        masjidList.forEach((m: Masjid) => {
-          regionMap.set(m.id_masjid, {
+        upzDesaList.forEach((m: UpzDesa) => {
+          regionMap.set(m.id_upz_desa, {
             id_provinsi: m.id_provinsi,
             id_kabupaten_kota: m.id_kabupaten_kota,
           });
         });
-        setMasjidRegionMap(regionMap);
+        setUpzDesaRegionMap(regionMap);
       }
     } catch {
-      // Masjid API failed — filter by region won't work, but user data still shows
+      // UPZ Desa API failed — filter by region won't work, but user data still shows
     }
 
     setLoading(false);
@@ -192,12 +192,12 @@ export default function KelolaPenggunaPage() {
       user.nama?.toLowerCase().includes(q) ||
       user.email?.toLowerCase().includes(q) ||
       user.nohp?.toLowerCase().includes(q) ||
-      user.nama_masjid?.toLowerCase().includes(q);
+      user.nama_upz_desa?.toLowerCase().includes(q);
     if (!matchesSearch || !matchesLevelFilter(user, levelFilter)) return false;
-    // Region filter — only applies to users with a mosque
+    // Region filter — only applies to users with a UPZ Desa
     if (provinsiFilter || kabFilter) {
-      const region = masjidRegionMap.get(user.id_jalur_akses || '');
-      if (!region) return false; // user has no mosque in map, hide when region filter active
+      const region = upzDesaRegionMap.get(user.id_jalur_akses || '');
+      if (!region) return false; // user has no UPZ Desa in map, hide when region filter active
       if (provinsiFilter && String(region.id_provinsi) !== provinsiFilter) return false;
       if (kabFilter && String(region.id_kabupaten_kota) !== kabFilter) return false;
     }
@@ -206,7 +206,7 @@ export default function KelolaPenggunaPage() {
 
   const counts = {
     total: users.length,
-    adminMasjid: users.filter((u) => u.id_level === 2).length,
+    adminUpzDesa: users.filter((u) => u.id_level === 2).length,
     pengguna: users.filter((u) => matchesLevelFilter(u, 'pengguna')).length,
     nonaktif: users.filter((u) => u.status_aktif !== 1).length,
   };
@@ -214,7 +214,7 @@ export default function KelolaPenggunaPage() {
   const openPromoteModal = (user: UserListItem, level: number) => {
     setPromoteTarget(user);
     setPromoteLevel(level);
-    setSelectedMasjid(user.id_jalur_akses || '');
+    setSelectedUpzDesa(user.id_jalur_akses || '');
     setModalProvinsi('');
     setModalKab('');
     setModalKec('');
@@ -222,8 +222,8 @@ export default function KelolaPenggunaPage() {
 
   const handlePromote = async () => {
     if (!promoteTarget) return;
-    if (promoteLevel === 2 && !selectedMasjid) {
-      toast.error('Pilih masjid terlebih dahulu');
+    if (promoteLevel === 2 && !selectedUpzDesa) {
+      toast.error('Pilih UPZ Desa terlebih dahulu');
       return;
     }
     if (promoteLevel === 11 && !modalProvinsi) {
@@ -243,7 +243,7 @@ export default function KelolaPenggunaPage() {
     try {
       const payload =
         promoteLevel === 2
-          ? { id_level: 2, id_jalur_akses: selectedMasjid }
+          ? { id_level: 2, id_jalur_akses: selectedUpzDesa }
           : promoteLevel === 11
             ? { id_level: 11, id_provinsi: Number(modalProvinsi) }
             : promoteLevel === 12
@@ -253,7 +253,7 @@ export default function KelolaPenggunaPage() {
       const res = await adminService.updateUser(promoteTarget.id_user, payload);
       if (res && (res.status_code === '000' || res.status === 'Sukses')) {
         const levelLabel = LEVEL_LABEL[promoteLevel] || 'Admin';
-        const masjid = promoteLevel === 2 ? masjids.find((m: Masjid) => m.id_masjid === selectedMasjid) : undefined;
+        const upzDesa = promoteLevel === 2 ? upzDesas.find((m: UpzDesa) => m.id_upz_desa === selectedUpzDesa) : undefined;
         toast.success(`${promoteTarget.nama} kini menjadi ${levelLabel}`);
         setUsers((prev) =>
           prev.map((u) =>
@@ -262,8 +262,8 @@ export default function KelolaPenggunaPage() {
                   ...u,
                   id_level: promoteLevel,
                   nama_level: levelLabel,
-                  id_jalur_akses: promoteLevel === 2 ? selectedMasjid : '',
-                  nama_masjid: promoteLevel === 2 ? (masjid?.nama_masjid || u.nama_masjid) : undefined,
+                  id_jalur_akses: promoteLevel === 2 ? selectedUpzDesa : '',
+                  nama_upz_desa: promoteLevel === 2 ? (upzDesa?.nama_upz_desa || u.nama_upz_desa) : undefined,
                 }
               : u
           )
@@ -328,8 +328,8 @@ export default function KelolaPenggunaPage() {
       <div className="bg-white rounded-xl border border-[#F0F4F8] p-4 sm:p-6">
         <div className="flex items-start sm:items-center justify-between flex-col sm:flex-row gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-              <UserCog size={20} className="text-[#28A71A]" />
+            <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+              <UserCog size={20} className="text-[#EFB100]" />
             </div>
             <div>
               <h2
@@ -342,14 +342,14 @@ export default function KelolaPenggunaPage() {
                 className="text-sm text-text-gray"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Atur level akses akun — kelola Admin Masjid dan akun pengguna
+                Atur level akses akun — kelola Admin UPZ Desa dan akun pengguna
               </p>
             </div>
           </div>
           <button
             onClick={loadData}
             disabled={loading}
-            className="text-sm text-[#28A71A] hover:text-[#1C7712] transition-colors flex items-center gap-1"
+            className="text-sm text-[#EFB100] hover:text-[#C99400] transition-colors flex items-center gap-1"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
@@ -370,10 +370,10 @@ export default function KelolaPenggunaPage() {
         </div>
         <div className="bg-white rounded-xl p-4 border border-[rgba(0,0,0,0.08)]">
           <p className="text-xs text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Admin Masjid
+            Admin UPZ Desa
           </p>
-          <p className="text-2xl font-semibold text-[#006844] mt-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {counts.adminMasjid}
+          <p className="text-2xl font-semibold text-[#7D5A00] mt-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {counts.adminUpzDesa}
           </p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-[rgba(0,0,0,0.08)]">
@@ -402,20 +402,20 @@ export default function KelolaPenggunaPage() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari nama, email, no HP, atau nama masjid..."
-            className="w-full pl-10 pr-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]"
+            placeholder="Cari nama, email, no HP, atau nama UPZ Desa..."
+            className="w-full pl-10 pr-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           />
         </div>
         <select
           value={levelFilter}
           onChange={(e) => setLevelFilter(e.target.value as LevelFilter)}
-          className="px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20"
+          className="px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20"
           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
         >
           <option value="all">Semua Level</option>
           <option value="admin-baznas">Admin BAZNAS</option>
-          <option value="admin-masjid">Admin Masjid</option>
+          <option value="admin-upz-desa">Admin UPZ Desa</option>
           <option value="admin-daerah">Admin Daerah</option>
           <option value="admin-kab">Admin Kab</option>
           <option value="admin-kua">Admin KUA</option>
@@ -426,7 +426,7 @@ export default function KelolaPenggunaPage() {
           <select
             value={provinsiFilter}
             onChange={(e) => setProvinsiFilter(e.target.value)}
-            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none"
+            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <option value="">Semua Provinsi</option>
@@ -443,7 +443,7 @@ export default function KelolaPenggunaPage() {
             value={kabFilter}
             onChange={(e) => setKabFilter(e.target.value)}
             disabled={!provinsiFilter}
-            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
+            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <option value="">Semua Kab/Kota</option>
@@ -461,7 +461,7 @@ export default function KelolaPenggunaPage() {
       <div className="bg-white rounded-xl border border-[#F0F4F8] overflow-hidden">
         {loading ? (
           <div className="p-12 text-center">
-            <Loader2 size={24} className="animate-spin text-[#28A71A] mx-auto mb-2" />
+            <Loader2 size={24} className="animate-spin text-[#EFB100] mx-auto mb-2" />
             <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Memuat data...
             </p>
@@ -482,9 +482,8 @@ export default function KelolaPenggunaPage() {
                 <tr className="border-b border-[#F0F4F8]">
                   <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Pengguna
-                  </th>
-                  <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden md:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Masjid
+                  </th>                    <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden md:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    UPZ Desa
                   </th>
                   <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Level
@@ -500,7 +499,7 @@ export default function KelolaPenggunaPage() {
               <tbody className="divide-y divide-[#F0F4F8]">
                 {filteredUsers.map((user) => {
                   const isPengguna = matchesLevelFilter(user, 'pengguna');
-                  const isAdminMasjid = user.id_level === 2;
+                  const isAdminUpzDesa = user.id_level === 2;
                   const isAdminBaznas = user.id_level === 1;
                   const isScopedAdmin = !!user.id_level && SCOPED_ADMIN_LEVELS.includes(user.id_level);
                   const level = user.id_level ?? 3;
@@ -514,8 +513,8 @@ export default function KelolaPenggunaPage() {
                             className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0 ${
                               isAdminBaznas
                                 ? 'bg-[#7C3AED]'
-                                : isAdminMasjid
-                                  ? 'bg-[#006844]'
+                                : isAdminUpzDesa
+                                  ? 'bg-[#7D5A00]'
                                   : isScopedAdmin
                                     ? 'bg-[#0369A1]'
                                     : 'bg-[#2B7FFF]'
@@ -535,10 +534,10 @@ export default function KelolaPenggunaPage() {
                         </div>
                       </td>
                       <td className="px-4 py-3 hidden md:table-cell">
-                        {user.nama_masjid ? (
+                        {user.nama_upz_desa ? (
                           <span className="text-sm text-text-gray flex items-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                            <Building2 size={14} className="text-[#28A71A] flex-shrink-0" />
-                            <span className="truncate max-w-[180px]">{user.nama_masjid}</span>
+                            <Building2 size={14} className="text-[#EFB100] flex-shrink-0" />
+                            <span className="truncate max-w-[180px]">{user.nama_upz_desa}</span>
                           </span>
                         ) : (
                           <span className="text-xs text-[#B0B0B0]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -557,7 +556,7 @@ export default function KelolaPenggunaPage() {
                       <td className="px-4 py-3 hidden sm:table-cell">
                         <span
                           className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${
-                            active ? 'bg-[#E6F9F0] text-[#006844]' : 'bg-red-50 text-red-600'
+                            active ? 'bg-[#FDF3C0] text-[#7D5A00]' : 'bg-red-50 text-red-600'
                           }`}
                           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                         >
@@ -584,10 +583,10 @@ export default function KelolaPenggunaPage() {
                                       }))
                                     }
                                     disabled={busy}
-                                    className="px-2 py-1.5 border border-[#D4D4D4] rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20"
+                                    className="px-2 py-1.5 border border-[#D4D4D4] rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20"
                                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                   >
-                                    <option value={2}>Admin Masjid</option>
+                                    <option value={2}>Admin UPZ Desa</option>
                                     <option value={11}>Admin Daerah</option>
                                     <option value={12}>Admin Kab</option>
                                     <option value={13}>Admin KUA</option>
@@ -595,7 +594,7 @@ export default function KelolaPenggunaPage() {
                                   <button
                                     onClick={() => openPromoteModal(user, promoteRoleChoice[user.id_user] ?? 2)}
                                     disabled={busy}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-[#B0B0B0] text-white rounded-lg text-xs font-medium transition-colors"
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-[#B0B0B0] text-white rounded-lg text-xs font-medium transition-colors"
                                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                                   >
                                     <ShieldCheck size={14} />
@@ -603,7 +602,7 @@ export default function KelolaPenggunaPage() {
                                   </button>
                                 </>
                               )}
-                              {(isAdminMasjid || isScopedAdmin) && (
+                              {(isAdminUpzDesa || isScopedAdmin) && (
                                 <button
                                   onClick={() => handleDemote(user)}
                                   disabled={busy}
@@ -621,14 +620,14 @@ export default function KelolaPenggunaPage() {
                                 className={`p-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                                   active
                                     ? 'text-red-500 hover:bg-red-50'
-                                    : 'text-[#28A71A] hover:bg-[#EAF6E8]'
+                                    : 'text-[#EFB100] hover:bg-[#FEF9E7]'
                                 }`}
                               >
                                 <Ban size={16} />
                               </button>
                             </>
                           )}
-                          {busy && <Loader2 size={14} className="animate-spin text-[#28A71A]" />}
+                          {busy && <Loader2 size={14} className="animate-spin text-[#EFB100]" />}
                         </div>
                       </td>
                     </tr>
@@ -646,8 +645,8 @@ export default function KelolaPenggunaPage() {
           <div className="absolute inset-0 bg-black/50" onClick={() => !promoteLoading && setPromoteTarget(null)} />
           <div className="relative bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-[#E6F9F0] rounded-xl flex items-center justify-center">
-                <ShieldCheck size={20} className="text-[#006844]" />
+              <div className="w-10 h-10 bg-[#FDF3C0] rounded-xl flex items-center justify-center">
+                <ShieldCheck size={20} className="text-[#7D5A00]" />
               </div>
               <div>
                 <h3 className="text-base font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -665,30 +664,30 @@ export default function KelolaPenggunaPage() {
                   className="block text-sm font-medium text-[#303030] mb-2"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  Pilih Masjid yang Dikelola
+                  Pilih UPZ Desa yang Dikelola
                 </label>
                 <div className="relative">
                   <Building2 size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B0B0B0]" />
                   <select
-                    value={selectedMasjid}
-                    onChange={(e) => setSelectedMasjid(e.target.value)}
+                    value={selectedUpzDesa}
+                    onChange={(e) => setSelectedUpzDesa(e.target.value)}
                     disabled={promoteLoading}
-                    className="w-full pl-10 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none"
+                    className="w-full pl-10 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
-                    <option value="">— Pilih masjid —</option>
-                    {masjids.map((m) => (
-                      <option key={m.id_masjid} value={m.id_masjid}>
-                        {m.nama_masjid}
+                    <option value="">— Pilih UPZ Desa —</option>
+                    {upzDesas.map((m) => (
+                      <option key={m.id_upz_desa} value={m.id_upz_desa}>
+                        {m.nama_upz_desa}
                         {m.kode_org_baznas ? ` (${m.kode_org_baznas})` : ''}
                       </option>
                     ))}
                   </select>
                   <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#B0B0B0] pointer-events-none" />
                 </div>
-                {masjids.length === 0 && (
+                {upzDesas.length === 0 && (
                   <p className="text-xs text-amber-600 mt-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Belum ada data masjid terdaftar. Tambahkan masjid dulu di Data Masjid.
+                    Belum ada data UPZ Desa terdaftar. Tambahkan UPZ Desa dulu di Data UPZ Desa.
                   </p>
                 )}
               </>
@@ -706,7 +705,7 @@ export default function KelolaPenggunaPage() {
                       value={modalProvinsi}
                       onChange={(e) => setModalProvinsi(e.target.value)}
                       disabled={promoteLoading}
-                      className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none"
+                      className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none"
                       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       <option value="">— Pilih provinsi —</option>
@@ -733,7 +732,7 @@ export default function KelolaPenggunaPage() {
                         value={modalKab}
                         onChange={(e) => setModalKab(e.target.value)}
                         disabled={promoteLoading || !modalProvinsi}
-                        className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
+                        className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         <option value="">— Pilih kabupaten/kota —</option>
@@ -761,7 +760,7 @@ export default function KelolaPenggunaPage() {
                         value={modalKec}
                         onChange={(e) => setModalKec(e.target.value)}
                         disabled={promoteLoading || !modalKab}
-                        className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
+                        className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         <option value="">— Pilih kecamatan —</option>
@@ -790,7 +789,7 @@ export default function KelolaPenggunaPage() {
               <button
                 onClick={handlePromote}
                 disabled={promoteLoading}
-                className="flex-1 py-2.5 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-[#B0B0B0] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                className="flex-1 py-2.5 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-[#B0B0B0] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {promoteLoading ? <Loader2 size={16} className="animate-spin" /> : <ShieldCheck size={16} />}

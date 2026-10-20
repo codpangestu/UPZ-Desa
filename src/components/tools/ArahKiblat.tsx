@@ -170,7 +170,7 @@ export default function ArahKiblat() {
     <div className="bg-white rounded-2xl border border-[rgba(0,0,0,0.1)] p-5">
       {/* Header */}
       <div className="flex items-center gap-2 mb-5">
-        <Compass size={18} className="text-[#28A71A]" />
+        <Compass size={18} className="text-[#EFB100]" />
         <h3 className="text-sm font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Arah Kiblat
         </h3>
@@ -183,7 +183,7 @@ export default function ArahKiblat() {
         {orientationPermission && deviceOrientation !== null && (
           <>
             <span className="mx-1">·</span>
-            <Navigation size={12} className="text-[#28A71A]" />
+            <Navigation size={12} className="text-[#EFB100]" />
             <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               {deviceOrientation.toFixed(0)}°
             </span>
@@ -255,9 +255,9 @@ export default function ArahKiblat() {
         >
           <div className="relative">
             {/* Qibla indicator - green arrow pointing up */}
-            <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-b-[40px] border-l-transparent border-r-transparent border-b-[#28A71A] mx-auto" />
+            <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-b-[40px] border-l-transparent border-r-transparent border-b-[#EFB100] mx-auto" />
             {/* Circle at base */}
-            <div className="w-3 h-3 rounded-full bg-[#28A71A] mx-auto -mt-1 shadow-md" />
+            <div className="w-3 h-3 rounded-full bg-[#EFB100] mx-auto -mt-1 shadow-md" />
           </div>
         </div>
 
@@ -280,7 +280,7 @@ export default function ArahKiblat() {
       {/* Qibla Info */}
       {qiblaData && (
         <div className="text-center mb-5">
-          <div className="text-3xl font-bold text-[#28A71A] tabular-nums" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <div className="text-3xl font-bold text-[#EFB100] tabular-nums" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {qiblaData.bearing.toFixed(1)}°
           </div>
           <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -299,17 +299,17 @@ export default function ArahKiblat() {
         </div>
         <ol className="text-[10px] text-[#555] space-y-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           <li className="flex items-start gap-2">
-            <span className="w-4 h-4 rounded-full bg-[#EAF6E8] text-[#28A71A] text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+            <span className="w-4 h-4 rounded-full bg-[#FEF9E7] text-[#EFB100] text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
             Izinkan akses lokasi untuk mendeteksi posisi Anda
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-4 h-4 rounded-full bg-[#EAF6E8] text-[#28A71A] text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+            <span className="w-4 h-4 rounded-full bg-[#FEF9E7] text-[#EFB100] text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
             {orientationPermission
               ? 'Arahkan perangkat sesuai kompas — panah hijau menunjuk Kiblat'
               : 'Aktifkan sensor kompas untuk panduan arah real-time'}
           </li>
           <li className="flex items-start gap-2">
-            <span className="w-4 h-4 rounded-full bg-[#EAF6E8] text-[#28A71A] text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+            <span className="w-4 h-4 rounded-full bg-[#FEF9E7] text-[#EFB100] text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
             Sesuaikan arah sholat mengikuti panah hijau
           </li>
         </ol>
@@ -317,7 +317,7 @@ export default function ArahKiblat() {
         {!orientationPermission && (
           <button
             onClick={requestOrientationPermission}
-            className="mt-3 w-full py-2 bg-[#28A71A] text-white rounded-lg text-xs font-medium hover:bg-[#1C7712] transition-colors flex items-center justify-center gap-2"
+            className="mt-3 w-full py-2 bg-[#EFB100] text-white rounded-lg text-xs font-medium hover:bg-[#C99400] transition-colors flex items-center justify-center gap-2"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <Target size={14} />
@@ -326,8 +326,8 @@ export default function ArahKiblat() {
         )}
 
         {orientationPermission && (
-          <div className="mt-3 flex items-center gap-2 text-[10px] text-[#28A71A] bg-[#EAF6E8] rounded-lg px-3 py-2">
-            <div className="w-2 h-2 rounded-full bg-[#28A71A] animate-pulse" />
+          <div className="mt-3 flex items-center gap-2 text-[10px] text-[#EFB100] bg-[#FEF9E7] rounded-lg px-3 py-2">
+            <div className="w-2 h-2 rounded-full bg-[#EFB100] animate-pulse" />
             <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Kompas aktif — arahkan perangkat
             </span>

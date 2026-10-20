@@ -75,7 +75,7 @@ export default function SaldoPage() {
     <div className="space-y-6">
       <Link
         to="/microfinance"
-        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#28A71A] transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#EFB100] transition-colors"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <ArrowLeft size={16} />
@@ -83,12 +83,12 @@ export default function SaldoPage() {
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Wallet size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Wallet size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Saldo Microfinance</h1>
-          <p className="text-sm text-[#555]">Dana bergulir program BMM masjid ini</p>
+          <p className="text-sm text-[#555]">Dana bergulir program BMD UPZ desa ini</p>
         </div>
       </div>
 
@@ -103,24 +103,24 @@ export default function SaldoPage() {
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Nama Saldo</label>
                 <input value={formData.nama_bmfi_saldo_microfinance || ''} onChange={(e) => setFormData({ ...formData, nama_bmfi_saldo_microfinance: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Saldo Awal Penerimaan</label>
                   <input type="number" value={formData.saldo_awal_penerimaan || ''} onChange={(e) => setFormData({ ...formData, saldo_awal_penerimaan: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Nominal Saldo Saat Ini</label>
                   <input type="number" value={formData.nominal_saldo_microfinance || ''} onChange={(e) => setFormData({ ...formData, nominal_saldo_microfinance: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Keterangan</label>
                 <textarea value={formData.keterangan || ''} onChange={(e) => setFormData({ ...formData, keterangan: e.target.value })} rows={3}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] resize-none" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] resize-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6 justify-end">

@@ -11,13 +11,13 @@ import {
 const navLinks = [
   { name: 'Beranda', path: '/' },
   { name: 'Tentang Kami', path: '/tentang' },
-  { name: 'Masjid', path: '/masjid' },
+  { name: 'UPZ Desa', path: '/upz-desa' },
   { name: 'Publikasi', path: '/kajian' },
 ];
 
 const navSecondaryLinks = [
   { name: 'Tools', path: '/tools' },
-  { name: 'Ajukan Masjid', path: '/ajukan-masjid' },
+  { name: 'Ajukan UPZ Desa', path: '/ajukan-upz-desa' },
   { name: 'Microfinance', path: '/microfinance' },
   { name: 'Donasi', path: '/donasi' },
   { name: 'Kontak', path: '/kontak' },
@@ -30,7 +30,7 @@ export default function Navbar() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   /**
-   * Microfinance dilindungi ProtectedRoute (admin-masjid). Kalau belum login,
+   * Microfinance dilindungi ProtectedRoute (admin-upz-desa). Kalau belum login,
    * arahkan LANGSUNG ke /login dengan state.from → setelah login user mendarat
    * di /microfinance; ProtectedRoute tetap mem-validasi role (role lain →
    * dashboard default masing-masing). Fix #48.
@@ -86,8 +86,8 @@ export default function Navbar() {
       {/* ===== MAIN NAVBAR ===== */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-            ? 'bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)]'
-            : 'bg-white'
+          ? 'bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)]'
+          : 'bg-white'
           }`}
       >
         <div
@@ -106,8 +106,8 @@ export default function Navbar() {
             {/* Logo Icon */}
             <div className="relative w-9 h-9 flex-shrink-0">
               <img
-                src="/images/logo-menara.svg"
-                alt="MENARA Masjid Logo"
+                src="/assets/icons/logo-upzDesa2.webp"
+                alt="UPZ Desa Logo"
                 className="w-full h-full object-contain"
               />
             </div>
@@ -115,10 +115,10 @@ export default function Navbar() {
             {/* Brand Name */}
             <div className="flex flex-col">
               <span
-                className="font-semibold leading-tight text-[#303030] group-hover:text-[#28A71A] transition-colors duration-200"
+                className="font-semibold leading-tight text-[#303030] group-hover:text-[#EFB100] transition-colors duration-200"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '16px' }}
               >
-                Menara Masjid
+                UPZ Desa
               </span>
               <span
                 className="text-[10px] leading-tight text-[#767676] hidden sm:block"
@@ -142,8 +142,8 @@ export default function Navbar() {
                   >
                     <span
                       className={`relative z-10 text-sm font-medium transition-colors duration-200 ${active
-                          ? 'text-[#28A71A]'
-                          : 'text-[#555555] group-hover:text-[#303030]'
+                        ? 'text-[#EFB100]'
+                        : 'text-[#555555] group-hover:text-[#303030]'
                         }`}
                       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
@@ -151,9 +151,9 @@ export default function Navbar() {
                     </span>
                     {/* Active indicator */}
                     <span
-                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-[#28A71A] rounded-full transition-all duration-300 ${active
-                          ? 'w-5 opacity-100'
-                          : 'w-0 opacity-0 group-hover:w-3 group-hover:opacity-50'
+                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-[#EFB100] rounded-full transition-all duration-300 ${active
+                        ? 'w-5 opacity-100'
+                        : 'w-0 opacity-0 group-hover:w-3 group-hover:opacity-50'
                         }`}
                     />
                   </Link>
@@ -176,20 +176,20 @@ export default function Navbar() {
                   {navSecondaryLinks.map((link) => {
                     const target = linkTarget(link);
                     return (
-                    <Link
-                      key={link.path}
-                      to={target.to}
-                      state={target.state}
-                      className={`flex items-center gap-2 px-4 py-2.5 text-sm transition-colors duration-150 ${isActive(link.path)
-                          ? 'text-[#28A71A] bg-[#EAF6E8]'
+                      <Link
+                        key={link.path}
+                        to={target.to}
+                        state={target.state}
+                        className={`flex items-center gap-2 px-4 py-2.5 text-sm transition-colors duration-150 ${isActive(link.path)
+                          ? 'text-[#EFB100] bg-[#FEF9E7]'
                           : 'text-[#555555] hover:bg-[#F0F4F8] hover:text-[#303030]'
-                        }`}
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                    >
-                      {link.name === 'Donasi' && <Heart size={14} />}
-                      {link.name === 'Microfinance' && <HandCoins size={14} />}
-                      {link.name}
-                    </Link>
+                          }`}
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      >
+                        {link.name === 'Donasi' && <Heart size={14} />}
+                        {link.name === 'Microfinance' && <HandCoins size={14} />}
+                        {link.name}
+                      </Link>
                     );
                   })}
                 </div>
@@ -202,17 +202,17 @@ export default function Navbar() {
             {/* Donasi Button */}
             <Link
               to="/donasi"
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#28A71A] text-[#28A71A] text-sm font-medium hover:bg-[#EAF6E8] transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#EFB100] text-[#EFB100] text-sm font-medium hover:bg-[#FEF9E7] transition-all duration-200"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              <Heart size={15} className="fill-[#28A71A]" />
+              <Heart size={15} className="fill-[#EFB100]" />
               Donasi
             </Link>
 
             {/* Login Button */}
             <Link
               to="/login"
-              className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#28A71A] text-white text-sm font-medium hover:bg-[#1C7712] hover:shadow-lg hover:shadow-[#28A71A]/25 active:scale-95 transition-all duration-200"
+              className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#EFB100] text-white text-sm font-medium hover:bg-[#C99400] hover:shadow-lg hover:shadow-[#EFB100]/25 active:scale-95 transition-all duration-200"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <LogIn size={15} />
@@ -229,8 +229,8 @@ export default function Navbar() {
             <div className="relative w-5 h-5">
               <span
                 className={`absolute left-0 block h-0.5 bg-[#303030] rounded-full transition-all duration-300 ${isOpen
-                    ? 'top-1/2 w-5 -translate-y-1/2 rotate-45'
-                    : 'top-0 w-5'
+                  ? 'top-1/2 w-5 -translate-y-1/2 rotate-45'
+                  : 'top-0 w-5'
                   }`}
               />
               <span
@@ -239,8 +239,8 @@ export default function Navbar() {
               />
               <span
                 className={`absolute left-0 block h-0.5 bg-[#303030] rounded-full transition-all duration-300 ${isOpen
-                    ? 'top-1/2 w-5 -translate-y-1/2 -rotate-45'
-                    : 'bottom-0 w-5'
+                  ? 'top-1/2 w-5 -translate-y-1/2 -rotate-45'
+                  : 'bottom-0 w-5'
                   }`}
               />
             </div>
@@ -251,8 +251,8 @@ export default function Navbar() {
       {/* ===== MOBILE MENU (Slide-in from right) ===== */}
       <div
         className={`fixed inset-0 z-[70] lg:hidden transition-opacity duration-300 ${isOpen
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none'
+          ? 'opacity-100 pointer-events-auto'
+          : 'opacity-0 pointer-events-none'
           }`}
       >
         {/* Overlay */}
@@ -296,8 +296,8 @@ export default function Navbar() {
                     state={target.state}
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${active
-                        ? 'bg-[#EAF6E8] text-[#28A71A]'
-                        : 'text-[#555] hover:bg-[#F0F4F8] hover:text-[#303030]'
+                      ? 'bg-[#FEF9E7] text-[#EFB100]'
+                      : 'text-[#555] hover:bg-[#F0F4F8] hover:text-[#303030]'
                       }`}
                     style={{
                       fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -310,7 +310,7 @@ export default function Navbar() {
                     {link.name === 'Microfinance' && <HandCoins size={16} />}
                     {link.name}
                     {active && (
-                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#28A71A]" />
+                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#EFB100]" />
                     )}
                   </Link>
                 );
@@ -325,7 +325,7 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-[#28A71A] text-white text-sm font-medium hover:bg-[#1C7712] active:scale-[0.98] transition-all duration-200"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-[#EFB100] text-white text-sm font-medium hover:bg-[#C99400] active:scale-[0.98] transition-all duration-200"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 <LogIn size={16} />
@@ -334,7 +334,7 @@ export default function Navbar() {
               <Link
                 to="/donasi"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-full border border-[#28A71A] text-[#28A71A] text-sm font-medium hover:bg-[#EAF6E8] active:scale-[0.98] transition-all duration-200"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-full border border-[#EFB100] text-[#EFB100] text-sm font-medium hover:bg-[#FEF9E7] active:scale-[0.98] transition-all duration-200"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 <Heart size={16} />

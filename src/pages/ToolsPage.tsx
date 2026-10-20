@@ -11,9 +11,9 @@ export default function ToolsPage() {
   const [activeTool, setActiveTool] = useState<string | null>(null);
 
   const allTools = [
-    { id: 'kiblat', label: 'Arah Kiblat', icon: MapPin, desc: 'Cari arah kiblat dari lokasi Anda dengan kompas interaktif', color: 'from-[#28A71A] to-[#6FC466]' },
+    { id: 'kiblat', label: 'Arah Kiblat', icon: MapPin, desc: 'Cari arah kiblat dari lokasi Anda dengan kompas interaktif', color: 'from-[#EFB100] to-[#F5CC4D]' },
     { id: 'jadwal', label: 'Jadwal Sholat', icon: Sun, desc: 'Lihat jadwal sholat harian untuk berbagai kota di Indonesia', color: 'from-[#E8A317] to-[#F5C842]' },
-    { id: 'tasbih', label: 'Tasbih Digital', icon: CircleDot, desc: 'Hitung dzikir dan wirid dengan target yang bisa disesuaikan', color: 'from-[#166b0d] to-[#28A71A]' },
+    { id: 'tasbih', label: 'Tasbih Digital', icon: CircleDot, desc: 'Hitung dzikir dan wirid dengan target yang bisa disesuaikan', color: 'from-[#7D5A00] to-[#EFB100]' },
     { id: 'jam', label: 'Jam Digital', icon: Clock, desc: 'Jam digital dengan tampilan waktu Hijriyah dan Masehi', color: 'from-[#0E6E8C] to-[#4AAFD4]' },
     { id: 'todo', label: 'To-do List', icon: CheckSquare, desc: 'Catat dan kelola tugas ibadah dan kegiatan harian Anda', color: 'from-[#7C3AED] to-[#A78BFA]' },
     { id: 'scan', label: 'Scan QRIS', icon: Scan, desc: 'Scan kode QRIS untuk pembayaran dan donasi digital', color: 'from-[#DC2626] to-[#F87171]' },
@@ -33,12 +33,12 @@ export default function ToolsPage() {
   return (
     <div className="bg-[#FAFAFA] min-h-screen">
       {/* ===== HERO ===== */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#FAFAFA] via-white to-[#F0FCE8] pb-12 pt-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#FAFAFA] via-white to-[#FEF9E7] pb-12 pt-20">
         {/* Decorative Elements */}
-        <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#28A71A]/5 blur-3xl" />
-        <div className="absolute -bottom-10 -left-10 w-56 h-56 rounded-full bg-[#6FC466]/5 blur-3xl" />
-        <div className="absolute top-1/2 left-1/3 w-4 h-4 rounded-full bg-[#28A71A]/20 animate-pulse" />
-        <div className="absolute top-1/3 right-1/4 w-3 h-3 rounded-full bg-[#6FC466]/20 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#EFB100]/5 blur-3xl" />
+        <div className="absolute -bottom-10 -left-10 w-56 h-56 rounded-full bg-[#F5CC4D]/5 blur-3xl" />
+        <div className="absolute top-1/2 left-1/3 w-4 h-4 rounded-full bg-[#EFB100]/20 animate-pulse" />
+        <div className="absolute top-1/3 right-1/4 w-3 h-3 rounded-full bg-[#F5CC4D]/20 animate-pulse" style={{ animationDelay: '1s' }} />
 
         {!activeTool ? (
           <>
@@ -62,13 +62,13 @@ export default function ToolsPage() {
                     <button
                       key={tool.id}
                       onClick={() => setActiveTool(tool.id)}
-                      className="group relative bg-white rounded-2xl border border-[rgba(0,0,0,0.06)] p-5 text-left hover:shadow-lg hover:border-[#28A71A]/20 transition-all duration-300 text-center"
+                      className="group relative bg-white rounded-2xl border border-[rgba(0,0,0,0.06)] p-5 text-left hover:shadow-lg hover:border-[#EFB100]/20 transition-all duration-300 text-center"
                     >
                       {/* Icon Circle */}
                       <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tool.color} flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:shadow-md group-hover:scale-110 transition-all duration-300`}>
                         <Icon size={24} className="text-white" />
                       </div>
-                      <h3 className="text-sm font-bold text-[#303030] group-hover:text-[#28A71A] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <h3 className="text-sm font-bold text-[#303030] group-hover:text-[#EFB100] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {tool.label}
                       </h3>
                       <p className="text-[11px] text-[#888] mt-1.5 leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -76,7 +76,7 @@ export default function ToolsPage() {
                       </p>
                       {/* Hover arrow */}
                       <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0">
-                        <ChevronRight size={14} className="text-[#28A71A]" />
+                        <ChevronRight size={14} className="text-[#EFB100]" />
                       </div>
                     </button>
                   );
@@ -89,7 +89,7 @@ export default function ToolsPage() {
           <div className="relative z-10 max-w-3xl mx-auto px-4">
             <button
               onClick={() => setActiveTool(null)}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#555] hover:text-[#28A71A] transition-colors mb-6"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#555] hover:text-[#EFB100] transition-colors mb-6"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <ArrowLeft size={14} />
@@ -128,8 +128,8 @@ export default function ToolsPage() {
                       onClick={() => setActiveTool(tool.id)}
                       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-medium transition-all ${
                         isActive
-                          ? 'bg-[#28A71A] text-white shadow-sm shadow-[#28A71A]/20'
-                          : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#28A71A] hover:text-[#28A71A]'
+                          ? 'bg-[#EFB100] text-white shadow-sm shadow-[#EFB100]/20'
+                          : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#EFB100] hover:text-[#EFB100]'
                       }`}
                       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >

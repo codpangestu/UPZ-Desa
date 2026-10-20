@@ -8,7 +8,7 @@ export default defineConfig({
     specPattern: 'cypress/e2e/**/*.cy.ts',
     viewportWidth: 1280,
     viewportHeight: 720,
-    // Timeout santai karena fetch data publik (masjid/kajian) butuh backend
+    // Timeout santai karena fetch data publik (UPZ Desa/kajian) butuh backend
     defaultCommandTimeout: 10000,
     requestTimeout: 15000,
     // Jangan fail build/lint karena video & screenshot

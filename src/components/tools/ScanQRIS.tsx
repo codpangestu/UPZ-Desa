@@ -76,7 +76,7 @@ export default function ScanQRIS() {
       {/* Header */}
       <div className="p-5 border-b border-[rgba(0,0,0,0.1)]">
         <div className="flex items-center gap-2">
-          <Scan size={18} className="text-[#28A71A]" />
+          <Scan size={18} className="text-[#EFB100]" />
           <h3 className="text-sm font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Scan QRIS
           </h3>
@@ -104,8 +104,8 @@ export default function ScanQRIS() {
         ) : result ? (
           /* Result Display */
           <div className="text-center py-6">
-            <div className="w-14 h-14 bg-[#EAF6E8] rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 size={28} className="text-[#28A71A]" />
+            <div className="w-14 h-14 bg-[#FEF9E7] rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 size={28} className="text-[#EFB100]" />
             </div>
             <p className="text-sm font-semibold text-[#303030] mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               QRIS Terdeteksi!
@@ -119,7 +119,7 @@ export default function ScanQRIS() {
               {result.startsWith('http') && (
                 <button
                   onClick={() => window.open(result, '_blank')}
-                  className="py-2.5 px-5 bg-[#28A71A] text-white rounded-lg text-sm font-medium hover:bg-[#1C7712] transition-colors flex items-center gap-2"
+                  className="py-2.5 px-5 bg-[#EFB100] text-white rounded-lg text-sm font-medium hover:bg-[#C99400] transition-colors flex items-center gap-2"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <ExternalLink size={14} />
@@ -138,8 +138,8 @@ export default function ScanQRIS() {
         ) : (
           /* Initial State */
           <div className="text-center py-6">
-            <div className="w-16 h-16 bg-[#EAF6E8] rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Scan size={28} className="text-[#28A71A]" />
+            <div className="w-16 h-16 bg-[#FEF9E7] rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Scan size={28} className="text-[#EFB100]" />
             </div>
             <p className="text-sm font-semibold text-[#303030] mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Scan QRIS Pembayaran
@@ -156,7 +156,7 @@ export default function ScanQRIS() {
 
             <button
               onClick={startScanning}
-              className="py-2.5 px-6 bg-[#28A71A] text-white rounded-lg text-sm font-medium hover:bg-[#1C7712] transition-colors inline-flex items-center gap-2 shadow-lg shadow-[#28A71A]/25"
+              className="py-2.5 px-6 bg-[#EFB100] text-white rounded-lg text-sm font-medium hover:bg-[#C99400] transition-colors inline-flex items-center gap-2 shadow-lg shadow-[#EFB100]/25"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Camera size={16} />

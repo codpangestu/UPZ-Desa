@@ -180,7 +180,7 @@ export default function PublicationMenu() {
           Jelajah <span className="text-gradient-green">Publikasi</span>
         </h1>
         <p className="text-lg text-[#555] max-w-2xl mx-auto">
-          Informasi, kajian, acara, dan donasi terbaru dari masjid-masjid di seluruh Indonesia
+          Informasi, kajian, acara, dan donasi terbaru dari UPZ Desa di seluruh Indonesia
         </p>
 
         {/* Search Section - Filter Chips + Search */}
@@ -196,7 +196,7 @@ export default function PublicationMenu() {
                 onClick={() => handleFilterChange(f.id)}
                 className={`whitespace-nowrap text-sm font-medium transition-all px-4 py-1.5 rounded-full shrink-0 ${
                   activeFilter === f.id
-                    ? 'bg-[#28A71A] text-white'
+                    ? 'bg-[#EFB100] text-white'
                     : 'text-[#737373] hover:text-[#555]'
                 }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -230,7 +230,7 @@ export default function PublicationMenu() {
           {/* Loading */}
           {loading && (
             <div className="flex items-center justify-center py-16 gap-3">
-              <Loader2 size={28} className="animate-spin text-[#28A71A]" />
+              <Loader2 size={28} className="animate-spin text-[#EFB100]" />
               <span className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Memuat publikasi...
               </span>
@@ -251,10 +251,10 @@ export default function PublicationMenu() {
           {!loading && !error && pagedItems.length > 0 && (
             <div className="mb-8">
               <div className="bg-white border border-[rgba(0,0,0,0.08)] rounded-2xl overflow-hidden card-hover md:flex hover:shadow-lg transition-all">
-                <div className="md:w-[400px] h-56 md:h-auto bg-gradient-to-br from-[#E6F9F0] to-[#EAF6E8] flex items-center justify-center text-7xl flex-shrink-0 relative overflow-hidden">
+                <div className="md:w-[400px] h-56 md:h-auto bg-gradient-to-br from-[#FDF3C0] to-[#FEF9E7] flex items-center justify-center text-7xl flex-shrink-0 relative overflow-hidden">
                   <span className="relative z-10">{TIPE_META[pagedItems[0].tipe].emoji}</span>
                   {/* Type badge on image */}
-                  <span className="absolute top-3 left-3 z-10 px-3 py-1 bg-[#28A71A]/90 text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                  <span className="absolute top-3 left-3 z-10 px-3 py-1 bg-[#EFB100]/90 text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
                     {pagedItems[0].tipe}
                   </span>
                 </div>
@@ -303,10 +303,10 @@ export default function PublicationMenu() {
                   className="bg-white border border-[rgba(0,0,0,0.08)] rounded-2xl overflow-hidden card-hover group flex flex-col hover:shadow-lg transition-all"
                 >
                   {/* Image */}
-                  <div className="h-44 bg-gradient-to-br from-[#E6F9F0] to-[#EAF6E8] flex items-center justify-center text-5xl relative overflow-hidden">
+                  <div className="h-44 bg-gradient-to-br from-[#FDF3C0] to-[#FEF9E7] flex items-center justify-center text-5xl relative overflow-hidden">
                     <span className="relative z-10">{TIPE_META[pub.tipe].emoji}</span>
                     {/* Type badge top-left */}
-                    <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 bg-[#28A71A]/90 text-white rounded-full text-[9px] font-bold uppercase tracking-wider shadow-sm">
+                    <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 bg-[#EFB100]/90 text-white rounded-full text-[9px] font-bold uppercase tracking-wider shadow-sm">
                       {pub.tipe}
                     </span>
                     {/* Category emoji decoration */}
@@ -324,7 +324,7 @@ export default function PublicationMenu() {
                       <span>{formatTanggal(pub.tanggal)}</span>
                     </div>
 
-                    <h3 className="text-sm font-bold text-[#303030] mb-2 leading-snug line-clamp-2 group-hover:text-[#28A71A] transition-colors">
+                    <h3 className="text-sm font-bold text-[#303030] mb-2 leading-snug line-clamp-2 group-hover:text-[#EFB100] transition-colors">
                       {pub.judul}
                     </h3>
 
@@ -348,7 +348,7 @@ export default function PublicationMenu() {
                         </div>
                         <div className="w-full h-2 bg-[#F0F4F8] rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-[#28A71A] to-[#6FC466] rounded-full transition-all duration-500"
+                            className="h-full bg-gradient-to-r from-[#EFB100] to-[#F5CC4D] rounded-full transition-all duration-500"
                             style={{ width: `${persen}%` }}
                           />
                         </div>
@@ -378,7 +378,7 @@ export default function PublicationMenu() {
               </p>
               <button
                 onClick={() => handleFilterChange('semua')}
-                className="mt-4 text-sm font-semibold text-[#28A71A] hover:text-[#1C7712] transition-colors"
+                className="mt-4 text-sm font-semibold text-[#EFB100] hover:text-[#C99400] transition-colors"
               >
                 Lihat Semua Publikasi →
               </button>
@@ -394,7 +394,7 @@ export default function PublicationMenu() {
                 className={`flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-medium transition-all ${
                   currentPage === 1
                     ? 'text-[#ccc] cursor-not-allowed'
-                    : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#28A71A] hover:text-[#28A71A]'
+                    : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#EFB100] hover:text-[#EFB100]'
                 }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
@@ -408,8 +408,8 @@ export default function PublicationMenu() {
                   onClick={() => setCurrentPage(page)}
                   className={`w-9 h-9 rounded-xl text-xs font-semibold transition-all ${
                     page === currentPage
-                      ? 'bg-[#28A71A] text-white shadow-sm shadow-[#28A71A]/20'
-                      : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#28A71A] hover:text-[#28A71A]'
+                      ? 'bg-[#EFB100] text-white shadow-sm shadow-[#EFB100]/20'
+                      : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#EFB100] hover:text-[#EFB100]'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
@@ -423,7 +423,7 @@ export default function PublicationMenu() {
                 className={`flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-medium transition-all ${
                   currentPage === totalPages
                     ? 'text-[#ccc] cursor-not-allowed'
-                    : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#28A71A] hover:text-[#28A71A]'
+                    : 'bg-white border border-[rgba(0,0,0,0.08)] text-[#555] hover:border-[#EFB100] hover:text-[#EFB100]'
                 }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >

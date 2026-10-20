@@ -120,8 +120,8 @@ export default function BukuKasPengeluaranPage() {
         nama_jenis_dana: item.nama_jenis_dana,
         nama_jenis_harta: item.nama_jenis_harta,
         nama_label_info_dana: item.nama_label_info_dana,
-        namaMasjid: user?.nama_masjid,
-        kodeMasjid: user?.id_jalur_akses,
+        namaUpzDesa: user?.nama_upz_desa,
+        kodeUpzDesa: user?.id_jalur_akses,
         id: item.id,
       });
     },
@@ -211,14 +211,14 @@ export default function BukuKasPengeluaranPage() {
         <div className="flex items-center justify-end gap-2">
           <button
             onClick={() => handleCetak(item)}
-            className="p-1.5 rounded-lg text-text-gray hover:bg-[#EAF6E8] hover:text-[#28A71A] transition-colors"
+            className="p-1.5 rounded-lg text-text-gray hover:bg-[#FEF9E7] hover:text-[#EFB100] transition-colors"
             title="Cetak Kuitansi"
           >
             <Printer size={15} />
           </button>
           <button
             onClick={() => handleEdit(item)}
-            className="p-1.5 rounded-lg text-text-gray hover:bg-[#F0F4F8] hover:text-[#28A71A] transition-colors"
+            className="p-1.5 rounded-lg text-text-gray hover:bg-[#F0F4F8] hover:text-[#EFB100] transition-colors"
             title="Edit"
           >
             <Pencil size={15} />
@@ -239,8 +239,8 @@ export default function BukuKasPengeluaranPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Wallet size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Wallet size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h2 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -272,7 +272,7 @@ export default function BukuKasPengeluaranPage() {
             {formatCurrency(cc?.total_nominal_keluar)}
           </p>
         </div>
-        <div className="bg-gradient-to-br from-[#28A71A] to-[#1C7712] rounded-xl p-5 text-white">
+        <div className="bg-gradient-to-br from-[#EFB100] to-[#C99400] rounded-xl p-5 text-white">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-white/80" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Saldo Akhir</p>
             <DollarSign size={18} className="text-white/70" />

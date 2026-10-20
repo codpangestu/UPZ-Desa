@@ -5,18 +5,18 @@
 // Prasyarat:
 //   1. Vite dev server   → npm run di frontend/ (port 3000)
 //   2. 5 backend service → uvicorn di backend/ (port 8001–8005)
-//   3. DB lokal `menara_masjid_revamp` berisi akun uji:
-//        • pangestuakbar939@gmail.com  (Admin Masjid, id_level=2)
-//        • baznas-provinsi@menara.masjid (Admin Daerah, id_level=11 —
+//   3. DB lokal `upzdesa_revamp` berisi akun uji:
+//        • pangestuakbar939@gmail.com  (Admin UPZ Desa, id_level=2)
+//        • baznas-provinsi@upzdesa.baznas.go.id (Admin Daerah, id_level=11 —
 //          login lewat opsi "Admin BAZNAS", endpoint /login/admin-pusat)
-//        • admin.kua@menara.masjid     (Admin KUA, id_level=13)
-//      password semua akun: menara23
+//        • admin.kua@upzdesa.baznas.go.id     (Admin KUA, id_level=13)
+//      password semua akun: upzdesa23
 // =====================================================================
 
 // --- Akun uji (jangan taruh kredensial produksi di sini) ---
-const AKUN_MASJID = { email: 'pangestuakbar939@gmail.com', password: 'menara23' };
-const AKUN_BAZNAS = { email: 'baznas-provinsi@menara.masjid', password: 'menara23' };
-const AKUN_KUA = { email: 'admin.kua@menara.masjid', password: 'menara23' };
+const AKUN_UPZ_DESA = { email: 'pangestuakbar939@gmail.com', password: 'upzdesa23' };
+const AKUN_BAZNAS = { email: 'baznas-provinsi@upzdesa.baznas.go.id', password: 'upzdesa23' };
+const AKUN_KUA = { email: 'admin.kua@upzdesa.baznas.go.id', password: 'upzdesa23' };
 
 // --- Selector (struktur LoginPage.tsx) ---
 const ROLE_TRIGGER = 'div.relative button[type="button"]'; // trigger dropdown "Login sebagai"
@@ -24,7 +24,7 @@ const EMAIL_INPUT = 'input[type="email"]';
 const PASSWORD_INPUT = 'input[type="password"]';
 const SUBMIT_BTN = 'button[type="submit"]';
 
-/** Isi form login lalu submit. Role TIDAK diubah (default Admin Masjid). */
+/** Isi form login lalu submit. Role TIDAK diubah (default Admin UPZ Desa). */
 function isiFormLogin(email: string, password: string) {
   cy.get(EMAIL_INPUT).clear().type(email);
   cy.get(PASSWORD_INPUT).clear().type(password);
@@ -51,11 +51,11 @@ beforeEach(() => {
 });
 
 describe('Flow Login — 3 role', () => {
-  it('Login Admin Masjid → redirect ke /dashboard + nama masjid tampil', () => {
-    isiFormLogin(AKUN_MASJID.email, AKUN_MASJID.password);
+  it('Login Admin UPZ Desa → redirect ke /dashboard + nama UPZ Desa tampil', () => {
+    isiFormLogin(AKUN_UPZ_DESA.email, AKUN_UPZ_DESA.password);
 
     cy.url().should('include', '/dashboard', { timeout: 15000 });
-    // Pastikan benar-benar di dashboard Admin Masjid (bukan dashboard role lain)
+    // Pastikan benar-benar di dashboard Admin UPZ Desa (bukan dashboard role lain)
     cy.url().should('not.include', '/dashboard-baznas');
     cy.url().should('not.include', '/dashboard-daerah');
     cy.url().should('not.include', '/dashboard-kab');
@@ -78,7 +78,7 @@ describe('Flow Login — 3 role', () => {
   });
 
   it('Password salah → tetap di /login + pesan error dari backend', () => {
-    isiFormLogin(AKUN_MASJID.email, 'password-salah');
+    isiFormLogin(AKUN_UPZ_DESA.email, 'password-salah');
 
     cy.url().should('include', '/login');
     // Alert error merah render dengan pesan backend { detail }
@@ -87,9 +87,9 @@ describe('Flow Login — 3 role', () => {
       .and('contain.text', 'Email atau password salah');
   });
 
-  it('Akun masjid lewat opsi Admin BAZNAS → ditolak backend (403)', () => {
+  it('Akun UPZ Desa lewat opsi Admin BAZNAS → ditolak backend (403)', () => {
     pilihRole('Admin BAZNAS');
-    isiFormLogin(AKUN_MASJID.email, AKUN_MASJID.password);
+    isiFormLogin(AKUN_UPZ_DESA.email, AKUN_UPZ_DESA.password);
 
     cy.url().should('include', '/login');
     cy.get('.bg-red-50')
@@ -97,9 +97,9 @@ describe('Flow Login — 3 role', () => {
       .and('contain.text', 'Akses ditolak');
   });
 
-  it('Akun masjid lewat opsi Admin KUA → ditolak backend (403)', () => {
+  it('Akun UPZ Desa lewat opsi Admin KUA → ditolak backend (403)', () => {
     pilihRole('Admin KUA');
-    isiFormLogin(AKUN_MASJID.email, AKUN_MASJID.password);
+    isiFormLogin(AKUN_UPZ_DESA.email, AKUN_UPZ_DESA.password);
 
     cy.url().should('include', '/login');
     cy.get('.bg-red-50')
@@ -108,7 +108,7 @@ describe('Flow Login — 3 role', () => {
   });
 
   it('Session tersimpan → reload halaman dashboard tetap login', () => {
-    isiFormLogin(AKUN_MASJID.email, AKUN_MASJID.password);
+    isiFormLogin(AKUN_UPZ_DESA.email, AKUN_UPZ_DESA.password);
 
     cy.url().should('include', '/dashboard', { timeout: 15000 });
 

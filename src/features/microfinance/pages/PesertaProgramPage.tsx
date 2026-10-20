@@ -112,7 +112,7 @@ export default function PesertaProgramPage() {
       key: 'aksi', label: 'Aksi',
       render: (d) => (
         <div className="flex items-center gap-1">
-          <button onClick={() => openTransaksi('pencairan', d)} title="Pencairan Pinjaman" className="p-1.5 rounded-lg hover:bg-[#EAF6E8] text-[#555] hover:text-[#28A71A]"><ArrowUpCircle size={15} /></button>
+          <button onClick={() => openTransaksi('pencairan', d)} title="Pencairan Pinjaman" className="p-1.5 rounded-lg hover:bg-[#FEF9E7] text-[#555] hover:text-[#EFB100]"><ArrowUpCircle size={15} /></button>
           <button onClick={() => openTransaksi('pengembalian', d)} title="Pengembalian/Cicilan" className="p-1.5 rounded-lg hover:bg-blue-50 text-[#555] hover:text-blue-500"><ArrowDownCircle size={15} /></button>
           <button onClick={() => openEdit(d)} className="p-1.5 rounded-lg hover:bg-[#F0F4F8] text-[#555] hover:text-[#2B7FFF]"><Pencil size={15} /></button>
           <button onClick={() => handleDelete(d)} className="p-1.5 rounded-lg hover:bg-red-50 text-[#555] hover:text-red-500"><Trash2 size={15} /></button>
@@ -125,7 +125,7 @@ export default function PesertaProgramPage() {
     <div className="space-y-6">
       <Link
         to="/microfinance"
-        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#28A71A] transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#EFB100] transition-colors"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <ArrowLeft size={16} />
@@ -133,8 +133,8 @@ export default function PesertaProgramPage() {
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Users size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Users size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Peserta Program dan Transaksi</h1>
@@ -153,13 +153,13 @@ export default function PesertaProgramPage() {
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Nama Lengkap</label>
                 <input value={formData.nama_peserta_program_bmfi_asesmen || ''} onChange={(e) => setFormData({ ...formData, nama_peserta_program_bmfi_asesmen: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Jenis Kelamin</label>
                   <select value={formData.jenis_kelamin || 'Laki-laki'} onChange={(e) => setFormData({ ...formData, jenis_kelamin: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]">
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]">
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                   </select>
@@ -167,17 +167,17 @@ export default function PesertaProgramPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">No. HP</label>
                   <input value={formData.no_hp || ''} onChange={(e) => setFormData({ ...formData, no_hp: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">No. KTP</label>
                   <input value={formData.no_ktp || ''} onChange={(e) => setFormData({ ...formData, no_ktp: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Pendamping</label>
                   <select value={formData.id_pendamping_bmfi_asesmen || ''} onChange={(e) => setFormData({ ...formData, id_pendamping_bmfi_asesmen: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]">
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]">
                     <option value="">--Pilih--</option>
                     {pendampingList.map((p: any) => (
                       <option key={p.id_pendamping_bmfi_asesmen} value={p.id_pendamping_bmfi_asesmen}>{p.nama_pendamping_bmfi_asesmen}</option>
@@ -187,33 +187,33 @@ export default function PesertaProgramPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Nama Usaha</label>
                   <input value={formData.nama_usaha || ''} onChange={(e) => setFormData({ ...formData, nama_usaha: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Lokasi Usaha</label>
                   <input value={formData.lokasi_usaha || ''} onChange={(e) => setFormData({ ...formData, lokasi_usaha: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Nama Bank</label>
                   <input value={formData.nama_bank || ''} onChange={(e) => setFormData({ ...formData, nama_bank: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">No. Rekening</label>
                   <input value={formData.no_rekening || ''} onChange={(e) => setFormData({ ...formData, no_rekening: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Alamat Rumah</label>
                 <textarea value={formData.alamat_rumah || ''} onChange={(e) => setFormData({ ...formData, alamat_rumah: e.target.value })} rows={2}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] resize-none" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] resize-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Keterangan</label>
                 <textarea value={formData.keterangan || ''} onChange={(e) => setFormData({ ...formData, keterangan: e.target.value })} rows={2}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] resize-none" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] resize-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6 justify-end">
@@ -236,24 +236,24 @@ export default function PesertaProgramPage() {
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Tanggal</label>
                 <input type="date" value={txForm.tanggal} onChange={(e) => setTxForm({ ...txForm, tanggal: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Nominal {txModal.mode === 'pencairan' && '(maks Rp3.000.000)'}</label>
                 <input type="number" value={txForm.nominal} onChange={(e) => setTxForm({ ...txForm, nominal: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
               </div>
               {txModal.mode === 'pengembalian' && (
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Infak (opsional)</label>
                   <input type="number" value={txForm.infak} onChange={(e) => setTxForm({ ...txForm, infak: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
               )}
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Keterangan Transaksi</label>
                 <textarea value={txForm.keterangan} onChange={(e) => setTxForm({ ...txForm, keterangan: e.target.value })} rows={2}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] resize-none" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] resize-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6 justify-end">

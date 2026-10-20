@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Building2, Search, Loader2, MapPin, ExternalLink, KeyRound, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { masjidService } from '../../services/masjidService';
+import { upzDesaService } from '../../services/upzDesaService';
 import { adminService } from '../../services/adminService';
-import type { Masjid, Provinsi, KabupatenKota } from '../../types';
+import type { UpzDesa, Provinsi, KabupatenKota } from '../../types';
 
 const PER_PAGE = 10;
 
-export default function DataMasjidBaznasPage() {
-  const [allItems, setAllItems] = useState<Masjid[]>([]);
+export default function DataUpzDesaBaznasPage() {
+  const [allItems, setAllItems] = useState<UpzDesa[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,7 +21,7 @@ export default function DataMasjidBaznasPage() {
 
   // Fetch provinsi on mount
   useEffect(() => {
-    masjidService.getProvinsi().then((res) => {
+    upzDesaService.getProvinsi().then((res) => {
       if (res?.data) setProvinsiList(res.data);
     });
   }, []);
@@ -29,7 +29,7 @@ export default function DataMasjidBaznasPage() {
   // Fetch kab/kota when provinsi changes
   useEffect(() => {
     if (provinsiFilter) {
-      masjidService.getKabupatenKota(Number(provinsiFilter)).then((res) => {
+      upzDesaService.getKabupatenKota(Number(provinsiFilter)).then((res) => {
         if (res?.data) setKabList(res.data);
       });
     } else {
@@ -38,16 +38,16 @@ export default function DataMasjidBaznasPage() {
     setKabFilter('');
   }, [provinsiFilter]);
 
-  /** Fetch ALL masjid by paginating through backend (max per_page=100). */
-  const fetchAllMasjid = async (): Promise<Masjid[]> => {
-    const ALL: Masjid[] = [];
+  /** Fetch ALL UPZ Desa by paginating through backend (max per_page=100). */
+  const fetchAllUpzDesa = async (): Promise<UpzDesa[]> => {
+    const ALL: UpzDesa[] = [];
     let pg = 1;
     const PER = 100; // backend max per_page
     // eslint-disable-next-line no-constant-condition
     while (true) {
       try {
-        const res = await masjidService.getMasjidList(pg, PER);
-        const batch = Array.isArray(res?.data) ? (res.data as Masjid[]) : [];
+        const res = await upzDesaService.getUpzDesaList(pg, PER);
+        const batch = Array.isArray(res?.data) ? (res.data as UpzDesa[]) : [];
         ALL.push(...batch);
         if (batch.length < PER) break; // last page
         pg++;
@@ -60,21 +60,21 @@ export default function DataMasjidBaznasPage() {
 
   const loadData = useCallback(async () => {
     setLoading(true);
-    let masjidList: Masjid[] = [];
+    let upzDesaList: UpzDesa[] = [];
 
-    // Fetch all masjid (paginated) — primary source
+    // Fetch all UPZ Desa (paginated) — primary source
     try {
-      masjidList = await fetchAllMasjid();
+      upzDesaList = await fetchAllUpzDesa();
     } catch {
       // ignore
     }
 
-    // Fetch users list to find extra mosques (non-critical)
+    // Fetch users list to find extra UPZ Desa (non-critical)
     try {
       const usersRes = await adminService.getUsersList();
       const usersList = Array.isArray(usersRes?.data) ? usersRes.data : [];
-      const existingIds = new Set(masjidList.map((m) => m.id_masjid));
-      const extraMasjids: Masjid[] = usersList
+      const existingIds = new Set(upzDesaList.map((m) => m.id_upz_desa));
+      const extraUpzDesas: UpzDesa[] = usersList
         .filter(
           (u: any) =>
             u.id_level === 2 &&
@@ -82,17 +82,17 @@ export default function DataMasjidBaznasPage() {
             !existingIds.has(u.id_jalur_akses)
         )
         .map((u: any) => ({
-          id_masjid: u.id_jalur_akses,
-          nama_masjid: u.nama_masjid || '-',
-          alamat_masjid: u.alamat_masjid || '',
+          id_upz_desa: u.id_jalur_akses,
+          nama_upz_desa: u.nama_upz_desa || '-',
+          alamat_upz_desa: u.alamat_upz_desa || '',
           kode_org_baznas: u.id_jalur_akses,
         }));
-      masjidList = [...masjidList, ...extraMasjids];
+      upzDesaList = [...upzDesaList, ...extraUpzDesas];
     } catch {
-      // Users API failed — show only masjid data
+      // Users API failed — show only UPZ Desa data
     }
 
-    setAllItems(masjidList);
+    setAllItems(upzDesaList);
     setLoading(false);
   }, []);
 
@@ -111,9 +111,9 @@ export default function DataMasjidBaznasPage() {
     const q = searchQuery.toLowerCase().trim();
     if (q) {
       const matchesSearch =
-        (m.nama_masjid || '').toLowerCase().includes(q) ||
-        (m.alamat_masjid || '').toLowerCase().includes(q) ||
-        (m.kode_org_baznas || m.id_masjid || '').toLowerCase().includes(q);
+        (m.nama_upz_desa || '').toLowerCase().includes(q) ||
+        (m.alamat_upz_desa || '').toLowerCase().includes(q) ||
+        (m.kode_org_baznas || m.id_upz_desa || '').toLowerCase().includes(q);
       if (!matchesSearch) return false;
     }
     // Region filters
@@ -133,17 +133,17 @@ export default function DataMasjidBaznasPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-            <Building2 size={20} className="text-[#28A71A]" />
+          <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+            <Building2 size={20} className="text-[#EFB100]" />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Data Masjid
+              Data UPZ Desa
             </h2>
             <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {allItems.length} masjid terdaftar di seluruh Indonesia
+              {allItems.length} UPZ Desa terdaftar di seluruh Indonesia
               {hasActiveFilter && (
-                <span className="text-[#28A71A] font-medium"> · {total} ditampilkan</span>
+                <span className="text-[#EFB100] font-medium"> · {total} ditampilkan</span>
               )}
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function DataMasjidBaznasPage() {
         <button
           onClick={loadData}
           disabled={loading}
-          className="text-sm text-[#28A71A] hover:text-[#1C7712] transition-colors flex items-center gap-1"
+          className="text-sm text-[#EFB100] hover:text-[#C99400] transition-colors flex items-center gap-1"
           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
         >
           <Loader2 size={14} className={loading ? 'animate-spin' : ''} />
@@ -167,8 +167,8 @@ export default function DataMasjidBaznasPage() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari nama masjid, alamat, atau kode..."
-            className="w-full pl-10 pr-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]"
+            placeholder="Cari nama UPZ Desa, alamat, atau kode..."
+            className="w-full pl-10 pr-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           />
         </div>
@@ -176,7 +176,7 @@ export default function DataMasjidBaznasPage() {
           <select
             value={provinsiFilter}
             onChange={(e) => setProvinsiFilter(e.target.value)}
-            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none"
+            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <option value="">Semua Provinsi</option>
@@ -193,7 +193,7 @@ export default function DataMasjidBaznasPage() {
             value={kabFilter}
             onChange={(e) => setKabFilter(e.target.value)}
             disabled={!provinsiFilter}
-            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
+            className="w-full pl-4 pr-8 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 appearance-none disabled:opacity-50 disabled:bg-[#F5F5F5]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <option value="">Semua Kab/Kota</option>
@@ -211,14 +211,14 @@ export default function DataMasjidBaznasPage() {
       <div className="bg-white rounded-xl border border-[#F0F4F8] overflow-hidden">
         {loading ? (
           <div className="p-12 text-center">
-            <Loader2 size={24} className="animate-spin text-[#28A71A] mx-auto mb-2" />
-            <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Memuat data masjid...</p>
+            <Loader2 size={24} className="animate-spin text-[#EFB100] mx-auto mb-2" />
+            <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Memuat data UPZ Desa...</p>
           </div>
         ) : pageItems.length === 0 ? (
           <div className="p-12 text-center">
             <Building2 size={40} className="text-[#D4D4D4] mx-auto mb-3" />
             <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {hasActiveFilter ? 'Tidak ada masjid yang cocok dengan filter' : 'Belum ada data masjid'}
+              {hasActiveFilter ? 'Tidak ada UPZ Desa yang cocok dengan filter' : 'Belum ada data UPZ Desa'}
             </p>
           </div>
         ) : (
@@ -226,7 +226,7 @@ export default function DataMasjidBaznasPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[#F0F4F8]">
-                  <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Nama Masjid</th>
+                  <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Nama UPZ Desa</th>
                   <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden sm:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kode</th>
                   <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden md:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Alamat</th>
                   <th className="text-right text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Aksi</th>
@@ -234,32 +234,32 @@ export default function DataMasjidBaznasPage() {
               </thead>
               <tbody className="divide-y divide-[#F0F4F8]">
                 {pageItems.map((m) => (
-                  <tr key={m.id_masjid} className="hover:bg-[#FAFAFA] transition-colors">
+                  <tr key={m.id_upz_desa} className="hover:bg-[#FAFAFA] transition-colors">
                     <td className="px-4 py-3">
                       <p className="text-sm font-medium text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {m.nama_masjid}
+                        {m.nama_upz_desa}
                       </p>
                       <p className="text-xs text-text-gray md:hidden truncate max-w-[200px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {m.alamat_masjid}
+                        {m.alamat_upz_desa}
                       </p>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#006844] bg-[#E6F9F0] px-2 py-1 rounded-md" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#7D5A00] bg-[#FDF3C0] px-2 py-1 rounded-md" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <KeyRound size={12} />
-                        {m.kode_org_baznas || m.id_masjid}
+                        {m.kode_org_baznas || m.id_upz_desa}
                       </span>
                     </td>
                     <td className="px-4 py-3 hidden md:table-cell">
                       <span className="text-sm text-text-gray flex items-start gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <MapPin size={14} className="flex-shrink-0 mt-0.5 text-[#B0B0B0]" />
-                        <span className="truncate max-w-[320px]">{m.alamat_masjid || '-'}</span>
+                        <span className="truncate max-w-[320px]">{m.alamat_upz_desa || '-'}</span>
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
                       <Link
-                        to={`/masjid/${m.slug_masjid || m.id_masjid}`}
+                        to={`/upz-desa/${m.slug_upz_desa || m.id_upz_desa}`}
                         target="_blank"
-                        className="inline-flex items-center gap-1 text-[#28A71A] hover:text-[#1C7712] transition-colors text-sm"
+                        className="inline-flex items-center gap-1 text-[#EFB100] hover:text-[#C99400] transition-colors text-sm"
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         <ExternalLink size={14} />
@@ -278,13 +278,13 @@ export default function DataMasjidBaznasPage() {
       {!loading && total > PER_PAGE && (
         <div className="flex items-center justify-between">
           <p className="text-xs text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Halaman {page} dari {totalPages} · {total} masjid
+            Halaman {page} dari {totalPages} · {total} UPZ Desa
           </p>
           <div className="flex gap-2">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="px-3 py-1.5 border border-[#D4D4D4] rounded-lg text-xs text-[#555] hover:border-[#28A71A] hover:text-[#28A71A] disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="px-3 py-1.5 border border-[#D4D4D4] rounded-lg text-xs text-[#555] hover:border-[#EFB100] hover:text-[#EFB100] disabled:opacity-40 disabled:pointer-events-none transition-colors"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               Sebelumnya
@@ -292,7 +292,7 @@ export default function DataMasjidBaznasPage() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="px-3 py-1.5 border border-[#D4D4D4] rounded-lg text-xs text-[#555] hover:border-[#28A71A] hover:text-[#28A71A] disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="px-3 py-1.5 border border-[#D4D4D4] rounded-lg text-xs text-[#555] hover:border-[#EFB100] hover:text-[#EFB100] disabled:opacity-40 disabled:pointer-events-none transition-colors"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               Berikutnya

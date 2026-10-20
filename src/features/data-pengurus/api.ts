@@ -1,7 +1,7 @@
 import { adminApi } from '../../services/api';
 import type { Pengurus } from './types';
 
-const API_KEY = 'menara23apikey';
+const API_KEY = 'upzdesa23apikey';
 const API_KEY_HEADER = { 'x-api-key': API_KEY };
 
 export const dataPengurusApi = {

@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Calendar, Plus, Pencil, Trash2 } from 'lucide-react';
 import DataTable from '../../buku-kas/components/DataTable';
 import type { Column, TableFilter } from '../../buku-kas/components/DataTable';
-import { useKegiatanList, useCreateKegiatan, useUpdateKegiatan, useDeleteKegiatan } from '../hooks/useKegiatanMasjid';
+import { useKegiatanList, useCreateKegiatan, useUpdateKegiatan, useDeleteKegiatan } from '../hooks/useKegiatanUpzDesa';
 import type { Kegiatan, KegiatanFormData } from '../types';
 import { JENIS_KEGIATAN_OPTIONS, JENIS_KEGIATAN_COLOR } from '../types';
 
-export default function DataKegiatanPage() {
+export default function DataKegiatanUpzDesaPage() {
   const { data: kegiatanList, isLoading } = useKegiatanList();
   const createMutation = useCreateKegiatan();
   const updateMutation = useUpdateKegiatan();
@@ -79,7 +79,7 @@ export default function DataKegiatanPage() {
       key: 'status',
       label: 'Status',
       render: (k) => (
-        <span className={`badge-xs ${k.status_aktif ? 'bg-[#E6F9F0] text-[#006844]' : 'bg-red-50 text-red-600'}`}>
+        <span className={`badge-xs ${k.status_aktif ? 'bg-[#FDF3C0] text-[#7D5A00]' : 'bg-red-50 text-red-600'}`}>
           {k.status_aktif ? 'Aktif' : 'Nonaktif'}
         </span>
       ),
@@ -99,12 +99,12 @@ export default function DataKegiatanPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Calendar size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Calendar size={20} className="text-[#EFB100]" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Data Kegiatan Masjid</h1>
-          <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kelola kegiatan rutin dan khusus masjid</p>
+          <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Data Kegiatan UPZ Desa</h1>
+          <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kelola kegiatan rutin dan khusus UPZ desa</p>
         </div>
       </div>
 
@@ -133,13 +133,13 @@ export default function DataKegiatanPage() {
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Nama Kegiatan</label>
                 <input value={formData.nama_kegiatan} onChange={(e) => setFormData({ ...formData, nama_kegiatan: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Jenis</label>
                 <select value={formData.jenis} onChange={(e) => setFormData({ ...formData, jenis: e.target.value as 'rutin' | 'tertentu' })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] bg-white"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] bg-white"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {JENIS_KEGIATAN_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
@@ -147,7 +147,7 @@ export default function DataKegiatanPage() {
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Keterangan</label>
                 <textarea value={formData.keterangan} onChange={(e) => setFormData({ ...formData, keterangan: e.target.value })} rows={3}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] resize-none"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] resize-none"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} />
               </div>
             </div>

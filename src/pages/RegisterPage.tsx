@@ -9,8 +9,8 @@ import { adminService } from '../services/adminService';
 import type { Kecamatan, KelurahanDesa } from '../types';
 
 const STEPS = [
-  { id: 1, label: 'Data Masjid', desc: 'Ajukan data masjid' },
-  { id: 2, label: 'Data Admin Masjid', desc: 'Kode otomatis terisi' },
+  { id: 1, label: 'Data UPZ Desa', desc: 'Ajukan data UPZ desa' },
+  { id: 2, label: 'Data Admin UPZ Desa', desc: 'Kode otomatis terisi' },
 ] as const;
 
 export default function RegisterPage() {
@@ -19,11 +19,11 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // ===== Step 1: Daftar Masjid (data masjid saja — kode diterbitkan otomatis) =====
-  const [masjidForm, setMasjidForm] = useState({
-    nama_masjid: '',
-    alamat_masjid: '',
-    nohp_masjid: '',
+  // ===== Step 1: Daftar UPZ Desa (data UPZ Desa saja — kode diterbitkan otomatis) =====
+  const [upzDesaForm, setUpzDesaForm] = useState({
+    nama_upz_desa: '',
+    alamat_upz_desa: '',
+    nohp_upz_desa: '',
     id_provinsi: '',
     id_kabupaten_kota: '',
     id_kecamatan: '',
@@ -35,11 +35,11 @@ export default function RegisterPage() {
   const [kecamatanList, setKecamatanList] = useState<Kecamatan[]>([]);
   const [kelurahanList, setKelurahanList] = useState<KelurahanDesa[]>([]);
   const [loadingWilayah, setLoadingWilayah] = useState(true);
-  // id pengajuan + kode masjid yang diterbitkan backend saat langkah 1 sukses
+  // id pengajuan + kode UPZ Desa yang diterbitkan backend saat langkah 1 sukses
   const [pengajuanId, setPengajuanId] = useState<number | null>(null);
   const [issuedKode, setIssuedKode] = useState('');
 
-  // ===== Step 2: Daftar Admin Masjid (kode otomatis terisi) =====
+  // ===== Step 2: Daftar Admin UPZ Desa (kode otomatis terisi) =====
   const [adminForm, setAdminForm] = useState({
     nama: '',
     email: '',
@@ -67,13 +67,13 @@ export default function RegisterPage() {
 
   // Load kabupaten/kota saat provinsi berubah
   useEffect(() => {
-    if (!masjidForm.id_provinsi) {
+    if (!upzDesaForm.id_provinsi) {
       setKabkotList([]);
       return;
     }
     const loadKabkot = async () => {
       try {
-        const res = await adminService.getKabupatenKota(Number(masjidForm.id_provinsi));
+        const res = await adminService.getKabupatenKota(Number(upzDesaForm.id_provinsi));
         if (res.status && Array.isArray(res.data)) {
           setKabkotList(res.data);
         }
@@ -82,20 +82,20 @@ export default function RegisterPage() {
       }
     };
     loadKabkot();
-    setMasjidForm((prev) => ({ ...prev, id_kabupaten_kota: '', id_kecamatan: '', id_kelurahan_desa: '' }));
+    setUpzDesaForm((prev) => ({ ...prev, id_kabupaten_kota: '', id_kecamatan: '', id_kelurahan_desa: '' }));
     setKecamatanList([]);
     setKelurahanList([]);
-  }, [masjidForm.id_provinsi]);
+  }, [upzDesaForm.id_provinsi]);
 
   // Load kecamatan saat kab/kota berubah
   useEffect(() => {
-    if (!masjidForm.id_kabupaten_kota) {
+    if (!upzDesaForm.id_kabupaten_kota) {
       setKecamatanList([]);
       return;
     }
     const loadKecamatan = async () => {
       try {
-        const res = await adminService.getKecamatan(Number(masjidForm.id_kabupaten_kota));
+        const res = await adminService.getKecamatan(Number(upzDesaForm.id_kabupaten_kota));
         if (res.status && Array.isArray(res.data)) {
           setKecamatanList(res.data);
         }
@@ -104,19 +104,19 @@ export default function RegisterPage() {
       }
     };
     loadKecamatan();
-    setMasjidForm((prev) => ({ ...prev, id_kecamatan: '', id_kelurahan_desa: '' }));
+    setUpzDesaForm((prev) => ({ ...prev, id_kecamatan: '', id_kelurahan_desa: '' }));
     setKelurahanList([]);
-  }, [masjidForm.id_kabupaten_kota]);
+  }, [upzDesaForm.id_kabupaten_kota]);
 
   // Load kelurahan/desa saat kecamatan berubah
   useEffect(() => {
-    if (!masjidForm.id_kecamatan) {
+    if (!upzDesaForm.id_kecamatan) {
       setKelurahanList([]);
       return;
     }
     const loadKelurahan = async () => {
       try {
-        const res = await adminService.getKelurahanDesa(Number(masjidForm.id_kecamatan));
+        const res = await adminService.getKelurahanDesa(Number(upzDesaForm.id_kecamatan));
         if (res.status && Array.isArray(res.data)) {
           setKelurahanList(res.data);
         }
@@ -125,35 +125,35 @@ export default function RegisterPage() {
       }
     };
     loadKelurahan();
-    setMasjidForm((prev) => ({ ...prev, id_kelurahan_desa: '' }));
-  }, [masjidForm.id_kecamatan]);
+    setUpzDesaForm((prev) => ({ ...prev, id_kelurahan_desa: '' }));
+  }, [upzDesaForm.id_kecamatan]);
 
   const goToStep = (next: 1 | 2) => {
-    // Step 2 hanya bisa dibuka setelah kode masjid diterbitkan
+    // Step 2 hanya bisa dibuka setelah kode UPZ Desa diterbitkan
     if (next === 2 && !issuedKode) return;
     setStep(next);
     setError('');
   };
 
   /** Jika pengajuan sudah dibuat (step 1 selesai), kembali ke step 2 tanpa membuat duplikat. */
-  const handleMasjidSubmitted = (e: React.FormEvent) => {
+  const handleContinueToStep2 = (e: React.FormEvent) => {
     // Jangan submit ulang — langsung lanjut ke step 2 (cegah pengajuan duplikat)
     e.preventDefault();
     setError('');
     setStep(2);
   };
 
-  const namaProvinsi = provinsiList.find((p) => String(p.id) === String(masjidForm.id_provinsi))?.nama_provinsi;
-  const namaKabkot = kabkotList.find((k) => String(k.id) === String(masjidForm.id_kabupaten_kota))?.nama_kabupaten_kota;
+  const namaProvinsi = provinsiList.find((p) => String(p.id) === String(upzDesaForm.id_provinsi))?.nama_provinsi;
+  const namaKabkot = kabkotList.find((k) => String(k.id) === String(upzDesaForm.id_kabupaten_kota))?.nama_kabupaten_kota;
 
-  /** Langkah 1 — Daftar Masjid: membuat pengajuan; backend langsung terbitkan kode masjid. */
-  const handleSubmitMasjid = async (e: React.FormEvent) => {
+  /** Langkah 1 — Daftar UPZ Desa: membuat pengajuan; backend langsung terbitkan kode UPZ Desa. */
+  const handleSubmitUpzDesa = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const m = masjidForm;
-    if (!m.nama_masjid.trim() || !m.alamat_masjid.trim() || !m.nohp_masjid.trim()) {
-      setError('Lengkapi data masjid terlebih dahulu.');
+    const m = upzDesaForm;
+    if (!m.nama_upz_desa.trim() || !m.alamat_upz_desa.trim() || !m.nohp_upz_desa.trim()) {
+      setError('Lengkapi data UPZ Desa terlebih dahulu.');
       return;
     }
     if (!m.id_provinsi || !m.id_kabupaten_kota) {
@@ -164,9 +164,9 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       const res = await adminService.submitPengajuan({
-        nama_masjid: m.nama_masjid.trim(),
-        alamat_masjid: m.alamat_masjid.trim(),
-        nohp_masjid: m.nohp_masjid.trim(),
+        nama_upz_desa: m.nama_upz_desa.trim(),
+        alamat_upz_desa: m.alamat_upz_desa.trim(),
+        nohp_upz_desa: m.nohp_upz_desa.trim(),
         id_provinsi: Number(m.id_provinsi),
         id_kabupaten_kota: Number(m.id_kabupaten_kota),
         id_kecamatan: m.id_kecamatan ? Number(m.id_kecamatan) : undefined,
@@ -176,12 +176,12 @@ export default function RegisterPage() {
       const kode = res?.data?.kode_org_baznas || '';
       const id = res?.data?.id;
       if (!kode || !id) {
-        throw new Error('Kode masjid tidak diterbitkan. Silakan coba lagi.');
+        throw new Error('Kode UPZ Desa tidak diterbitkan. Silakan coba lagi.');
       }
       setIssuedKode(kode);
       setPengajuanId(id);
-      toast.success(`Kode masjid Anda: ${kode}.`);
-      // Lanjut otomatis ke langkah 2 — form admin masjid dengan kode terisi
+      toast.success(`Kode UPZ Desa Anda: ${kode}.`);
+      // Lanjut otomatis ke langkah 2 — form admin UPZ desa dengan kode terisi
       setStep(2);
       setError('');
     } catch (err: any) {
@@ -189,7 +189,7 @@ export default function RegisterPage() {
         err?.response?.data?.status ||
         err?.response?.data?.message ||
         err?.message ||
-        'Gagal mengirim pengajuan masjid. Silakan coba lagi.';
+        'Gagal mengirim pengajuan UPZ Desa. Silakan coba lagi.';
       setError(message);
     } finally {
       setIsLoading(false);
@@ -235,7 +235,7 @@ export default function RegisterPage() {
   };
 
   const inputCls =
-    'w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all placeholder:text-gray-400 bg-gray-50/50 hover:bg-white focus:bg-white';
+    'w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all placeholder:text-gray-400 bg-gray-50/50 hover:bg-white focus:bg-white';
   const labelCls = 'block text-sm font-semibold text-[#303030] mb-1.5';
 
   return (
@@ -247,8 +247,8 @@ export default function RegisterPage() {
           <Link to="/" className="flex items-center gap-3">
             <div className="flex-shrink-0">
               <img
-                src="/images/logo-menara.svg"
-                alt="MENARA Masjid Logo"
+                src="/assets/icons/logo-upzDesa2.webp"
+                alt="UPZ Desa Logo"
                 className="w-[30px] h-[30px] object-contain"
               />
             </div>
@@ -256,13 +256,13 @@ export default function RegisterPage() {
               className="text-base font-bold text-[#303030] tracking-wide"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              MENARA Masjid
+              UPZ Desa
             </span>
           </Link>
 
           <Link
             to="/login"
-            className="hidden sm:inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#28A71A] transition-colors"
+            className="hidden sm:inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#EFB100] transition-colors"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <ArrowLeft size={14} />
@@ -276,7 +276,7 @@ export default function RegisterPage() {
             {/* Mobile Back Link */}
             <Link
               to="/login"
-              className="sm:hidden inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#28A71A] transition-colors mb-6"
+              className="sm:hidden inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#EFB100] transition-colors mb-6"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <ArrowLeft size={14} />
@@ -289,10 +289,10 @@ export default function RegisterPage() {
                 className="text-[28px] font-bold text-[#303030] mb-2"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Daftar Admin Masjid
+                Daftar Admin UPZ Desa
               </h1>
               <p className="text-sm text-gray-500" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Daftarkan masjid Anda dulu — kode masjid diterbitkan otomatis, lalu lengkapi data Admin Masjid
+                Daftarkan UPZ Desa Anda dulu — kode UPZ Desa diterbitkan otomatis, lalu lengkapi data Admin UPZ Desa
               </p>
             </div>
 
@@ -302,7 +302,7 @@ export default function RegisterPage() {
                 {/* Connector line */}
                 <div
                   className={`absolute top-[19px] left-[12.5%] right-[12.5%] h-0.5 transition-colors duration-500 ${
-                    step === 2 ? 'bg-[#28A71A]' : 'bg-gray-200'
+                    step === 2 ? 'bg-[#EFB100]' : 'bg-gray-200'
                   }`}
                 />
                 {STEPS.map((s) => {
@@ -321,9 +321,9 @@ export default function RegisterPage() {
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2 ${
                           isDone
-                            ? 'bg-[#28A71A] border-[#28A71A] text-white'
+                            ? 'bg-[#EFB100] border-[#EFB100] text-white'
                             : isActive
-                              ? 'bg-white border-[#28A71A] text-[#28A71A] shadow-lg shadow-[#28A71A]/25'
+                              ? 'bg-white border-[#EFB100] text-[#EFB100] shadow-lg shadow-[#EFB100]/25'
                               : 'bg-white border-gray-200 text-gray-400'
                         }`}
                       >
@@ -336,7 +336,7 @@ export default function RegisterPage() {
                       <div className="text-center">
                         <p
                           className={`text-xs font-semibold transition-colors ${
-                            isActive || isDone ? 'text-[#1C7712]' : 'text-gray-400'
+                            isActive || isDone ? 'text-[#C99400]' : 'text-gray-400'
                           }`}
                         >
                           {s.label}
@@ -357,54 +357,54 @@ export default function RegisterPage() {
               </div>
             )}
 
-            {/* ========== STEP 1: DAFTAR MASJID ========== */}
+            {/* ========== STEP 1: DAFTAR UPZ DESA ========== */}
             {step === 1 && (
               <form
-                onSubmit={pengajuanId ? handleMasjidSubmitted : handleSubmitMasjid}
+                onSubmit={pengajuanId ? handleContinueToStep2 : handleSubmitUpzDesa}
                 className="space-y-4"
               >
                 {/* Info alur */}
-                <div className="p-3.5 bg-[#EAF6E8] border border-[#28A71A]/20 rounded-xl flex items-start gap-2.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  <Info size={16} className="text-[#28A71A] flex-shrink-0 mt-0.5" />
+                <div className="p-3.5 bg-[#FEF9E7] border border-[#EFB100]/20 rounded-xl flex items-start gap-2.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  <Info size={16} className="text-[#EFB100] flex-shrink-0 mt-0.5" />
                   {pengajuanId ? (
                     <p className="text-xs text-[#555] leading-relaxed">
-                      Pengajuan masjid <b>{masjidForm.nama_masjid}</b> sudah dibuat dengan kode{' '}
-                      <b className="font-mono text-[#1C7712]">{issuedKode}</b>. Lanjut ke langkah 2 untuk mendaftarkan{' '}
-                      <b>Admin Masjid</b> — atau ubah data di bawah jika ada yang perlu diperbaiki (data sudah terkirim, perubahan tidak mengubah pengajuan).
+                      Pengajuan UPZ Desa <b>{upzDesaForm.nama_upz_desa}</b> sudah dibuat dengan kode{' '}
+                      <b className="font-mono text-[#C99400]">{issuedKode}</b>. Lanjut ke langkah 2 untuk mendaftarkan{' '}
+                      <b>Admin UPZ Desa</b> — atau ubah data di bawah jika ada yang perlu diperbaiki (data sudah terkirim, perubahan tidak mengubah pengajuan).
                     </p>
                   ) : (
                     <p className="text-xs text-[#555] leading-relaxed">
-                      Setelah data masjid dikirim, Anda langsung menerima <b>kode masjid</b> dan otomatis lanjut ke
-                      langkah 2 untuk mendaftarkan <b>Admin Masjid</b>. Admin BAZNAS akan mengkonfirmasi masjid + admin sekaligus.
+                      Setelah data UPZ Desa dikirim, Anda langsung menerima <b>kode UPZ Desa</b> dan otomatis lanjut ke
+                      langkah 2 untuk mendaftarkan <b>Admin UPZ Desa</b>. Admin BAZNAS akan mengkonfirmasi UPZ Desa + admin sekaligus.
                     </p>
                   )}
                 </div>
 
-                {/* Data Masjid */}
+                {/* Data UPZ Desa */}
                 <p className="text-sm font-bold text-[#303030] mt-5 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Data Masjid
+                  Data UPZ Desa
                 </p>
                 <div>
                   <label className={labelCls} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Nama Masjid <span className="text-red-500">*</span>
+                    Nama UPZ Desa <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    value={masjidForm.nama_masjid}
-                    onChange={(e) => setMasjidForm((p) => ({ ...p, nama_masjid: e.target.value }))}
-                    placeholder="Nama masjid Anda"
+                    value={upzDesaForm.nama_upz_desa}
+                    onChange={(e) => setUpzDesaForm((p) => ({ ...p, nama_upz_desa: e.target.value }))}
+                    placeholder="Nama UPZ Desa Anda"
                     className={inputCls}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                 </div>
                 <div>
                   <label className={labelCls} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Alamat Masjid <span className="text-red-500">*</span>
+                    Alamat UPZ Desa <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    value={masjidForm.alamat_masjid}
-                    onChange={(e) => setMasjidForm((p) => ({ ...p, alamat_masjid: e.target.value }))}
-                    placeholder="Alamat lengkap masjid"
+                    value={upzDesaForm.alamat_upz_desa}
+                    onChange={(e) => setUpzDesaForm((p) => ({ ...p, alamat_upz_desa: e.target.value }))}
+                    placeholder="Alamat lengkap UPZ Desa"
                     rows={2}
                     className={`${inputCls} resize-none`}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -418,8 +418,8 @@ export default function RegisterPage() {
                     <div className="relative">
                       <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                       <select
-                        value={masjidForm.id_provinsi}
-                        onChange={(e) => setMasjidForm((p) => ({ ...p, id_provinsi: e.target.value }))}
+                        value={upzDesaForm.id_provinsi}
+                        onChange={(e) => setUpzDesaForm((p) => ({ ...p, id_provinsi: e.target.value }))}
                         disabled={loadingWilayah}
                         className={`${inputCls} pl-10 appearance-none`}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -440,9 +440,9 @@ export default function RegisterPage() {
                     <div className="relative">
                       <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                       <select
-                        value={masjidForm.id_kabupaten_kota}
-                        onChange={(e) => setMasjidForm((p) => ({ ...p, id_kabupaten_kota: e.target.value }))}
-                        disabled={!masjidForm.id_provinsi}
+                        value={upzDesaForm.id_kabupaten_kota}
+                        onChange={(e) => setUpzDesaForm((p) => ({ ...p, id_kabupaten_kota: e.target.value }))}
+                        disabled={!upzDesaForm.id_provinsi}
                         className={`${inputCls} pl-10 appearance-none`}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
@@ -462,9 +462,9 @@ export default function RegisterPage() {
                     <div className="relative">
                       <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                       <select
-                        value={masjidForm.id_kecamatan}
-                        onChange={(e) => setMasjidForm((p) => ({ ...p, id_kecamatan: e.target.value }))}
-                        disabled={!masjidForm.id_kabupaten_kota}
+                        value={upzDesaForm.id_kecamatan}
+                        onChange={(e) => setUpzDesaForm((p) => ({ ...p, id_kecamatan: e.target.value }))}
+                        disabled={!upzDesaForm.id_kabupaten_kota}
                         className={`${inputCls} pl-10 appearance-none`}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
@@ -484,9 +484,9 @@ export default function RegisterPage() {
                     <div className="relative">
                       <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                       <select
-                        value={masjidForm.id_kelurahan_desa}
-                        onChange={(e) => setMasjidForm((p) => ({ ...p, id_kelurahan_desa: e.target.value }))}
-                        disabled={!masjidForm.id_kecamatan}
+                        value={upzDesaForm.id_kelurahan_desa}
+                        onChange={(e) => setUpzDesaForm((p) => ({ ...p, id_kelurahan_desa: e.target.value }))}
+                        disabled={!upzDesaForm.id_kecamatan}
                         className={`${inputCls} pl-10 appearance-none`}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
@@ -502,12 +502,12 @@ export default function RegisterPage() {
                 </div>
                 <div>
                   <label className={labelCls} style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    No. HP Masjid <span className="text-red-500">*</span>
+                    No. HP UPZ Desa <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
-                    value={masjidForm.nohp_masjid}
-                    onChange={(e) => setMasjidForm((p) => ({ ...p, nohp_masjid: e.target.value }))}
+                    value={upzDesaForm.nohp_upz_desa}
+                    onChange={(e) => setUpzDesaForm((p) => ({ ...p, nohp_upz_desa: e.target.value }))}
                     placeholder="08xxxxxxxxxx"
                     className={inputCls}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -519,64 +519,62 @@ export default function RegisterPage() {
                   </label>
                   <input
                     type="text"
-                    value={masjidForm.keterangan}
-                    onChange={(e) => setMasjidForm((p) => ({ ...p, keterangan: e.target.value }))}
-                    placeholder="Informasi tambahan masjid"
+                    value={upzDesaForm.keterangan}
+                    onChange={(e) => setUpzDesaForm((p) => ({ ...p, keterangan: e.target.value }))}
+                    placeholder="Informasi tambahan UPZ Desa"
                     className={inputCls}
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full py-3 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#28A71A]/25 hover:shadow-[#28A71A]/40 disabled:shadow-none"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 size={17} className="animate-spin" />
-                      Mengirim...
-                    </>
-                  ) : pengajuanId ? (
-                    <>
-                      <ArrowLeft size={17} className="rotate-180" />
-                      Lanjut ke Data Admin Masjid
-                    </>
-                  ) : (
-                    <>
-                      <Building2 size={17} />
-                      Ajukan Masjid & Dapatkan Kode
-                    </>
-                  )}
-                </button>
+                </div>                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full py-3 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#EFB100]/25 hover:shadow-[#EFB100]/40 disabled:shadow-none"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 size={17} className="animate-spin" />
+                        Mengirim...
+                      </>
+                    ) : pengajuanId ? (
+                      <>
+                        <ArrowLeft size={17} className="rotate-180" />
+                        Lanjut ke Data Admin UPZ Desa
+                      </>
+                    ) : (
+                      <>
+                        <Building2 size={17} />
+                        Ajukan UPZ Desa & Dapatkan Kode
+                      </>
+                    )}
+                  </button>
               </form>
             )}
 
-            {/* ========== STEP 2: DAFTAR ADMIN MASJID ========== */}
+            {/* ========== STEP 2: DAFTAR ADMIN UPZ DESA ========== */}
             {step === 2 && (
               <form onSubmit={handleSubmitAdmin} className="space-y-4">
-                {/* Ringkasan masjid yang diajukan */}
-                <div className="p-4 bg-white border border-[#28A71A]/20 rounded-xl shadow-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                {/* Ringkasan UPZ Desa yang diajukan */}
+                <div className="p-4 bg-white border border-[#EFB100]/20 rounded-xl shadow-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   <p className="text-[11px] font-bold text-[#555] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                    <ClipboardList size={13} className="text-[#28A71A]" />
-                    Ringkasan Pengajuan Masjid
+                    <ClipboardList size={13} className="text-[#EFB100]" />
+                    Ringkasan Pengajuan UPZ Desa
                   </p>
-                  <p className="text-sm font-bold text-[#303030]">{masjidForm.nama_masjid}</p>
+                  <p className="text-sm font-bold text-[#303030]">{upzDesaForm.nama_upz_desa}</p>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    {masjidForm.alamat_masjid}
+                    {upzDesaForm.alamat_upz_desa}
                     {namaKabkot && <><br />{namaKabkot}{namaProvinsi ? `, ${namaProvinsi}` : ''}</>}
                   </p>
                   <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2">
-                    <KeyRound size={14} className="text-[#006844]" />
-                    <span className="text-xs text-gray-500">Kode Masjid:</span>
-                    <span className="text-sm font-mono font-bold text-[#1C7712] tracking-wider">{issuedKode}</span>
+                    <KeyRound size={14} className="text-[#7D5A00]" />
+                    <span className="text-xs text-gray-500">Kode UPZ Desa:</span>
+                    <span className="text-sm font-mono font-bold text-[#C99400] tracking-wider">{issuedKode}</span>
                   </div>
                 </div>
 
                 {/* Data Admin */}
                 <p className="text-sm font-bold text-[#303030] mt-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Data Admin Masjid
+                  Data Admin UPZ Desa
                 </p>
 
                 <div>
@@ -652,11 +650,11 @@ export default function RegisterPage() {
                 </div>
 
                 {/* Password info */}
-                <div className="p-3.5 bg-[#EAF6E8] border border-[#28A71A]/20 rounded-xl flex items-start gap-2.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  <Lock size={16} className="text-[#28A71A] flex-shrink-0 mt-0.5" />
+                <div className="p-3.5 bg-[#FEF9E7] border border-[#EFB100]/20 rounded-xl flex items-start gap-2.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  <Lock size={16} className="text-[#EFB100] flex-shrink-0 mt-0.5" />
                   <p className="text-xs text-[#555] leading-relaxed">
                     Password awal akun Anda adalah{' '}
-                    <code className="px-1.5 py-0.5 bg-white rounded-md text-[#1C7712] font-semibold border border-[#28A71A]/20">menara23</code>.
+                    <code className="px-1.5 py-0.5 bg-white rounded-md text-[#C99400] font-semibold border border-[#EFB100]/20">upzdesa23</code>.
                     Anda dapat mengubahnya nanti melalui menu Setting Akun.
                   </p>
                 </div>
@@ -666,7 +664,7 @@ export default function RegisterPage() {
                     type="button"
                     onClick={() => goToStep(1)}
                     disabled={isLoading}
-                    className="py-3 px-5 border border-gray-200 hover:border-[#28A71A] hover:text-[#1C7712] text-gray-500 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    className="py-3 px-5 border border-gray-200 hover:border-[#EFB100] hover:text-[#C99400] text-gray-500 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <ChevronLeft size={16} />
@@ -675,7 +673,7 @@ export default function RegisterPage() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 py-3 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#28A71A]/25 hover:shadow-[#28A71A]/40 disabled:shadow-none"
+                    className="flex-1 py-3 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#EFB100]/25 hover:shadow-[#EFB100]/40 disabled:shadow-none"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     {isLoading ? (
@@ -686,7 +684,7 @@ export default function RegisterPage() {
                     ) : (
                       <>
                         <UserPlus size={17} />
-                        Daftar Admin Masjid
+                        Daftar Admin UPZ Desa
                       </>
                     )}
                   </button>
@@ -699,7 +697,7 @@ export default function RegisterPage() {
               Sudah punya akun?{' '}
               <Link
                 to="/login"
-                className="text-[#28A71A] hover:text-[#1C7712] font-semibold transition-colors"
+                className="text-[#EFB100] hover:text-[#C99400] font-semibold transition-colors"
               >
                 Masuk sekarang
               </Link>
@@ -707,7 +705,7 @@ export default function RegisterPage() {
 
             {/* Footer */}
             <p className="mt-8 text-xs text-center text-gray-400" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              &copy; 2024 Menara Masjid BAZNAS. All rights reserved.
+              &copy; 2024 UPZ Desa BAZNAS. All rights reserved.
             </p>
           </div>
         </div>
@@ -718,7 +716,7 @@ export default function RegisterPage() {
         <div className="w-[570px] h-[904px] max-h-[90vh] rounded-[40px] overflow-hidden shadow-xl bg-[#D9D9D9]">
           <img
             src="/images/banner-login.svg"
-            alt="MENARA Masjid"
+            alt="UPZ Desa"
             className="w-full h-full object-cover"
           />
         </div>

@@ -223,7 +223,7 @@ export default function DataAnggotaPage() {
         <div className="flex items-center justify-end gap-2">
           <button
             onClick={() => handleEdit(item)}
-            className="p-1.5 rounded-lg text-text-gray hover:bg-[#F0F4F8] hover:text-[#28A71A] transition-colors"
+            className="p-1.5 rounded-lg text-text-gray hover:bg-[#F0F4F8] hover:text-[#EFB100] transition-colors"
             title="Edit"
           >
             <Pencil size={15} />
@@ -250,8 +250,8 @@ export default function DataAnggotaPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Users size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Users size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h2 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -273,7 +273,7 @@ export default function DataAnggotaPage() {
               onClick={() => handleTabChange(tab.id)}
               className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
                 isActive
-                  ? 'text-[#28A71A] border-[#28A71A]'
+                  ? 'text-[#EFB100] border-[#EFB100]'
                   : 'text-text-gray border-transparent hover:text-[#303030] hover:border-[#D4D4D4]'
               }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -281,7 +281,7 @@ export default function DataAnggotaPage() {
               <tab.icon size={16} />
               {tab.label}
               {isActive && (
-                <span className="text-[10px] bg-[#28A71A]/10 text-[#28A71A] px-2 py-0.5 rounded-full font-medium">
+                <span className="text-[10px] bg-[#EFB100]/10 text-[#EFB100] px-2 py-0.5 rounded-full font-medium">
                   {pagination?.total || anggotaList.length}
                 </span>
               )}

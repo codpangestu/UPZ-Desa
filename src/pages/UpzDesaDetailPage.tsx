@@ -1,27 +1,29 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { ArrowLeft, MapPin, Phone, Mail, Users, Loader2, AlertCircle, Building2, Calendar } from 'lucide-react';
-import { masjidService } from '../services/masjidService';
+import { upzDesaService } from '../services/upzDesaService';
 
-/** Shape response GET /api/v1/masjid/{slug} (Content Service 8003). */
-interface PublikMasjidDetail {
-  id_masjid?: string;
-  nama_masjid?: string | null;
-  slug_masjid?: string | null;
-  jenis_masjid?: string | null;
+/** Shape response GET /api/v1/masjid/{slug} (Content Service 8003) setelah
+ * normalisasi nama field oleh adapter di services/api.ts (backend mengirim
+ * `nama_masjid`, app memakai `nama_upz_desa`). */
+interface PublikUpzDesaDetail {
+  id_upz_desa?: string;
+  nama_upz_desa?: string | null;
+  slug_upz_desa?: string | null;
+  jenis_upz_desa?: string | null;
   tipologi?: string | null;
-  alamat_masjid?: string | null;
+  alamat_upz_desa?: string | null;
   deskripsi?: string | null;
-  nohp_masjid?: string | null;
-  email_masjid?: string | null;
+  nohp_upz_desa?: string | null;
+  email_upz_desa?: string | null;
   fasilitas?: Array<{ id: number; nama: string }>;
   kajian?: Array<{ id: number; judul: string; tanggal: string; penulis?: string }>;
   acara?: Array<{ id: number; judul: string; tanggal: string; penulis?: string }>;
 }
 
-export default function MasjidDetailPage() {
-  const { id } = useParams<{ id: string }>(); // id = slug masjid
-  const [masjid, setMasjid] = useState<PublikMasjidDetail | null>(null);
+export default function UpzDesaDetailPage() {
+  const { id } = useParams<{ id: string }>(); // id = slug upz_desa
+  const [upzDesa, setUpzDesa] = useState<PublikUpzDesaDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState(false);
@@ -31,14 +33,14 @@ export default function MasjidDetailPage() {
     setLoading(true);
     setNotFound(false);
     setError(false);
-    setMasjid(null);
+    setUpzDesa(null);
     if (!id) {
       setNotFound(true);
       setLoading(false);
       return;
     }
-    masjidService
-      .getMasjidBySlug(id)
+    upzDesaService
+      .getUpzDesaBySlug(id)
       .then((res) => {
         if (cancelled) return;
         // 404 backend mengirim status_code="404" dengan data null — ApiResponse
@@ -46,7 +48,7 @@ export default function MasjidDetailPage() {
         if (!res?.data) {
           setNotFound(true);
         } else {
-          setMasjid(res.data as unknown as PublikMasjidDetail);
+          setUpzDesa(res.data as unknown as PublikUpzDesaDetail);
         }
       })
       .catch(() => {
@@ -68,9 +70,9 @@ export default function MasjidDetailPage() {
     return (
       <div className="bg-[#FAFAFA] min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 size={32} className="animate-spin text-[#28A71A]" />
+          <Loader2 size={32} className="animate-spin text-[#EFB100]" />
           <span className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Memuat profil masjid...
+            Memuat profil UPZ Desa...
           </span>
         </div>
       </div>
@@ -83,21 +85,21 @@ export default function MasjidDetailPage() {
         <div className="text-center px-6">
           <AlertCircle size={48} className="text-[#EF4444] mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-[#303030] mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Terjadi Kesalahan</h2>
-          <p className="text-sm text-[#555] mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Gagal memuat profil masjid. Coba muat ulang halaman.</p>
-          <Link to="/masjid" className="btn-primary-green">Kembali ke Daftar Masjid</Link>
+          <p className="text-sm text-[#555] mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Gagal memuat profil UPZ desa. Coba muat ulang halaman.</p>
+          <Link to="/upz-desa" className="btn-primary-green">Kembali ke Daftar UPZ Desa</Link>
         </div>
       </div>
     );
   }
 
-  if (notFound || !masjid) {
+  if (notFound || !upzDesa) {
     return (
       <div className="bg-[#FAFAFA] min-h-screen flex items-center justify-center">
         <div className="text-center px-6">
           <div className="text-6xl mb-4">🔍</div>
-          <h2 className="text-xl font-semibold text-[#303030] mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Masjid Tidak Ditemukan</h2>
-          <p className="text-sm text-[#555] mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Masjid yang Anda cari tidak tersedia.</p>
-          <Link to="/masjid" className="btn-primary-green">Kembali ke Daftar Masjid</Link>
+          <h2 className="text-xl font-semibold text-[#303030] mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UPZ Desa Tidak Ditemukan</h2>
+          <p className="text-sm text-[#555] mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UPZ desa yang Anda cari tidak tersedia.</p>
+          <Link to="/upz-desa" className="btn-primary-green">Kembali ke Daftar UPZ Desa</Link>
         </div>
       </div>
     );
@@ -109,42 +111,56 @@ export default function MasjidDetailPage() {
         <div className="page-section-inner max-w-4xl">
           {/* Back Button */}
           <Link
-            to="/masjid"
-            className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#28A71A] transition-colors mb-6"
+            to="/upz-desa"
+            className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#EFB100] transition-colors mb-6"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <ArrowLeft size={16} />
-            Kembali ke Daftar Masjid
+            Kembali ke Daftar UPZ Desa
           </Link>
 
           {/* Header Card */}
           <div className="bg-white border border-[rgba(0,0,0,0.1)] rounded-2xl overflow-hidden mb-6 card-hover">
-            <div className="h-64 bg-gradient-to-br from-[#E6F9F0] to-[#EAF6E8] flex items-center justify-center relative">
-              <span className="text-8xl">🕌</span>
-              {masjid.jenis_masjid && (
+            <div className="h-64 bg-gradient-to-br from-[#FDF3C0] to-[#FEF9E7] flex items-center justify-center relative">
+              <svg width="110" height="110" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="14" y="32" width="52" height="38" rx="2" fill="#EFB100" opacity="0.9"/>
+                <rect x="33" y="52" width="14" height="18" rx="2" fill="#C99400"/>
+                <rect x="19" y="54" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                <rect x="51" y="54" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                <rect x="19" y="38" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                <rect x="35" y="38" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                <rect x="51" y="38" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                <path d="M10 33L40 14L70 33H10Z" fill="#C99400"/>
+                <rect x="17" y="33" width="5" height="37" rx="1" fill="#B8860B" opacity="0.5"/>
+                <rect x="58" y="33" width="5" height="37" rx="1" fill="#B8860B" opacity="0.5"/>
+                <rect x="38" y="6" width="3" height="10" rx="1" fill="#C99400"/>
+                <path d="M41 6L50 9.5L41 13V6Z" fill="#EFB100"/>
+                <rect x="10" y="69" width="60" height="3" rx="1.5" fill="#C99400" opacity="0.6"/>
+              </svg>
+              {upzDesa.jenis_upz_desa && (
                 <span
                   className={`absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide ${
-                    masjid.jenis_masjid === 'Musholla' ? 'bg-[#FF8C00]/90 text-white' : 'bg-[#28A71A]/90 text-white'
+                    upzDesa.jenis_upz_desa === 'Musholla' ? 'bg-[#FF8C00]/90 text-white' : 'bg-[#EFB100]/90 text-white'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  {masjid.jenis_masjid}
+                  {upzDesa.jenis_upz_desa}
                 </span>
               )}
             </div>
             <div className="p-6 md:p-8">
               <h1 className="text-2xl md:text-3xl font-semibold text-[#303030] mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                {masjid.nama_masjid || 'Tanpa Nama'}
+                {upzDesa.nama_upz_desa || 'Tanpa Nama'}
               </h1>
-              {masjid.alamat_masjid && (
+              {upzDesa.alamat_upz_desa && (
                 <div className="flex items-start gap-2 text-sm text-[#555] mb-4">
-                  <MapPin size={16} className="text-[#28A71A] mt-0.5 flex-shrink-0" />
-                  <span>{masjid.alamat_masjid}</span>
+                  <MapPin size={16} className="text-[#EFB100] mt-0.5 flex-shrink-0" />
+                  <span>{upzDesa.alamat_upz_desa}</span>
                 </div>
               )}
-              {stripHtml(masjid.deskripsi) && (
+              {stripHtml(upzDesa.deskripsi) && (
                 <p className="text-base text-[#303030] leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {stripHtml(masjid.deskripsi)}
+                  {stripHtml(upzDesa.deskripsi)}
                 </p>
               )}
             </div>
@@ -158,36 +174,36 @@ export default function MasjidDetailPage() {
                 <span>Informasi Kontak</span>
               </div>
               <div className="space-y-4">
-                {masjid.alamat_masjid ? (
+                {upzDesa.alamat_upz_desa ? (
                   <div className="flex items-start gap-3">
-                    <MapPin size={16} className="text-[#28A71A] mt-0.5 flex-shrink-0" />
+                    <MapPin size={16} className="text-[#EFB100] mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Alamat</p>
-                      <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{masjid.alamat_masjid}</p>
+                      <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{upzDesa.alamat_upz_desa}</p>
                     </div>
                   </div>
                 ) : null}
-                {masjid.nohp_masjid ? (
+                {upzDesa.nohp_upz_desa ? (
                   <div className="flex items-start gap-3">
-                    <Phone size={16} className="text-[#28A71A] mt-0.5 flex-shrink-0" />
+                    <Phone size={16} className="text-[#EFB100] mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Telepon</p>
-                      <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{masjid.nohp_masjid}</p>
+                      <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{upzDesa.nohp_upz_desa}</p>
                     </div>
                   </div>
                 ) : null}
-                {masjid.email_masjid ? (
+                {upzDesa.email_upz_desa ? (
                   <div className="flex items-start gap-3">
-                    <Mail size={16} className="text-[#28A71A] mt-0.5 flex-shrink-0" />
+                    <Mail size={16} className="text-[#EFB100] mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email</p>
-                      <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{masjid.email_masjid}</p>
+                      <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{upzDesa.email_upz_desa}</p>
                     </div>
                   </div>
                 ) : null}
-                {!masjid.alamat_masjid && !masjid.nohp_masjid && !masjid.email_masjid && (
+                {!upzDesa.alamat_upz_desa && !upzDesa.nohp_upz_desa && !upzDesa.email_upz_desa && (
                   <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Informasi kontak belum dilengkapi admin masjid.
+                    Informasi kontak belum dilengkapi admin UPZ Desa.
                   </p>
                 )}
               </div>
@@ -199,9 +215,9 @@ export default function MasjidDetailPage() {
                 <Building2 size={14} />
                 <span>Fasilitas</span>
               </div>
-              {masjid.fasilitas && masjid.fasilitas.length > 0 ? (
+              {upzDesa.fasilitas && upzDesa.fasilitas.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {masjid.fasilitas.map((fas) => (
+                  {upzDesa.fasilitas.map((fas) => (
                     <span key={fas.id} className="badge-sm">{fas.nama}</span>
                   ))}
                 </div>
@@ -218,11 +234,11 @@ export default function MasjidDetailPage() {
                 <Users size={14} />
                 <span>Kajian & Acara</span>
               </div>
-              {((masjid.kajian?.length ?? 0) + (masjid.acara?.length ?? 0)) > 0 ? (
+              {((upzDesa.kajian?.length ?? 0) + (upzDesa.acara?.length ?? 0)) > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {masjid.kajian?.slice(0, 4).map((k) => (
+                  {upzDesa.kajian?.slice(0, 4).map((k) => (
                     <div key={`k-${k.id}`} className="flex items-start gap-3 p-3 bg-[#FAFAFA] rounded-xl border border-[rgba(0,0,0,0.04)]">
-                      <div className="w-9 h-9 rounded-full bg-[#EAF6E8] flex items-center justify-center text-[#28A71A] flex-shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-[#FEF9E7] flex items-center justify-center text-[#EFB100] flex-shrink-0">
                         <Calendar size={16} />
                       </div>
                       <div className="min-w-0">
@@ -233,9 +249,9 @@ export default function MasjidDetailPage() {
                       </div>
                     </div>
                   ))}
-                  {masjid.acara?.slice(0, 4).map((a) => (
+                  {upzDesa.acara?.slice(0, 4).map((a) => (
                     <div key={`a-${a.id}`} className="flex items-start gap-3 p-3 bg-[#FAFAFA] rounded-xl border border-[rgba(0,0,0,0.04)]">
-                      <div className="w-9 h-9 rounded-full bg-[#EAF6E8] flex items-center justify-center text-[#28A71A] flex-shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-[#FEF9E7] flex items-center justify-center text-[#EFB100] flex-shrink-0">
                         <Calendar size={16} />
                       </div>
                       <div className="min-w-0">
@@ -249,7 +265,7 @@ export default function MasjidDetailPage() {
                 </div>
               ) : (
                 <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Belum ada kajian/acara yang dipublikasikan masjid ini.
+                  Belum ada kajian/acara yang dipublikasikan UPZ Desa ini.
                 </p>
               )}
             </div>

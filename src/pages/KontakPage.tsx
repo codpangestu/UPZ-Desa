@@ -42,14 +42,14 @@ export default function KontakPage() {
               </h2>
               <p className="text-base text-[#555] mb-10 leading-relaxed">
                 Jangan ragu untuk menghubungi kami jika ada pertanyaan, saran, atau
-                masukan terkait platform MENARA.
+                masukan terkait platform UPZ Desa.
               </p>
 
               <div className="space-y-6">
                 {/* Address */}
                 <div className="flex gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E8] flex items-center justify-center flex-shrink-0">
-                    <MapPin size={20} className="text-[#28A71A]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#FEF9E7] flex items-center justify-center flex-shrink-0">
+                    <MapPin size={20} className="text-[#EFB100]" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#303030] mb-1 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kantor Pusat</h4>
@@ -63,8 +63,8 @@ export default function KontakPage() {
 
                 {/* Phone */}
                 <div className="flex gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E8] flex items-center justify-center flex-shrink-0">
-                    <Phone size={20} className="text-[#28A71A]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#FEF9E7] flex items-center justify-center flex-shrink-0">
+                    <Phone size={20} className="text-[#EFB100]" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#303030] mb-1 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Telepon</h4>
@@ -77,22 +77,22 @@ export default function KontakPage() {
 
                 {/* Email */}
                 <div className="flex gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E8] flex items-center justify-center flex-shrink-0">
-                    <Mail size={20} className="text-[#28A71A]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#FEF9E7] flex items-center justify-center flex-shrink-0">
+                    <Mail size={20} className="text-[#EFB100]" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#303030] mb-1 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email</h4>
                     <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      info@menara.baznas.go.id<br />
-                      support@menara.baznas.go.id
+                      info@upzdesa.baznas.go.id<br />
+                      support@upzdesa.baznas.go.id
                     </p>
                   </div>
                 </div>
 
                 {/* Hours */}
                 <div className="flex gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-[#EAF6E8] flex items-center justify-center flex-shrink-0">
-                    <Clock size={20} className="text-[#28A71A]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#FEF9E7] flex items-center justify-center flex-shrink-0">
+                    <Clock size={20} className="text-[#EFB100]" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-[#303030] mb-1 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Jam Operasional</h4>
@@ -120,7 +120,7 @@ export default function KontakPage() {
                     required
                     value={formData.nama}
                     onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#28A71A] focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all text-sm"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#EFB100] focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all text-sm"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     placeholder="Masukkan nama Anda"
                   />
@@ -134,7 +134,7 @@ export default function KontakPage() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#28A71A] focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all text-sm"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#EFB100] focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all text-sm"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     placeholder="Masukkan email Anda"
                   />
@@ -148,7 +148,7 @@ export default function KontakPage() {
                     required
                     value={formData.subjek}
                     onChange={(e) => setFormData({ ...formData, subjek: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#28A71A] focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all text-sm"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#EFB100] focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all text-sm"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     placeholder="Subjek pesan"
                   />
@@ -162,7 +162,7 @@ export default function KontakPage() {
                     rows={5}
                     value={formData.pesan}
                     onChange={(e) => setFormData({ ...formData, pesan: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#28A71A] focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 transition-all text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#EFB100] focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 transition-all text-sm resize-none"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     placeholder="Tulis pesan Anda..."
                   />

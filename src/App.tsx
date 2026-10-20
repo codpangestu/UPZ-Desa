@@ -10,34 +10,34 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import TentangPage from './pages/TentangPage';
-import MasjidPage from './pages/MasjidPage';
+import UpzDesaPage from './pages/UpzDesaPage';
 import PublicationMenu from './pages/PublicationMenu';
 import DonasiPage from './pages/DonasiPage';
 import KontakPage from './pages/KontakPage';
 import ToolsPage from './pages/ToolsPage';
-import AjukanMasjidPage from './pages/AjukanMasjidPage';
-import MasjidDetailPage from './pages/MasjidDetailPage';
-import PengajuanMasjidApproval from './pages/dashboard/PengajuanMasjidApproval';
-import DataMasjidBaznasPage from './pages/dashboard/DataMasjidBaznasPage';
+import AjukanUpzDesaPage from './pages/AjukanUpzDesaPage';
+import UpzDesaDetailPage from './pages/UpzDesaDetailPage';
+import PengajuanUpzDesaApproval from './pages/dashboard/PengajuanUpzDesaApproval';
+import DataUpzDesaBaznasPage from './pages/dashboard/DataUpzDesaBaznasPage';
 import KelolaPenggunaPage from './pages/dashboard/KelolaPenggunaPage';
 import BukuKasPenerimaanPage from './features/buku-kas/pages/BukuKasPenerimaanPage';
 import BukuKasPengeluaranPage from './features/buku-kas-pengeluaran/pages/BukuKasPengeluaranPage';
 import DataAnggotaPage from './features/data-anggota/pages/DataAnggotaPage';
 import DataPengurusPage from './features/data-pengurus/pages/DataPengurusPage';
-import ProfilMasjidPage from './features/profil-masjid/pages/ProfilMasjidPage';
+import ProfilUpzDesaPage from './features/profil-upz-desa/pages/ProfilUpzDesaPage';
 import PublikasiDashboardPage from './features/menu-publikasi/pages/PublikasiPage';
-import DashboardAdminMasjid from './pages/dashboard/DashboardAdminMasjid';
+import DashboardAdminUpzDesa from './pages/dashboard/DashboardAdminUpzDesa';
 import DashboardAdminBaznas from './pages/dashboard/DashboardAdminBaznas';
 import DashboardAdminDaerah from './pages/dashboard/DashboardAdminDaerah';
 import DashboardAdminKab from './pages/dashboard/DashboardAdminKab';
 import DashboardAdminKua from './pages/dashboard/DashboardAdminKua';
 import SettingAkunPage from './pages/SettingAkunPage';
-import DataKegiatanPage from './features/kegiatan-masjid/pages/DataKegiatanPage';
+import DataKegiatanUpzDesaPage from './features/kegiatan-upz-desa/pages/DataKegiatanUpzDesaPage';
 import BukuAsetPage from './features/buku-aset/pages/BukuAsetPage';
-import FotoMasjidPage from './pages/FotoMasjidPage';
-import FasilitasMasjidPage from './pages/FasilitasMasjidPage';
-import LogoMasjidPage from './pages/LogoMasjidPage';
-import StrukturMasjidPage from './pages/StrukturMasjidPage';
+import FotoUpzDesaPage from './pages/FotoUpzDesaPage';
+import FasilitasUpzDesaPage from './pages/FasilitasUpzDesaPage';
+import LogoUpzDesaPage from './pages/LogoUpzDesaPage';
+import StrukturUpzDesaPage from './pages/StrukturUpzDesaPage';
 import MitraKerjasamaPage from './pages/MitraKerjasamaPage';
 import QRISPage from './pages/QRISPage';
 import KalkulatorPinjamanPage from './pages/KalkulatorPinjamanPage';
@@ -91,13 +91,13 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="tentang" element={<TentangPage />} />
-          <Route path="masjid" element={<MasjidPage />} />
-          <Route path="masjid/:id" element={<MasjidDetailPage />} />
+          <Route path="upz-desa" element={<UpzDesaPage />} />
+          <Route path="upz-desa/:id" element={<UpzDesaDetailPage />} />
           <Route path="kajian" element={<PublicationMenu />} />
           <Route path="donasi" element={<DonasiPage />} />
           <Route path="kontak" element={<KontakPage />} />
           <Route path="tools" element={<ToolsPage />} />
-          <Route path="ajukan-masjid" element={<AjukanMasjidPage />} />
+          <Route path="ajukan-upz-desa" element={<AjukanUpzDesaPage />} />
           <Route path="kalkulator-pinjaman" element={<KalkulatorPinjamanPage />} />
           <Route path="skoring-pinjaman" element={<SkoringPinjamanPage />} />
         </Route>
@@ -106,11 +106,11 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* ========== DASHBOARD ADMIN MASJID ========== */}
+        {/* ========== DASHBOARD ADMIN UPZ DESA ========== */}
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -118,8 +118,8 @@ function App() {
           <Route
             index
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <DashboardAdminMasjid />
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <DashboardAdminUpzDesa />
               </ProtectedRoute>
             }
           />
@@ -127,8 +127,8 @@ function App() {
           <Route
             path="profil"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <div className="p-4 text-[#555]">Halaman Profil Masjid</div>
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <div className="p-4 text-[#555]">Halaman Profil UPZ Desa</div>
               </ProtectedRoute>
             }
           />
@@ -189,9 +189,9 @@ function App() {
 
         {/* Additional dashboard sub-routes will be added as features are built */}
         <Route
-          path="/data-masjid"
+          path="/data-upz-desa"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -199,8 +199,8 @@ function App() {
           <Route
             path="profil"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <ProfilMasjidPage />
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <ProfilUpzDesaPage />
               </ProtectedRoute>
             }
           />
@@ -208,48 +208,48 @@ function App() {
             path="daftar"
             element={
               <ProtectedRoute allowedRoles={['admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
-                <DataMasjidBaznasPage />
+                <DataUpzDesaBaznasPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="foto"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <FotoMasjidPage />
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <FotoUpzDesaPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="fasilitas"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <FasilitasMasjidPage />
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <FasilitasUpzDesaPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="kegiatan"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <div className="p-4 text-[#555]">Kegiatan Masjid</div>
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <div className="p-4 text-[#555]">Kegiatan UPZ Desa</div>
               </ProtectedRoute>
             }
           />
           <Route
             path="logo"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <LogoMasjidPage />
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <LogoUpzDesaPage />
               </ProtectedRoute>
             }
           />
         </Route>
 
         <Route
-          path="/info-masjid"
+          path="/info-upz-desa"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -257,7 +257,7 @@ function App() {
           <Route
             path="data-pengurus"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
+              <ProtectedRoute allowedRoles={['admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
                 <DataPengurusPage />
               </ProtectedRoute>
             }
@@ -265,7 +265,7 @@ function App() {
           <Route
             path="data-anggota"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
                 <DataAnggotaPage />
               </ProtectedRoute>
             }
@@ -273,15 +273,15 @@ function App() {
           <Route
             path="struktur"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
-                <StrukturMasjidPage />
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
+                <StrukturUpzDesaPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="mitra-kerjasama"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
                 <MitraKerjasamaPage />
               </ProtectedRoute>
             }
@@ -289,7 +289,7 @@ function App() {
           <Route
             path="qris"
             element={
-              <ProtectedRoute allowedRoles={['admin-masjid']}>
+              <ProtectedRoute allowedRoles={['admin-upz-desa']}>
                 <QRISPage />
               </ProtectedRoute>
             }
@@ -299,7 +299,7 @@ function App() {
         <Route
           path="/menu-publikasi"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -318,7 +318,7 @@ function App() {
         <Route
           path="/buku-kas"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -336,7 +336,7 @@ function App() {
         <Route
           path="/buku-aset"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -348,23 +348,23 @@ function App() {
         </Route>
 
         <Route
-          path="/kegiatan-masjid"
+          path="/kegiatan-upz-desa"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
         >
           <Route
             index
-            element={<DataKegiatanPage />}
+            element={<DataKegiatanUpzDesaPage />}
           />
         </Route>
 
         <Route
           path="/setting-akun"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -376,7 +376,7 @@ function App() {
         </Route>
 
         <Route
-          path="/pengajuan-masjid"
+          path="/pengajuan-upz-desa"
           element={
             <ProtectedRoute allowedRoles={['admin-baznas']}>
               <DashboardLayout />
@@ -385,14 +385,14 @@ function App() {
         >
           <Route
             index
-            element={<PengajuanMasjidApproval />}
+            element={<PengajuanUpzDesaApproval />}
           />
         </Route>
 
         <Route
           path="/microfinance"
           element={
-            <ProtectedRoute allowedRoles={['admin-masjid']}>
+            <ProtectedRoute allowedRoles={['admin-upz-desa']}>
               <DashboardLayout />
             </ProtectedRoute>
           }

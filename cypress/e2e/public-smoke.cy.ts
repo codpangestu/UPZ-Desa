@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 // =====================================================================
-// Smoke test — halaman publik MENARA Masjid
+// Smoke test — halaman publik UPZ Desa
 // Prasyarat: `npm run dev` jalan di http://localhost:3000
 // Backend TIDAK wajib jalan — test memverifikasi UI render, bukan data.
 // =====================================================================
@@ -78,13 +78,13 @@ describe('Smoke test halaman publik', () => {
     cy.get('#root').children().should('have.length.greaterThan', 0);
   });
 
-  it('Navigasi navbar berfungsi (klik link Masjid)', () => {
+  it('Navigasi navbar berfungsi (klik link UPZ Desa)', () => {
     cy.visit('/');
 
     // Link desktop nav (link "Tools" ada di dropdown Lainnya, tidak selalu visible)
-    cy.get('nav a[href="/masjid"]').first().should('be.visible').click();
+    cy.get('nav a[href="/upz-desa"]').first().should('be.visible').click();
 
-    cy.url().should('include', '/masjid');
+    cy.url().should('include', '/upz-desa');
     // Halaman tetap ter-render
     cy.get('#root').children().should('have.length.greaterThan', 0);
   });

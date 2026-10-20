@@ -10,8 +10,8 @@ declare global {
     interface Chainable {
       /** Login via UI (akun uji apa pun) — TIDAK menunggu redirect; asersi URL di spec. */
       loginViaUi(email: string, password: string): Chainable<void>;
-      /** Login via UI sebagai Admin Masjid (akun uji) dan tunggu sampai di /dashboard. */
-      loginAdminMasjid(): Chainable<void>;
+      /** Login via UI sebagai Admin UPZ Desa (akun uji) dan tunggu sampai di /dashboard. */
+      loginAdminUpzDesa(): Chainable<void>;
     }
   }
 }
@@ -30,8 +30,8 @@ Cypress.Commands.add('loginViaUi', (email: string, password: string) => {
   cy.get('button[type="submit"]').click();
 });
 
-Cypress.Commands.add('loginAdminMasjid', () => {
-  cy.loginViaUi('pangestuakbar939@gmail.com', 'menara23');
+Cypress.Commands.add('loginAdminUpzDesa', () => {
+  cy.loginViaUi('pangestuakbar939@gmail.com', 'upzdesa23');
   cy.url({ timeout: 15000 }).should('include', '/dashboard');
 });
 

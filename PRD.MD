@@ -1,12 +1,12 @@
 # Product Requirements Document (PRD)
-## Frontend Aplikasi "Menara Masjid"
+## Frontend Aplikasi "UPZ Desa"
 
 | Field | Detail |
 |---|---|
-| Dokumen | PRD Frontend Menara Masjid |
+| Dokumen | PRD Frontend UPZ Desa |
 | Versi | 1.0 |
 | Tanggal | 19 Juli 2026 |
-| Referensi | Buku Panduan Aplikasi Menara Masjid v1.10.24 (BAZNAS) |
+| Referensi | Buku Panduan Aplikasi UPZ Desa v1.10.24 (BAZNAS) |
 | Status | Draft |
 
 ---
@@ -46,7 +46,7 @@ Setelah menyelesaikan **setiap task/modul**, AI agent WAJIB memperbarui file `CO
 
 ## 1. Latar Belakang
 
-BAZNAS memiliki Aplikasi Menara Masjid sebagai media sarana informasi, komunikasi, dan pelaporan UPZ (Unit Pengumpul Zakat) berbasis masjid. Aplikasi ini menggantikan manajemen manual UPZ masjid dengan sistem digital yang transparan, akuntabel, dan efisien, mendukung pencatatan ZIS DSKL (Zakat, Infak, Sedekah, Dana Sosial Keagamaan Lainnya) yang terintegrasi dengan SIMBA (Sistem Informasi Manajemen BAZNAS).
+BAZNAS memiliki Aplikasi UPZ Desa sebagai media sarana informasi, komunikasi, dan pelaporan UPZ (Unit Pengumpul Zakat) berbasis masjid. Aplikasi ini menggantikan manajemen manual UPZ masjid dengan sistem digital yang transparan, akuntabel, dan efisien, mendukung pencatatan ZIS DSKL (Zakat, Infak, Sedekah, Dana Sosial Keagamaan Lainnya) yang terintegrasi dengan SIMBA (Sistem Informasi Manajemen BAZNAS).
 
 Saat ini dibutuhkan pembangunan **frontend** (antarmuka pengguna) untuk dua sisi:
 1. **Panel Manajemen Masjid** — dashboard privat untuk operator/pengurus masjid mengelola data.
@@ -94,7 +94,7 @@ Berdasarkan collection API (3 varian login: umum, admin-masjid, admin-pusat), ap
 - **Halaman publik "Ajukan Masjid Baru"** (form pengajuan masjid oleh masyarakat/pengurus, terhubung ke endpoint Admin Service `pengajuan`) + halaman approval-nya di sisi Admin Pusat
 
 ### 4.2 Out-of-Scope
-- Sistem registrasi akun masjid di SIMBA (dilakukan oleh BAZNAS Daerah, bukan bagian frontend Menara Masjid) — namun lihat catatan di section 13 soal kemungkinan tumpang tindih dengan fitur "Pengajuan Masjid"
+- Sistem registrasi akun masjid di SIMBA (dilakukan oleh BAZNAS Daerah, bukan bagian frontend UPZ Desa) — namun lihat catatan di section 13 soal kemungkinan tumpang tindih dengan fitur "Pengajuan Masjid"
 - Backend/API dan integrasi database (dokumen ini fokus pada frontend)
 - Aplikasi mobile native (kecuali disebutkan lain oleh stakeholder)
 - Fitur Sync offline-to-online (`sync-push`/`sync-pull`) — itu untuk aplikasi mobile terpisah
@@ -130,7 +130,7 @@ Berdasarkan collection API (3 varian login: umum, admin-masjid, admin-pusat), ap
 
 ### 5.2 Backend (Arsitektur Nyata — Microservices)
 
-Berdasarkan Postman Collection resmi ("MENARA API v2.0.0"), backend **bukan monolith tunggal**, melainkan **5 microservices terpisah**. Frontend harus mengarah ke base URL yang berbeda-beda sesuai domain data:
+Berdasarkan Postman Collection resmi ("UPZ Desa API v2.0.0"), backend **bukan monolith tunggal**, melainkan **5 microservices terpisah**. Frontend harus mengarah ke base URL yang berbeda-beda sesuai domain data:
 
 | Service | Port (local) | Tanggung Jawab |
 |---|---|---|
@@ -147,7 +147,7 @@ VITE_MASJID_URL=http://localhost:8002
 VITE_CONTENT_URL=http://localhost:8003
 VITE_TRANSACTION_URL=http://localhost:8004
 VITE_ADMIN_URL=http://localhost:8005
-VITE_API_KEY=menara23apikey   # header x-api-key, WAJIB untuk hampir semua endpoint privat
+VITE_API_KEY=upzdesa23apikey   # header x-api-key, WAJIB untuk hampir semua endpoint privat
 ```
 
 **Konvensi otentikasi & header (penting untuk `lib/api.ts`):**
@@ -248,7 +248,7 @@ BAZNAS Daerah daftarkan masjid (SIMBA)
         ↓
 BAZNAS Daerah tambahkan akun pengelola
         ↓
-Pengurus Masjid Login ke Menara Masjid (frontend ini)
+Pengurus Masjid Login ke UPZ Desa (frontend ini)
         ↓
 Kelola: Profil | Buku Kas | Pengurus | Anggota | Kegiatan | Publikasi
         ↓
@@ -262,7 +262,7 @@ Website dibagikan via WhatsApp/medsos & terindeks Google
 ### 7.1 Autentikasi
 - **FR-1.1**: Halaman Login dengan input Email & Password.
 - **FR-1.2**: Notifikasi sukses ("Selamat, E-mail dan Password Sesuai, Anda Telah Berhasil Masuk") dan notifikasi gagal (email/password salah).
-- **FR-1.3**: Tombol "Keluar Aplikasi" dengan dialog konfirmasi (Ya/Tidak) sebelum logout, mengarahkan kembali ke halaman utama Menara Masjid.
+- **FR-1.3**: Tombol "Keluar Aplikasi" dengan dialog konfirmasi (Ya/Tidak) sebelum logout, mengarahkan kembali ke halaman utama UPZ Desa.
 - **FR-1.4**: Setelah login sukses, frontend memanggil `GET /api/v1/me` untuk mengambil data role pengguna (Petugas / Admin Masjid / Admin Pusat), disimpan di `useAuthStore` (Zustand), dan dipakai untuk menentukan endpoint login yang dipanggil sebelumnya serta menu/route yang ditampilkan (lihat section 3: Target Pengguna).
 - **FR-1.5**: Halaman Login dapat menyediakan **toggle/tab pilihan "Login sebagai"** (Petugas/Admin Masjid, atau Admin Pusat) agar frontend tahu endpoint mana yang harus dipanggil (`/login`, `/login/admin-masjid`, `/login/admin-pusat`) — atau, jika 1 form generik dipakai untuk semua, coba endpoint umum dulu (`/login`) lalu redirect berdasarkan role dari response `/me`. *(Keputusan UX final: dikonfirmasi dengan tim produk saat desain wireframe.)*
 - **FR-1.6**: Route guard (`ProtectedRoute`) memblokir akses ke halaman yang bukan scope role-nya (mis. Petugas mencoba akses Dashboard Rekap Admin Pusat → redirect ke halaman "403 Tidak Diizinkan" atau ke Dashboard miliknya).
@@ -362,7 +362,7 @@ Website dibagikan via WhatsApp/medsos & terindeks Google
 | **Performa** | Halaman publik (Website Masjid) harus cepat dimuat karena jadi entry point dari share link & pencarian Google. |
 | **Keamanan** | Validasi upload file (tipe & ukuran maks 2MB untuk foto), proteksi form dari XSS pada field rich text (Keterangan/Deskripsi). |
 | **Kompatibilitas Browser** | Mendukung Chrome, Safari, Firefox versi terbaru (mengacu pada dokumentasi asli yang mencontohkan Chrome & WhatsApp share). |
-| **Konsistensi UI** | Sidebar hijau (brand color BAZNAS/Menara Masjid), ikon konsisten per menu, pola tabel (search + show entries + pagination + Aksi kolom) dipakai berulang di semua modul CRUD. |
+| **Konsistensi UI** | Sidebar hijau (brand color BAZNAS/UPZ Desa), ikon konsisten per menu, pola tabel (search + show entries + pagination + Aksi kolom) dipakai berulang di semua modul CRUD. |
 | **Localization** | Bahasa Indonesia sebagai bahasa utama antarmuka. |
 | **Reusability** | Karena banyak modul (Ustadz, Marbot, Jamaah, Santri, Cendikiawan, Postingan, dll.) memiliki pola form & tabel yang sangat mirip, komponen tabel-CRUD & form generator harus dibuat reusable/generic. |
 
@@ -445,7 +445,7 @@ Website dibagikan via WhatsApp/medsos & terindeks Google
 /n/{slug}/acara
 ```
 
-## 11. Kontrak API (Referensi untuk AI Agent — Berdasarkan Postman Collection Resmi "MENARA API v2.0.0")
+## 11. Kontrak API (Referensi untuk AI Agent — Berdasarkan Postman Collection Resmi "UPZ Desa API v2.0.0")
 
 > Endpoint di bawah ini **bukan asumsi lagi** — diambil langsung dari Postman Collection resmi tim backend. AI agent WAJIB memakai path, method, dan base URL persis seperti ini. Field JSON memakai penamaan asli backend (Bahasa Indonesia, `snake_case`) — jangan diterjemahkan ke Inggris.
 
@@ -534,7 +534,7 @@ Ini adalah service **paling penting untuk Panel Manajemen Masjid**, karena hampi
 | **Masjid CRUD** | `POST /api/v1/admin/masjid/create`, `PUT .../update/{id_masjid}`, `DELETE .../delete/{id_masjid}` | — |
 | **Sync Detail Masjid (bulk)** | `POST /api/v1/admin/masjid/{id_masjid}/sync-detail` | Body berisi array `fasilitas[]`, `bank[]`, `medsos[]` sekaligus — dipakai untuk update banyak detail masjid dalam 1 request |
 | **Content CRUD (generic)** | `POST /api/v1/admin/content/{tipe}/create`, `PUT .../update/{id}`, `DELETE .../delete/{id}` | `tipe` ∈ `informasi, kajian, acara, cerita, donasi, postingan, panduan-pengguna, panduan-pengelola, pengumuman, repository, dokumentasi-pengembangan, dokumentasi-pengujian, dokumentasi-sosialisasi, info-pemberitahuan, infografis, inspirasi, infovideo, infoayat, infohadits, infodoa` |
-| **Master Data CRUD (generic)** | `POST /api/v1/admin/master/{tipe}/create`, `PUT .../update/{id}`, `DELETE .../delete/{id}` | `tipe` ∈ `levels, labels, jenis-dana, jenis-harta, jenis-laporan, jenis-perolehan-aset, label-info-dana, tema, kategori-acara, kategori-cerita, kategori-donasi, kategori-postingan, kategori-panduan-pengguna, kategori-panduan-pengelola, kategori-menara-video` |
+| **Master Data CRUD (generic)** | `POST /api/v1/admin/master/{tipe}/create`, `PUT .../update/{id}`, `DELETE .../delete/{id}` | `tipe` ∈ `levels, labels, jenis-dana, jenis-harta, jenis-laporan, jenis-perolehan-aset, label-info-dana, tema, kategori-acara, kategori-cerita, kategori-donasi, kategori-postingan, kategori-panduan-pengguna, kategori-panduan-pengelola, kategori-upz-video` |
 | **Wilayah CRUD (generic)** | `POST /api/v1/admin/wilayah/{tipe}/create` (update/delete mengikuti pola sama, belum dicontohkan di collection) | `tipe` ∈ `provinsi, kabupaten-kota, kecamatan, kelurahan-desa` |
 | **Detail Masjid CRUD (generic)** | `POST /api/v1/admin/detail/{tipe}/create` (+ update/delete pola sama) | `tipe` ∈ `fasilitas, images, dokumen, bank, medsos, logo, mitra-kerjasama, qris, struktur, kegiatan, videos` — Body selalu sertakan `parent_id` (= `id_masjid`) |
 | **Transaksi CRUD (generic)** | `POST /api/v1/admin/transaksi/{tipe}/create` (+ update/delete pola sama) | `tipe` ∈ `bukukas-penerimaan, bukukas-pengeluaran, kas, coa, buku-aset, berkas-laporan, saran-masukan` |
@@ -612,4 +612,4 @@ Ini adalah service **paling penting untuk Panel Manajemen Masjid**, karena hampi
 
 ---
 
-*Dokumen ini disusun berdasarkan isi Buku Panduan Aplikasi Menara Masjid v1.10.24 (BAZNAS, 10 Oktober 2024) dan ditujukan sebagai acuan awal pengembangan frontend. Detail teknis (arsitektur, API contract, komponen desain final) akan dijabarkan pada dokumen turunan seperti Technical Design Document (TDD) dan Design System.*
+*Dokumen ini disusun berdasarkan isi Buku Panduan Aplikasi UPZ Desa v1.10.24 (BAZNAS, 10 Oktober 2024) dan ditujukan sebagai acuan awal pengembangan frontend. Detail teknis (arsitektur, API contract, komponen desain final) akan dijabarkan pada dokumen turunan seperti Technical Design Document (TDD) dan Design System.*

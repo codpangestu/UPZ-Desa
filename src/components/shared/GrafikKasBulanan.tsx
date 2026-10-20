@@ -10,11 +10,11 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { BarChart3, TrendingUp, TrendingDown, Wallet, Loader2, CalendarRange, Inbox } from 'lucide-react';
-import { masjidService } from '../../services/masjidService';
+import { upzDesaService } from '../../services/upzDesaService';
 import type { RekapBulananItem } from '../../types';
 
 const BULAN_SINGKAT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-const GREEN = '#28A71A';
+const GREEN = '#EFB100';
 const RED = '#EF4444';
 
 function labelPeriode(periode: string): string {
@@ -76,13 +76,11 @@ function KasTooltip({ active, payload, label }: { active?: boolean; payload?: To
   );
 }
 
-type Mode = 'rolling' | 'custom';
-
-/**
- * Kartu Grafik "Penerimaan vs Pengeluaran per Bulan" (PRD FR-2.5–2.7).
- * Data: GET /api/v1/rekap/bulanan/{id_masjid} (Masjid Service) — agregasi server-side.
- */
-export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | undefined }) {
+type Mode = 'rolling' | 'custom';  /**
+   * Kartu Grafik "Penerimaan vs Pengeluaran per Bulan" (PRD FR-2.5–2.7).
+   * Data: GET /api/v1/rekap/bulanan/{id_upz_desa} (UPZ Desa Service) — agregasi server-side.
+   */
+export default function GrafikKasBulanan({ idUpzDesa }: { idUpzDesa: string | undefined }) {
   const [mode, setMode] = useState<Mode>('rolling');
   const [initialRange] = useState(defaultRollingRange);
   const [customStart, setCustomStart] = useState('');
@@ -99,16 +97,16 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
   }, [mode, initialRange, customStart, customEnd]);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['dashboard-masjid-rekap-bulanan', idMasjid, range?.start, range?.end],
+    queryKey: ['dashboard-upz-desa-rekap-bulanan', idUpzDesa, range?.start, range?.end],
     queryFn: async () => {
-      if (!idMasjid || !range) return null;
-      const res = await masjidService.getRekapBulananByMasjid(idMasjid, {
+      if (!idUpzDesa || !range) return null;
+      const res = await upzDesaService.getRekapBulananByUpzDesa(idUpzDesa, {
         startDate: range.start,
         endDate: range.end,
       });
       return res?.data ?? null;
     },
-    enabled: !!idMasjid && !!range,
+    enabled: !!idUpzDesa && !!range,
   });
 
   const chartData: (RekapBulananItem & { label: string })[] = useMemo(
@@ -131,9 +129,9 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
       {/* Header: judul + toggle periode (FR-2.6) */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <BarChart3 size={18} className="text-[#28A71A]" />
+          <BarChart3 size={18} className="text-[#EFB100]" />
           <h2 className="text-sm font-semibold text-[#303030]">Penerimaan vs Pengeluaran</h2>
-          <span className="badge-xs inline-flex bg-[#EAF6E8] text-[#1C7712]">{periodeLabel}</span>
+          <span className="badge-xs inline-flex bg-[#FEF9E7] text-[#C99400]">{periodeLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           {(['rolling', 'custom'] as Mode[]).map((m) => (
@@ -143,8 +141,8 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
               onClick={() => setMode(m)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 mode === m
-                  ? 'bg-[#28A71A] text-white'
-                  : 'bg-[#F1F5F9] text-[#555555] hover:bg-[#EAF6E8] hover:text-[#1C7712]'
+                  ? 'bg-[#EFB100] text-white'
+                  : 'bg-[#F1F5F9] text-[#555555] hover:bg-[#FEF9E7] hover:text-[#C99400]'
               }`}
             >
               {m === 'rolling' ? '12 Bulan Terakhir' : 'Rentang Kustom'}
@@ -156,13 +154,13 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
       {/* Input rentang kustom */}
       {mode === 'custom' && (
         <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-[#555555]">
-          <CalendarRange size={14} className="text-[#28A71A]" />
+          <CalendarRange size={14} className="text-[#EFB100]" />
           <input
             type="date"
             value={customStart}
             max={customEnd || undefined}
             onChange={(e) => setCustomStart(e.target.value)}
-            className="rounded-lg border border-[rgba(0,0,0,0.1)] px-2 py-1.5 text-xs text-[#303030] outline-none focus:border-[#28A71A]"
+            className="rounded-lg border border-[rgba(0,0,0,0.1)] px-2 py-1.5 text-xs text-[#303030] outline-none focus:border-[#EFB100]"
             aria-label="Tanggal mulai"
           />
           <span>s/d</span>
@@ -171,7 +169,7 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
             value={customEnd}
             min={customStart || undefined}
             onChange={(e) => setCustomEnd(e.target.value)}
-            className="rounded-lg border border-[rgba(0,0,0,0.1)] px-2 py-1.5 text-xs text-[#303030] outline-none focus:border-[#28A71A]"
+            className="rounded-lg border border-[rgba(0,0,0,0.1)] px-2 py-1.5 text-xs text-[#303030] outline-none focus:border-[#EFB100]"
             aria-label="Tanggal akhir"
           />
         </div>
@@ -185,7 +183,7 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
             value: data?.total_penerimaan,
             icon: TrendingUp,
             iconColor: GREEN,
-            badge: 'bg-[#E6F9F0] text-[#006844]',
+            badge: 'bg-[#FDF3C0] text-[#7D5A00]',
           },
           {
             label: 'Total Pengeluaran',
@@ -198,8 +196,8 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
             label: 'Saldo Akhir',
             value: data?.saldo,
             icon: Wallet,
-            iconColor: '#1C7712',
-            badge: 'bg-[#EAF6E8] text-[#1C7712]',
+            iconColor: '#C99400',
+            badge: 'bg-[#FEF9E7] text-[#C99400]',
           },
         ].map((card) => (
           <div key={card.label} className="rounded-xl bg-[#FAFBFC] p-3">
@@ -216,14 +214,14 @@ export default function GrafikKasBulanan({ idMasjid }: { idMasjid: string | unde
       </div>
 
       {/* Grafik / status */}
-      {!idMasjid ? (
+      {      !idUpzDesa ? (
         <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-sm text-[#555555]">
           <Inbox size={24} className="text-[#9CA3AF]" />
-          Data masjid belum tersedia untuk menghitung grafik.
+          Data UPZ Desa belum tersedia untuk menghitung grafik.
         </div>
       ) : isLoading ? (
         <div className="flex h-[260px] items-center justify-center gap-2 text-sm text-[#555555]">
-          <Loader2 size={18} className="animate-spin text-[#28A71A]" />
+          <Loader2 size={18} className="animate-spin text-[#EFB100]" />
           Memuat grafik...
         </div>
       ) : isError || !data ? (

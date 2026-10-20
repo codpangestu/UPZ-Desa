@@ -4,29 +4,29 @@ import { useAuthStore } from '../../store/authStore';
 
 const quickLinks = [
   {
-    label: 'Pengajuan Masjid',
+    label: 'Pengajuan UPZ Desa',
     icon: ClipboardCheck,
-    path: '/pengajuan-masjid',
-    color: '#28A71A',
-    bgColor: '#EAF6E8',
-    description: 'Approval masjid baru & terbitkan kode masjid',
+    path: '/pengajuan-upz-desa',
+    color: '#EFB100',
+    bgColor: '#FEF9E7',
+    description: 'Approval UPZ Desa baru & terbitkan kode UPZ Desa',
     badge: '0',
   },
   {
-    label: 'Data Masjid',
+    label: 'Data UPZ Desa',
     icon: Building2,
-    path: '/data-masjid/daftar',
+    path: '/data-upz-desa/daftar',
     color: '#7C3AED',
     bgColor: '#F3E8FF',
-    description: 'Data seluruh masjid terdaftar',
+    description: 'Data seluruh UPZ Desa terdaftar',
   },
   {
     label: 'Data Pengurus',
     icon: Users,
-    path: '/info-masjid/data-pengurus',
+    path: '/info-upz-desa/data-pengurus',
     color: '#D97706',
     bgColor: '#FFFBEB',
-    description: 'Pengurus lintas masjid',
+    description: 'Pengurus lintas UPZ Desa',
   },
   {
     label: 'Kelola Pengguna',
@@ -34,7 +34,7 @@ const quickLinks = [
     path: '/kelola-pengguna',
     color: '#2B7FFF',
     bgColor: '#EAF2FF',
-    description: 'Kelola akun admin masjid',
+    description: 'Kelola akun admin UPZ Desa',
   },
   {
     label: 'Setting Akun',
@@ -48,9 +48,9 @@ const quickLinks = [
     label: 'Kunjungi Website',
     icon: Globe,
     path: '/',
-    color: '#28A71A',
-    bgColor: '#EAF6E8',
-    description: 'Lihat portal publik MENARA',
+    color: '#EFB100',
+    bgColor: '#FEF9E7',
+    description: 'Lihat portal publik UPZ Desa',
   },
 ];
 
@@ -60,7 +60,7 @@ export default function DashboardAdminBaznas() {
   return (
     <div className="space-y-6">
       {/* Welcome Card */}
-      <div className="bg-gradient-to-r from-[#1C7712] to-[#28A71A] rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-[#C99400] to-[#EFB100] rounded-2xl p-6 text-white">
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-xl font-semibold mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function DashboardAdminBaznas() {
           <Link
             key={link.path}
             to={link.path}
-            className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)] hover:shadow-md hover:border-[#28A71A]/30 transition-all duration-200 group relative"
+            className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)] hover:shadow-md hover:border-[#EFB100]/30 transition-all duration-200 group relative"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <div className="flex items-start gap-4">
@@ -107,23 +107,23 @@ export default function DashboardAdminBaznas() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)]">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Total Masjid</p>
-            <Building2 size={16} className="text-[#28A71A]" />
+            <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Total UPZ Desa</p>
+            <Building2 size={16} className="text-[#EFB100]" />
           </div>
           <p className="text-2xl font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>0</p>
           <div className="flex items-center gap-1 mt-1">
-            <TrendingUp size={14} className="text-[#28A71A]" />
-            <span className="badge-xs bg-[#E6F9F0] text-[#006844]">Terdaftar</span>
+            <TrendingUp size={14} className="text-[#EFB100]" />
+            <span className="badge-xs bg-[#FDF3C0] text-[#7D5A00]">Terdaftar</span>
           </div>
         </div>
 
         <div className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)]">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Total Penerimaan</p>
-            <TrendingUp size={16} className="text-[#28A71A]" />
+            <TrendingUp size={16} className="text-[#EFB100]" />
           </div>
           <p className="text-2xl font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Rp 0</p>
-          <span className="badge-xs bg-[#E6F9F0] text-[#006844]">Nasional</span>
+          <span className="badge-xs bg-[#FDF3C0] text-[#7D5A00]">Nasional</span>
         </div>
 
         <div className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)]">
@@ -142,7 +142,7 @@ export default function DashboardAdminBaznas() {
           </div>
           <p className="text-2xl font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>0</p>
           <Link
-            to="/pengajuan-masjid"
+            to="/pengajuan-upz-desa"
             className="text-[10px] text-[#2B7FFF] hover:underline inline-block mt-1"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >

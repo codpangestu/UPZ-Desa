@@ -4,40 +4,40 @@
 // E2E test — Halaman publik dengan DATA ASLI (Fix #48)
 // Prasyarat:
 //   1. Vite dev server → http://localhost:3000
-//   2. Content Service (8003) WAJIB (search masjid, kajian/acara/cerita/donasi)
+//   2. Content Service (8003) WAJIB (search UPZ Desa, kajian/acara/cerita/donasi)
 //   3. Auth Service (8001) untuk test alur login microfinance
 // =====================================================================
 
-const AKUN_BMM = { email: 'dkmalhidayah0107@gmail.com', password: 'menara23' };
-const AKUN_BAZNAS = { email: 'baznas-provinsi@menara.masjid', password: 'menara23' };
+const AKUN_BMM = { email: 'dkmalhidayah0107@gmail.com', password: 'upzdesa23' };
+const AKUN_BAZNAS = { email: 'baznas-provinsi@upzdesa.baznas.go.id', password: 'upzdesa23' };
 
 describe('Halaman publik — data asli dari API (Fix #48)', () => {
-  it('Pencarian masjid menampilkan data asli + search server-side bekerja', () => {
-    cy.visit('/masjid');
+  it('Pencarian UPZ Desa menampilkan data asli + search server-side bekerja', () => {
+    cy.visit('/upz-desa');
 
-    // Kartu masjid terisi dari GET /masjid/search (data asli, bukan mock)
+    // Kartu UPZ Desa terisi dari GET /api/v1/masjid/search (data asli, bukan mock)
     cy.get('.card-hover', { timeout: 15000 }).should('have.length.at.least', 1);
 
     // Search server-side (debounced) → nama asli muncul
-    cy.get('input[placeholder="Cari nama masjid..."]').type('istiqomah');
+    cy.get('input[placeholder="Cari nama UPZ Desa..."]').type('istiqomah');
     cy.contains('h3', 'Al-istiqomah', { timeout: 15000 }).should('be.visible');
   });
 
-  it('Detail masjid publik menampilkan data asli via slug', () => {
-    cy.visit('/masjid');
+  it('Detail UPZ Desa publik menampilkan data asli via slug', () => {
+    cy.visit('/upz-desa');
 
     cy.get('.card-hover', { timeout: 15000 }).should('have.length.at.least', 1);
     cy.get('.card-hover').first().contains('Lihat Profil').click();
 
-    // URL berubah ke /masjid/{slug}, h1 berisi nama masjid asli
-    cy.url({ timeout: 15000 }).should('include', '/masjid/');
+    // URL berubah ke /upz-desa/{slug}, h1 berisi nama UPZ Desa asli
+    cy.url({ timeout: 15000 }).should('include', '/upz-desa/');
     cy.get('h1', { timeout: 15000 }).invoke('text').should('have.length.at.least', 3);
-    cy.contains('Kembali ke Daftar Masjid').should('exist');
+    cy.contains('Kembali ke Daftar UPZ Desa').should('exist');
   });
 
   it('Klik Microfinance di navbar (belum login) → /login → setelah login BMM → /microfinance', () => {
     cy.clearAllLocalStorage();
-    cy.visit('/masjid');
+    cy.visit('/upz-desa');
 
     // Link Microfinance ada di dropdown "Lainnya" (desktop, hidden sampai hover)
     cy.get('a[href="/microfinance"]').first().click({ force: true });
@@ -45,7 +45,7 @@ describe('Halaman publik — data asli dari API (Fix #48)', () => {
     // Direct ke /login (bukan flash redirect diam-diam)
     cy.url().should('include', '/login');
 
-    // Login sebagai Admin Masjid BMM → mendarat di /microfinance
+    // Login sebagai Admin UPZ Desa BMM → mendarat di /microfinance
     cy.get('input[type="email"]').type(AKUN_BMM.email);
     cy.get('input[type="password"]').type(AKUN_BMM.password);
     cy.get('button[type="submit"]').click();
@@ -55,7 +55,7 @@ describe('Halaman publik — data asli dari API (Fix #48)', () => {
 
   it('Login role lain dari redirect microfinance → dashboard sesuai role', () => {
     cy.clearAllLocalStorage();
-    cy.visit('/masjid');
+    cy.visit('/upz-desa');
 
     cy.get('a[href="/microfinance"]').first().click({ force: true });
     cy.url().should('include', '/login');

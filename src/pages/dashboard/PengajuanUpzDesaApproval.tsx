@@ -18,17 +18,17 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { adminService } from '../../services/adminService';
-import type { PengajuanMasjid, StatusPengajuan } from '../../types';
+import type { PengajuanUpzDesa, StatusPengajuan } from '../../types';
 import { STATUS_PENGAJUAN_LABEL, STATUS_PENGAJUAN_COLOR } from '../../types';
 
-export default function PengajuanMasjidApproval() {
-  const [pengajuanList, setPengajuanList] = useState<PengajuanMasjid[]>([]);
+export default function PengajuanUpzDesaApproval() {
+  const [pengajuanList, setPengajuanList] = useState<PengajuanUpzDesa[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusPengajuan | 'all'>('all');
-  const [selectedItem, setSelectedItem] = useState<PengajuanMasjid | null>(null);
+  const [selectedItem, setSelectedItem] = useState<PengajuanUpzDesa | null>(null);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
-  // Kode masjid yang baru diterbitkan saat approve — tampil di modal agar bisa disampaikan ke pemohon
+  // Kode UPZ Desa yang baru diterbitkan saat approve — tampil di modal agar bisa disampaikan ke pemohon
   const [issuedCode, setIssuedCode] = useState<{ kode: string; nama: string } | null>(null);
 
   const loadData = useCallback(async () => {
@@ -36,11 +36,30 @@ export default function PengajuanMasjidApproval() {
     try {
       const res = await adminService.getPengajuanList(1, 100);
       if (res.status && Array.isArray(res.data)) {
-        // Normalisasi status backend ('Menunggu') ke key frontend ('pending')
+        // Normalisasi status backend ('Menunggu') ke key frontend ('pending').
+        // Nama field response sudah dinormalisasi oleh adapter di services/api.ts
+        // (backend mengirim `nama_masjid`, app memakai `nama_upz_desa`).
         setPengajuanList(
           res.data.map((item) => ({
-            ...item,
+            id: item.id,
+            nama_upz_desa: item.nama_upz_desa ?? '',
+            alamat_upz_desa: item.alamat_upz_desa ?? '',
+            nohp_upz_desa: item.nohp_upz_desa ?? '',
+            id_provinsi: item.id_provinsi,
+            id_kabupaten_kota: item.id_kabupaten_kota,
+            nama_provinsi: item.nama_provinsi,
+            nama_kabupaten_kota: item.nama_kabupaten_kota,
+            keterangan: item.keterangan,
             status_pengajuan: adminService.normalizePengajuanStatus(item.status_pengajuan),
+            kode_org_baznas: item.kode_org_baznas,
+            slug_upz_desa: item.slug_upz_desa,
+            nama_pemohon: item.nama_pemohon,
+            email_pemohon: item.email_pemohon,
+            jk_pemohon: item.jk_pemohon,
+            nohp_pemohon: item.nohp_pemohon,
+            alamat_pemohon: item.alamat_pemohon,
+            created_at: item.created_at,
+            updated_at: item.updated_at,
           }))
         );
       }
@@ -77,9 +96,9 @@ export default function PengajuanMasjidApproval() {
           prev ? { ...prev, status_pengajuan: status, kode_org_baznas: issued ?? prev.kode_org_baznas } : null
         );
       }
-      // Tampilkan kode masjid yang baru diterbitkan agar bisa disampaikan ke pemohon
+      // Tampilkan kode UPZ Desa yang baru diterbitkan agar bisa disampaikan ke pemohon
       if (issued && item) {
-        setIssuedCode({ kode: issued, nama: item.nama_masjid });
+        setIssuedCode({ kode: issued, nama: item.nama_upz_desa });
       } else if (status === 'disetujui') {
         toast.success('Pengajuan disetujui');
       }
@@ -93,9 +112,9 @@ export default function PengajuanMasjidApproval() {
   // Filter items
   const filteredList = pengajuanList.filter((item) => {
     const matchesSearch =
-      item.nama_masjid.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.alamat_masjid.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.nohp_masjid.includes(searchQuery);
+      item.nama_upz_desa.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.alamat_upz_desa.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.nohp_upz_desa.includes(searchQuery);
     const matchesStatus = statusFilter === 'all' || item.status_pengajuan === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -119,15 +138,15 @@ export default function PengajuanMasjidApproval() {
       <div className="bg-white rounded-xl border border-[#F0F4F8] p-4 sm:p-6">
         <div className="flex items-start sm:items-center justify-between flex-col sm:flex-row gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-              <ClipboardCheck size={20} className="text-[#28A71A]" />
+            <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+              <ClipboardCheck size={20} className="text-[#EFB100]" />
             </div>
             <div>
               <h2
                 className="text-lg font-semibold text-[#303030]"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                Pengajuan Masjid Baru
+                Pengajuan UPZ Desa
               </h2>
               <p
                 className="text-sm text-text-gray"
@@ -140,7 +159,7 @@ export default function PengajuanMasjidApproval() {
           <button
             onClick={loadData}
             disabled={loading}
-            className="text-sm text-[#28A71A] hover:text-[#1C7712] transition-colors flex items-center gap-1"
+            className="text-sm text-[#EFB100] hover:text-[#C99400] transition-colors flex items-center gap-1"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <Loader2 size={14} className={loading ? 'animate-spin' : ''} />
@@ -158,14 +177,14 @@ export default function PengajuanMasjidApproval() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari berdasarkan nama, alamat, atau no HP..."
-            className="w-full pl-10 pr-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]"
+            className="w-full pl-10 pr-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as StatusPengajuan | 'all')}
-          className="px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20"
+          className="px-4 py-2.5 border border-[#D4D4D4] rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20"
           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
         >
           <option value="all">Semua Status</option>
@@ -182,7 +201,7 @@ export default function PengajuanMasjidApproval() {
           <div className="p-4 border-b border-[#F0F4F8] flex items-center justify-between">
             <button
               onClick={() => setSelectedItem(null)}
-              className="text-sm text-[#28A71A] hover:text-[#1C7712] transition-colors flex items-center gap-1"
+              className="text-sm text-[#EFB100] hover:text-[#C99400] transition-colors flex items-center gap-1"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               ← Kembali ke daftar
@@ -195,10 +214,9 @@ export default function PengajuanMasjidApproval() {
             </span>
           </div>
           <div className="p-6 space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-[#303030] flex items-center gap-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                <Building2 size={18} className="text-[#28A71A]" />
-                {selectedItem.nama_masjid}
+            <div>                <h3 className="text-lg font-semibold text-[#303030] flex items-center gap-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <Building2 size={18} className="text-[#EFB100]" />
+                {selectedItem.nama_upz_desa}
               </h3>
             </div>
 
@@ -208,7 +226,7 @@ export default function PengajuanMasjidApproval() {
                 <div>
                   <p className="text-xs text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Alamat</p>
                   <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {selectedItem.alamat_masjid}
+                    {selectedItem.alamat_upz_desa}
                     {selectedItem.nama_kabupaten_kota && <><br />{selectedItem.nama_kabupaten_kota}</>}
                     {selectedItem.nama_provinsi && <><br />{selectedItem.nama_provinsi}</>}
                   </p>
@@ -218,7 +236,7 @@ export default function PengajuanMasjidApproval() {
                 <Phone size={16} className="text-text-gray mt-0.5" />
                 <div>
                   <p className="text-xs text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No. HP</p>
-                  <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{selectedItem.nohp_masjid}</p>
+                  <p className="text-sm text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{selectedItem.nohp_upz_desa}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -234,8 +252,8 @@ export default function PengajuanMasjidApproval() {
             {(selectedItem.nama_pemohon || selectedItem.email_pemohon) && (
               <div className="p-4 bg-[#F0F4F8]/60 border border-[#F0F4F8] rounded-xl">
                 <p className="text-xs font-semibold text-[#303030] mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  <UserRound size={14} className="text-[#28A71A]" />
-                  Admin Masjid (dibuat saat disetujui)
+                  <UserRound size={14} className="text-[#EFB100]" />
+                  Admin UPZ Desa (dibuat saat disetujui)
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
@@ -258,16 +276,16 @@ export default function PengajuanMasjidApproval() {
 
             {/* Kode Masjid (jika sudah disetujui) */}
             {selectedItem.status_pengajuan === 'disetujui' && selectedItem.kode_org_baznas && (
-              <div className="p-4 bg-[#E6F9F0] border border-[#006844]/20 rounded-xl flex items-center justify-between gap-3">
+              <div className="p-4 bg-[#FDF3C0] border border-[#7D5A00]/20 rounded-xl flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#006844] rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-[#7D5A00] rounded-lg flex items-center justify-center flex-shrink-0">
                     <KeyRound size={18} className="text-white" />
                   </div>
                   <div>
-                    <p className="text-xs text-[#006844] font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      Kode Masjid (sampaikan ke pemohon)
+                    <p className="text-xs text-[#7D5A00] font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Kode UPZ Desa (sampaikan ke pemohon)
                     </p>
-                    <p className="text-base font-mono font-bold text-[#006844] tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <p className="text-base font-mono font-bold text-[#7D5A00] tracking-wider" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       {selectedItem.kode_org_baznas}
                     </p>
                   </div>
@@ -275,9 +293,9 @@ export default function PengajuanMasjidApproval() {
                 <button
                   onClick={() => {
                     navigator.clipboard?.writeText(selectedItem.kode_org_baznas || '');
-                    toast.success('Kode masjid disalin');
+                    toast.success('Kode UPZ Desa disalin');
                   }}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#006844]/20 rounded-lg text-xs font-medium text-[#006844] hover:bg-[#006844] hover:text-white transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#7D5A00]/20 rounded-lg text-xs font-medium text-[#7D5A00] hover:bg-[#7D5A00] hover:text-white transition-colors"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <Copy size={14} />
@@ -292,7 +310,7 @@ export default function PengajuanMasjidApproval() {
                 <button
                   onClick={() => handleAction(selectedItem.id, 'disetujui')}
                   disabled={actionLoading === selectedItem.id}
-                  className="flex-1 py-2.5 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-[#B0B0B0] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-[#B0B0B0] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   {actionLoading === selectedItem.id ? (
@@ -324,14 +342,14 @@ export default function PengajuanMasjidApproval() {
         <div className="bg-white rounded-xl border border-[#F0F4F8] overflow-hidden">
           {loading ? (
             <div className="p-12 text-center">
-              <Loader2 size={24} className="animate-spin text-[#28A71A] mx-auto mb-2" />
+              <Loader2 size={24} className="animate-spin text-[#EFB100] mx-auto mb-2" />
               <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Memuat data...</p>
             </div>
           ) : filteredList.length === 0 ? (
             <div className="p-12 text-center">
               <ClipboardCheck size={40} className="text-[#D4D4D4] mx-auto mb-3" />
               <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                {searchQuery ? 'Tidak ada hasil pencarian' : 'Belum ada pengajuan masjid'}
+                {searchQuery ? 'Tidak ada hasil pencarian' : 'Belum ada pengajuan UPZ Desa'}
               </p>
             </div>
           ) : (
@@ -339,10 +357,10 @@ export default function PengajuanMasjidApproval() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-[#F0F4F8]">
-                    <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Nama Masjid</th>
+                    <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Nama UPZ Desa</th>
                     <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden sm:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No. HP</th>
                     <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden md:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Tanggal</th>
-                    <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden lg:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kode Masjid</th>
+                    <th className="text-left text-xs font-medium text-text-gray px-4 py-3 hidden lg:table-cell" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kode UPZ Desa</th>
                     <th className="text-left text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Status</th>
                     <th className="text-right text-xs font-medium text-text-gray px-4 py-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Aksi</th>
                   </tr>
@@ -356,15 +374,15 @@ export default function PengajuanMasjidApproval() {
                     >
                       <td className="px-4 py-3">
                         <p className="text-sm font-medium text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                          {item.nama_masjid}
+                          {item.nama_upz_desa}
                         </p>
                         <p className="text-xs text-text-gray truncate max-w-[200px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                          {item.alamat_masjid}
+                          {item.alamat_upz_desa}
                         </p>
                       </td>
                       <td className="px-4 py-3 hidden sm:table-cell">
                         <span className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                          {item.nohp_masjid}
+                          {item.nohp_upz_desa}
                         </span>
                       </td>
                       <td className="px-4 py-3 hidden md:table-cell">
@@ -375,7 +393,7 @@ export default function PengajuanMasjidApproval() {
                       <td className="px-4 py-3 hidden lg:table-cell">
                         {item.kode_org_baznas ? (
                           <span
-                            className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#006844] bg-[#E6F9F0] px-2 py-1 rounded-md"
+                            className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#7D5A00] bg-[#FDF3C0] px-2 py-1 rounded-md"
                             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                           >
                             <KeyRound size={12} />
@@ -396,7 +414,7 @@ export default function PengajuanMasjidApproval() {
                       <td className="px-4 py-3 text-right">
                         <button
                           onClick={(e) => { e.stopPropagation(); setSelectedItem(item); }}
-                          className="text-[#28A71A] hover:text-[#1C7712] transition-colors"
+                          className="text-[#EFB100] hover:text-[#C99400] transition-colors"
                           title="Lihat detail"
                         >
                           <Eye size={16} />
@@ -423,8 +441,8 @@ export default function PengajuanMasjidApproval() {
               <X size={18} />
             </button>
             <div className="text-center mb-5">
-              <div className="w-14 h-14 bg-[#E6F9F0] rounded-full flex items-center justify-center mx-auto mb-3">
-                <KeyRound size={26} className="text-[#006844]" />
+              <div className="w-14 h-14 bg-[#FDF3C0] rounded-full flex items-center justify-center mx-auto mb-3">
+                <KeyRound size={26} className="text-[#7D5A00]" />
               </div>
               <h3 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Masjid Disetujui!
@@ -434,28 +452,26 @@ export default function PengajuanMasjidApproval() {
               </p>
             </div>
 
-            <div className="p-4 bg-[#EAF6E8] border border-[#28A71A]/20 rounded-xl text-center mb-5">
+            <div className="p-4 bg-[#FEF9E7] border border-[#EFB100]/20 rounded-xl text-center mb-5">
               <p className="text-xs text-[#555] mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Sampaikan kode ini ke pemohon untuk mendaftar sebagai Admin Masjid
+                Sampaikan kode ini ke pemohon untuk mendaftar sebagai Admin UPZ Desa
               </p>
               <p
-                className="text-2xl font-mono font-bold text-[#1C7712] tracking-widest select-all"
+                className="text-2xl font-mono font-bold text-[#C99400] tracking-widest select-all"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {issuedCode.kode}
               </p>
-            </div>
-
-            <button
+            </div>              <button
               onClick={() => {
                 navigator.clipboard?.writeText(issuedCode.kode);
-                toast.success('Kode masjid disalin');
+                toast.success('Kode UPZ Desa disalin');
               }}
-              className="w-full py-2.5 bg-[#28A71A] hover:bg-[#1C7712] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-[#EFB100] hover:bg-[#C99400] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Copy size={16} />
-              Salin Kode Masjid
+              Salin Kode UPZ Desa
             </button>
           </div>
         </div>

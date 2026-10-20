@@ -22,9 +22,9 @@ interface NotificationProps {
 
 const variantStyles: Record<NotificationVariant, { bg: string; border: string; iconColor: string; Icon: typeof CheckCircle }> = {
   success: {
-    bg: 'bg-[#E6F9F0]',
-    border: 'border-[#00C16A]',
-    iconColor: 'text-[#00C16A]',
+    bg: 'bg-[#FDF3C0]',
+    border: 'border-[#D4A000]',
+    iconColor: 'text-[#D4A000]',
     Icon: CheckCircle,
   },
   error: {
@@ -93,7 +93,7 @@ export default function Notification({
       {action && (
         <button
           onClick={action.onClick}
-          className="text-sm font-semibold text-[#28A71A] hover:text-[#1C7712] whitespace-nowrap transition-colors"
+          className="text-sm font-semibold text-[#EFB100] hover:text-[#C99400] whitespace-nowrap transition-colors"
         >
           {action.label}
         </button>

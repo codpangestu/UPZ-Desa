@@ -1,4 +1,4 @@
-// Types for Kegiatan Masjid
+// Types for Kegiatan UPZ Desa
 export interface Kegiatan {
   id: number;
   nama_kegiatan: string;
@@ -23,6 +23,6 @@ export const JENIS_KEGIATAN_OPTIONS = [
 ];
 
 export const JENIS_KEGIATAN_COLOR: Record<string, string> = {
-  rutin: 'bg-[#EAF6E8] text-[#1C7712]',
+  rutin: 'bg-[#FEF9E7] text-[#C99400]',
   tertentu: 'bg-[#EAF2FF] text-[#2B7FFF]',
 };

@@ -17,7 +17,7 @@ L.Icon.Default.mergeOptions({
 function makeIcon(type: string, active: boolean): L.DivIcon {
   const isMasjid = type === 'Masjid';
   const bgColor = isMasjid
-    ? 'linear-gradient(135deg, #28A71A, #1f8a13)'
+    ? 'linear-gradient(135deg, #EFB100, #1f8a13)'
     : 'linear-gradient(135deg, #FF8C00, #E67E00)';
   const shadowColor = isMasjid ? 'rgba(40,167,26,0.4)' : 'rgba(255,140,0,0.4)';
   const size = active ? 44 : 36;
@@ -35,10 +35,20 @@ function makeIcon(type: string, active: boolean): L.DivIcon {
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 8px ${shadowColor};
-        font-size: ${fontSize}px;
         transform: scale(${scale});
         transition: all 0.3s ease;
-      ">🕌</div>
+      ">
+        <svg width="${fontSize + 4}" height="${fontSize + 4}" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="32" width="52" height="38" rx="2" fill="white" opacity="0.95"/>
+          <rect x="33" y="52" width="14" height="18" rx="2" fill="white" opacity="0.6"/>
+          <rect x="19" y="38" width="10" height="8" rx="1.5" fill="white" opacity="0.5"/>
+          <rect x="35" y="38" width="10" height="8" rx="1.5" fill="white" opacity="0.5"/>
+          <rect x="51" y="38" width="10" height="8" rx="1.5" fill="white" opacity="0.5"/>
+          <path d="M10 33L40 14L70 33H10Z" fill="white" opacity="0.85"/>
+          <rect x="38" y="6" width="3" height="10" rx="1" fill="white" opacity="0.7"/>
+          <path d="M41 6L49 9.5L41 13V6Z" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
     `,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
@@ -186,7 +196,7 @@ export default function MapSection() {
               </div>
               <button
                 onClick={handleLocateMe}
-                className="flex items-center gap-1.5 text-xs font-medium text-[#28A71A] bg-[#E6F9F0] hover:bg-[#d0f0cc] px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className="flex items-center gap-1.5 text-xs font-medium text-[#EFB100] bg-[#FDF3C0] hover:bg-[#d0f0cc] px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
                 title="Deteksi lokasi saya"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
@@ -254,8 +264,8 @@ export default function MapSection() {
                               <span key={i} style={{
                                 fontSize: '9px',
                                 padding: '1px 6px',
-                                background: '#E6F9F0',
-                                color: '#28A71A',
+                                background: '#FDF3C0',
+                                color: '#EFB100',
                                 borderRadius: '4px',
                                 fontWeight: 500,
                               }}>
@@ -264,10 +274,10 @@ export default function MapSection() {
                             ))}
                           </div>
                           <a
-                            href={`/masjid/${m.id}`}
+                            href={`/upz-desa/${m.id}`}
                             style={{
                               fontSize: '11px',
-                              color: '#28A71A',
+                              color: '#EFB100',
                               fontWeight: 600,
                               textDecoration: 'none',
                             }}
@@ -292,12 +302,12 @@ export default function MapSection() {
             {/* Legend */}
             <div className="flex items-center gap-4 px-4 py-2.5 border-t border-[rgba(0,0,0,0.04)] bg-[#FAFAFA]">
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-[#28A71A] border-2 border-white shadow-sm" />
-                <span className="text-[10px] text-[#666]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Masjid</span>
+                <div className="w-3 h-3 rounded-full bg-[#EFB100] border-2 border-white shadow-sm" />
+                <span className="text-[10px] text-[#666]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UPZ Desa</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-[#FF8C00] border-2 border-white shadow-sm" />
-                <span className="text-[10px] text-[#666]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Musholla</span>
+                <span className="text-[10px] text-[#666]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>UPZ Kelurahan</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-[#3B82F6] border-2 border-white shadow-sm" />
@@ -312,7 +322,7 @@ export default function MapSection() {
           {/* List Masjid */}
           <div className="flex flex-col gap-4 flex-1 w-full max-h-[560px] overflow-y-auto pr-1">
             <div className="flex justify-between items-center w-full sticky top-0 bg-[#FAFAFA] py-2 z-10">
-              <span className="text-lg font-medium leading-7 text-[#303030]">Masjid dan Musholla Terdekat</span>
+              <span className="text-lg font-medium leading-7 text-[#303030]">UPZ Desa Terdekat</span>
               <div className="badge-xs">{filteredMosques.length} ditemukan</div>
             </div>
 
@@ -320,7 +330,7 @@ export default function MapSection() {
               <div className="text-center py-8">
                 <div className="text-4xl mb-2 opacity-30">🔍</div>
                 <p className="text-sm text-[#888]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  Tidak ada masjid yang ditemukan
+                  Tidak ada UPZ desa yang ditemukan
                 </p>
               </div>
             ) : (
@@ -332,12 +342,22 @@ export default function MapSection() {
                     onClick={() => handleCardClick(masjid.id)}
                     className={`masjid-card w-full cursor-pointer transition-all ${
                       isActive
-                        ? 'ring-2 ring-[#28A71A] ring-offset-2 bg-[#F0FDF0]'
+                        ? 'ring-2 ring-[#EFB100] ring-offset-2 bg-[#F0FDF0]'
                         : 'hover:bg-[#F0FDF0]'
                     }`}
                   >
-                    <div className="w-[78px] h-[78px] bg-gradient-to-br from-[#E6F9F0] to-[#EAF6E8] rounded-lg flex items-center justify-center text-3xl flex-shrink-0">
-                      🕌
+                    <div className="w-[78px] h-[78px] bg-gradient-to-br from-[#FDF3C0] to-[#FEF9E7] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg width="48" height="48" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="14" y="32" width="52" height="38" rx="2" fill="#EFB100" opacity="0.9"/>
+                        <rect x="33" y="52" width="14" height="18" rx="2" fill="#C99400"/>
+                        <rect x="19" y="38" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                        <rect x="35" y="38" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                        <rect x="51" y="38" width="10" height="8" rx="1.5" fill="#FEF9E7" stroke="#C99400" strokeWidth="1.2"/>
+                        <path d="M10 33L40 14L70 33H10Z" fill="#C99400"/>
+                        <rect x="38" y="6" width="3" height="10" rx="1" fill="#C99400"/>
+                        <path d="M41 6L50 9.5L41 13V6Z" fill="#EFB100"/>
+                        <rect x="10" y="69" width="60" height="3" rx="1.5" fill="#C99400" opacity="0.6"/>
+                      </svg>
                     </div>
                     <div className="flex flex-col items-start gap-3 flex-1 min-w-0">
                       <div className="flex justify-between items-start gap-4 w-full">
@@ -346,9 +366,9 @@ export default function MapSection() {
                           <span className="text-sm leading-5 text-[#888]">{masjid.address}</span>
                         </div>
                         {masjid.type === 'Musholla' ? (
-                          <div className="px-2.5 py-0.5 bg-[#FFF3E0] text-[#E65100] rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap">Musholla</div>
+                          <div className="px-2.5 py-0.5 bg-[#FFF3E0] text-[#E65100] rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap">UPZ Kelurahan</div>
                         ) : (
-                          <div className="px-2.5 py-0.5 bg-[#E6F9F0] text-[#28A71A] rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap">Masjid</div>
+                          <div className="px-2.5 py-0.5 bg-[#FDF3C0] text-[#EFB100] rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap">UPZ Desa</div>
                         )}
                       </div>
                       <div className="flex flex-row gap-2 flex-wrap">
@@ -362,7 +382,7 @@ export default function MapSection() {
               })
             )}
 
-            <Link to="/masjid" className="btn-primary-green w-full justify-center rounded-lg mt-2">
+            <Link to="/upz-desa" className="btn-primary-green w-full justify-center rounded-lg mt-2">
               Lihat Semua
             </Link>
           </div>

@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [selectedRole, setSelectedRole] = useState<LoginableRole>('admin-masjid');
+  const [selectedRole, setSelectedRole] = useState<LoginableRole>('admin-upz-desa');
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
   const [error, setError] = useState('');
   const roleMenuRef = useRef<HTMLDivElement>(null);
@@ -25,7 +25,7 @@ export default function LoginPage() {
   // ketiganya login lewat endpoint yang sama dan scope wilayahnya ditentukan
   // server dari id_level akun. Hanya Admin KUA (kecamatan) yang dipisah.
   const ROLE_OPTIONS: { role: LoginableRole; label: string; desc: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
-    { role: 'admin-masjid', label: 'Admin Masjid', desc: 'Kelola masjid Anda', icon: Building2 },
+    { role: 'admin-upz-desa', label: 'Admin UPZ Desa', desc: 'Kelola UPZ Desa Anda', icon: Building2 },
     { role: 'admin-baznas', label: 'Admin BAZNAS', desc: 'Pusat, daerah & kabupaten/kota', icon: Landmark },
     { role: 'admin-kua', label: 'Admin KUA', desc: 'Kelola data tingkat kecamatan', icon: MapPin },
   ];
@@ -85,8 +85,8 @@ export default function LoginPage() {
           <Link to="/" className="flex items-center gap-3">
             <div className="flex-shrink-0">
               <img
-                src="/images/logo-menara.svg"
-                alt="MENARA Masjid Logo"
+                src="/assets/icons/logo-upzDesa2.webp"
+                alt="UPZ Desa Logo"
                 className="w-[30px] h-[30px] object-contain"
               />
             </div>
@@ -94,13 +94,13 @@ export default function LoginPage() {
               className="text-base font-bold text-[#303030] tracking-wide"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              MENARA Masjid
+              UPZ Desa
             </span>
           </Link>
 
           <Link
             to="/"
-            className="hidden sm:inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#28A71A] transition-colors"
+            className="hidden sm:inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#EFB100] transition-colors"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <ArrowLeft size={14} />
@@ -114,7 +114,7 @@ export default function LoginPage() {
             {/* Mobile Back Link */}
             <Link
               to="/"
-              className="sm:hidden inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#28A71A] transition-colors mb-6"
+              className="sm:hidden inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#EFB100] transition-colors mb-6"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <ArrowLeft size={14} />
@@ -146,13 +146,13 @@ export default function LoginPage() {
                   onClick={() => setRoleMenuOpen((v) => !v)}
                   className={`w-full flex items-center gap-3 p-3 bg-white border rounded-xl transition-all duration-200 text-left ${
                     roleMenuOpen
-                      ? 'border-[#28A71A] ring-2 ring-[#28A71A]/20'
-                      : 'border-gray-200 hover:border-[#28A71A]/50 hover:bg-[#FAFFFA]'
+                      ? 'border-[#EFB100] ring-2 ring-[#EFB100]/20'
+                      : 'border-gray-200 hover:border-[#EFB100]/50 hover:bg-[#FAFFFA]'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <span className="w-9 h-9 rounded-lg bg-[#EAF6E8] flex items-center justify-center flex-shrink-0">
-                    <ActiveIcon size={18} className="text-[#28A71A]" />
+                  <span className="w-9 h-9 rounded-lg bg-[#FEF9E7] flex items-center justify-center flex-shrink-0">
+                    <ActiveIcon size={18} className="text-[#EFB100]" />
                   </span>
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-semibold text-[#303030]">{activeRole.label}</span>
@@ -178,13 +178,13 @@ export default function LoginPage() {
                             setRoleMenuOpen(false);
                           }}
                           className={`w-full flex items-center gap-3 px-3 py-2.5 transition-colors text-left ${
-                            active ? 'bg-[#EAF6E8]' : 'hover:bg-[#FAFAFA]'
+                            active ? 'bg-[#FEF9E7]' : 'hover:bg-[#FAFAFA]'
                           }`}
                           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                         >
                           <span
                             className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              active ? 'bg-[#28A71A] text-white' : 'bg-[#EAF6E8] text-[#28A71A]'
+                              active ? 'bg-[#EFB100] text-white' : 'bg-[#FEF9E7] text-[#EFB100]'
                             }`}
                           >
                             <Icon size={16} />
@@ -193,7 +193,7 @@ export default function LoginPage() {
                             <span className="block text-sm font-medium text-[#303030]">{label}</span>
                             <span className="block text-xs text-gray-500">{desc}</span>
                           </span>
-                          {active && <Check size={16} className="text-[#28A71A] flex-shrink-0" />}
+                          {active && <Check size={16} className="text-[#EFB100] flex-shrink-0" />}
                         </button>
                       );
                     })}
@@ -229,7 +229,7 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Masukkan email Anda"
                     required
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all placeholder:text-gray-400 bg-gray-50/50 hover:bg-white focus:bg-white"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all placeholder:text-gray-400 bg-gray-50/50 hover:bg-white focus:bg-white"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                 </div>
@@ -248,7 +248,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Masukkan kata sandi"
                     required
-                    className="w-full pl-10 pr-11 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all placeholder:text-gray-400 bg-gray-50/50 hover:bg-white focus:bg-white"
+                    className="w-full pl-10 pr-11 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all placeholder:text-gray-400 bg-gray-50/50 hover:bg-white focus:bg-white"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                   <button
@@ -267,8 +267,8 @@ export default function LoginPage() {
                   <div
                     onClick={() => setRememberMe(!rememberMe)}
                     className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 ${rememberMe
-                        ? 'bg-[#28A71A] border-[#28A71A]'
-                        : 'border-gray-300 group-hover:border-[#28A71A]'
+                        ? 'bg-[#EFB100] border-[#EFB100]'
+                        : 'border-gray-300 group-hover:border-[#EFB100]'
                       }`}
                   >
                     {rememberMe && <Check size={10} className="text-white" strokeWidth={3} />}
@@ -279,7 +279,7 @@ export default function LoginPage() {
                 </label>
                 <button
                   type="button"
-                  className="text-sm text-[#28A71A] hover:text-[#1C7712] font-medium transition-colors"
+                  className="text-sm text-[#EFB100] hover:text-[#C99400] font-medium transition-colors"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   onClick={() => { }}
                 >
@@ -291,7 +291,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading || !email || !password}
-                className="w-full py-3 bg-[#28A71A] hover:bg-[#1C7712] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#28A71A]/25 hover:shadow-[#28A71A]/40 disabled:shadow-none"
+                className="w-full py-3 bg-[#EFB100] hover:bg-[#C99400] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-[#EFB100]/25 hover:shadow-[#EFB100]/40 disabled:shadow-none"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {isLoading ? (
@@ -313,7 +313,7 @@ export default function LoginPage() {
               Belum punya akun?{' '}
               <Link
                 to="/register"
-                className="text-[#28A71A] hover:text-[#1C7712] font-semibold transition-colors"
+                className="text-[#EFB100] hover:text-[#C99400] font-semibold transition-colors"
               >
                 Daftar sekarang
               </Link>
@@ -321,7 +321,7 @@ export default function LoginPage() {
 
             {/* Footer */}
             <p className="mt-8 text-xs text-center text-gray-400" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              &copy; 2024 Menara Masjid BAZNAS. All rights reserved.
+              &copy; 2024 UPZ Desa BAZNAS. All rights reserved.
             </p>
           </div>
         </div>
@@ -332,7 +332,7 @@ export default function LoginPage() {
         <div className="w-[570px] h-[904px] max-h-[90vh] rounded-[40px] overflow-hidden shadow-xl bg-[#D9D9D9]">
           <img
             src="/images/banner-login.svg"
-            alt="MENARA Masjid Login"
+            alt="UPZ Desa Login"
             className="w-full h-full object-cover"
           />
         </div>

@@ -1,33 +1,33 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { profilMasjidApi } from '../api';
+import { profilUpzDesaApi } from '../api';
 
-const PROFILE_KEY = 'profil-masjid';
+const PROFILE_KEY = 'profil-upz-desa';
 
-export function useMasjidProfile(id: string | undefined) {
+export function useUpzDesaProfile(id: string | undefined) {
   return useQuery({
     queryKey: [PROFILE_KEY, id],
-    queryFn: () => profilMasjidApi.getDetail(id!),
+    queryFn: () => profilUpzDesaApi.getDetail(id!),
     enabled: !!id,
   });
 }
 
-export function useUpdateMasjidProfile() {
+export function useUpdateUpzDesaProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) =>
-      profilMasjidApi.update(id, data),
+      profilUpzDesaApi.update(id, data),
     onSuccess: (res) => {
       if (res.status) {
-        toast.success('Profil masjid berhasil diperbarui');
+        toast.success('Profil UPZ Desa berhasil diperbarui');
         queryClient.invalidateQueries({ queryKey: [PROFILE_KEY] });
       } else {
-        toast.error(res.message || 'Gagal memperbarui profil masjid');
+        toast.error(res.message || 'Gagal memperbarui profil UPZ Desa');
       }
     },
     onError: () => {
-      toast.error('Gagal memperbarui profil masjid. Silakan coba lagi.');
+      toast.error('Gagal memperbarui profil UPZ Desa. Silakan coba lagi.');
     },
   });
 }
@@ -36,8 +36,8 @@ export function useAddBank() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { id_masjid: string; nama_bank: string; norek: string; atas_nama: string }) =>
-      profilMasjidApi.addBank(data),
+    mutationFn: (data: { id_upz_desa: string; nama_bank: string; norek: string; atas_nama: string }) =>
+      profilUpzDesaApi.addBank(data),
     onSuccess: (res) => {
       if (res.status) {
         toast.success('Rekening bank berhasil ditambahkan');
@@ -56,7 +56,7 @@ export function useDeleteBank() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => profilMasjidApi.deleteBank(id),
+    mutationFn: (id: number) => profilUpzDesaApi.deleteBank(id),
     onSuccess: (res) => {
       if (res.status) {
         toast.success('Rekening bank berhasil dihapus');
@@ -75,8 +75,8 @@ export function useAddMedsos() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { id_masjid: string; name_medsos: string; url_medsos: string }) =>
-      profilMasjidApi.addMedsos(data),
+    mutationFn: (data: { id_upz_desa: string; name_medsos: string; url_medsos: string }) =>
+      profilUpzDesaApi.addMedsos(data),
     onSuccess: (res) => {
       if (res.status) {
         toast.success('Media sosial berhasil ditambahkan');
@@ -95,7 +95,7 @@ export function useDeleteMedsos() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => profilMasjidApi.deleteMedsos(id),
+    mutationFn: (id: number) => profilUpzDesaApi.deleteMedsos(id),
     onSuccess: (res) => {
       if (res.status) {
         toast.success('Media sosial berhasil dihapus');

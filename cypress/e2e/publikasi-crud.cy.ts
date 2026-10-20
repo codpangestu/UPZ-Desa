@@ -4,7 +4,7 @@
 // E2E test — CRUD Dashboard Menu Publikasi (Fix #49, real backend)
 // Prasyarat:
 //   1. Vite dev server + 5 backend service + DB lokal
-//   2. Akun uji Admin Masjid pangestuakbar939@gmail.com (menara23)
+//   2. Akun uji Admin UPZ Desa pangestuakbar939@gmail.com (upzdesa23)
 //   3. Tabel `publikasi` (migration 006) — test membuat & menghapus
 //      datanya sendiri (prefiks "E2E Test"), TIDAK menyentuh data lain.
 // =====================================================================
@@ -14,7 +14,7 @@ let judulDibuat = '';
 
 describe('Dashboard Menu Publikasi — CRUD (Fix #49)', () => {
   beforeEach(() => {
-    cy.loginAdminMasjid();
+    cy.loginAdminUpzDesa();
     cy.visit('/menu-publikasi');
     cy.url().should('include', '/menu-publikasi');
   });

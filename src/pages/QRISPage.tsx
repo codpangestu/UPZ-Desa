@@ -32,12 +32,12 @@ export default function QRISPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-            <QrCode size={20} className="text-[#28A71A]" />
+          <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+            <QrCode size={20} className="text-[#EFB100]" />
           </div>
           <div>
             <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>QRIS Donasi</h1>
-            <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kelola QR Code untuk donasi masjid</p>
+            <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Kelola QR Code untuk donasi UPZ desa</p>
           </div>
         </div>
         <button onClick={() => setShowForm(true)} className="btn-primary-green gap-2 rounded-xl"><Plus size={16} />Tambah QR</button>
@@ -77,9 +77,9 @@ export default function QRISPage() {
             <h3 className="text-lg font-semibold text-[#303030] mb-4" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Tambah QR Code</h3>
             <div className="space-y-3 mb-4">
               <input value={newQR.nama} onChange={(e) => setNewQR({ ...newQR, nama: e.target.value })} placeholder="Nama QR (contoh: QRIS Donasi)"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
               <input value={newQR.value} onChange={(e) => setNewQR({ ...newQR, value: e.target.value })} placeholder="URL / link tujuan"
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
             </div>
             <div className="flex gap-3 justify-end">
               <button onClick={() => setShowForm(false)} className="px-4 py-2 border border-[rgba(0,0,0,0.15)] rounded-xl text-sm text-[#303030] hover:bg-[#F0F4F8]">Batal</button>

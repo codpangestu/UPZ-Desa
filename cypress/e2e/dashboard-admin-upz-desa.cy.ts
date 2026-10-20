@@ -1,29 +1,29 @@
 /// <reference types="cypress" />
 
 // =====================================================================
-// E2E test — Dashboard Admin Masjid (real backend, TANPA mock)
+// E2E test — Dashboard Admin UPZ Desa (real backend, TANPA mock)
 // Prasyarat:
 //   1. Vite dev server → http://localhost:3000
 //   2. 5 backend service (8001–8005) + DB lokal
-//   3. Akun uji pangestuakbar939@gmail.com (masjid "Al-istiqomah",
+//   3. Akun uji pangestuakbar939@gmail.com (UPZ Desa "Al-istiqomah",
 //      id MSJ-8E8AEA) — rekap all-zero & Buku Kas ada data Zakat Mal
 //      (verifikasi API terakhir lihat CONTEXT.md Fix History #46)
 // =====================================================================
 
-describe('Dashboard Admin Masjid (setelah login)', () => {
+describe('Dashboard Admin UPZ Desa (setelah login)', () => {
   beforeEach(() => {
     // Custom command (cypress/support/commands.ts): login via UI → berakhir di /dashboard
-    cy.loginAdminMasjid();
+    cy.loginAdminUpzDesa();
   });
 
-  it('Menampilkan selamat datang, nama masjid, dan kartu statistik', () => {
+  it('Menampilkan selamat datang, nama UPZ Desa, dan kartu statistik', () => {
     // Welcome card + nama user
     cy.contains('h1', 'Selamat Datang').should('be.visible');
 
-    // Nama masjid dari GET /masjid/detail (bukan state kosong)
+    // Nama UPZ Desa dari GET /upz-desa/detail (bukan state kosong)
     cy.contains('p', 'Al-istiqomah').should('be.visible');
 
-    // 3 kartu statistik render dengan nilai dari GET /rekap/by-masjid
+    // 3 kartu statistik render dengan nilai dari GET /rekap/by-upz-desa
     // (data uji: seluruhnya 0 — nilai Rp 0 valid, yang dites adalah struktur)
     // CATATAN: label "Total Penerimaan" dkk juga ada di kartu ringkasan GRAFIK
     // (GrafikKasBulanan, nilai pakai p.text-lg) — kartu statistik dashboard
@@ -65,13 +65,13 @@ describe('Dashboard Admin Masjid (setelah login)', () => {
     cy.contains('td', 'Zakat', { timeout: 15000 }).should('be.visible');
   });
 
-  it('Profil Masjid: form terisi dari data masjid (nama & alamat)', () => {
-    cy.visit('/data-masjid/profil');
+  it('Profil UPZ Desa: form terisi dari data UPZ Desa (nama & alamat)', () => {
+    cy.visit('/data-upz-desa/profil');
 
     // Tidak menampilkan pesan gagal muat
-    cy.contains('Gagal memuat profil masjid').should('not.exist');
+    cy.contains('Gagal memuat profil UPZ Desa').should('not.exist');
 
-    // Input pertama = Nama Masjid, terisi dari API detail masjid
+    // Input pertama = Nama UPZ Desa, terisi dari API detail UPZ Desa
     cy.get('input[type="text"]').first().should('have.value', 'Al-istiqomah');
 
     // Textarea alamat terisi (tidak kosong)

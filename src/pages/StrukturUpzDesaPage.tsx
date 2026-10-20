@@ -1,26 +1,26 @@
 import { Users } from 'lucide-react';
 
 const strukturData = [
-  { level: 1, nama: 'Ketua DKM', jabatan: 'Dr. H. Ahmad Syarif', color: '#28A71A' },
+  { level: 1, nama: 'Ketua UPZ Desa', jabatan: 'Dr. H. Ahmad Syarif', color: '#EFB100' },
   { level: 2, nama: 'Sekretaris', jabatan: 'H. M. Yusuf', color: '#2B7FFF' },
   { level: 2, nama: 'Bendahara', jabatan: 'H. Abdurrahman', color: '#2B7FFF' },
-  { level: 3, nama: 'Seksi Dakwah', jabatan: 'Ust. Faisal Rahman', color: '#7C3AED' },
-  { level: 3, nama: 'Seksi Pendidikan', jabatan: 'Dr. Hj. Siti Nurhayati', color: '#7C3AED' },
-  { level: 3, nama: 'Seksi Sosial', jabatan: 'H. Bambang Suprapto', color: '#7C3AED' },
-  { level: 3, nama: 'Seksi Pembangunan', jabatan: 'Ir. H. Dedi Kusnadi', color: '#7C3AED' },
-  { level: 3, nama: 'Seksi Humas', jabatan: 'Drs. H. Taufik Hidayat', color: '#7C3AED' },
+  { level: 3, nama: 'Seksi Pendistribusian', jabatan: 'Ust. Faisal Rahman', color: '#7C3AED' },
+  { level: 3, nama: 'Seksi Pengumpulan', jabatan: 'Dr. Hj. Siti Nurhayati', color: '#7C3AED' },
+  { level: 3, nama: 'Seksi Sosialisasi', jabatan: 'H. Bambang Suprapto', color: '#7C3AED' },
+  { level: 3, nama: 'Seksi Pendataan', jabatan: 'Ir. H. Dedi Kusnadi', color: '#7C3AED' },
+  { level: 3, nama: 'Seksi Pelaporan', jabatan: 'Drs. H. Taufik Hidayat', color: '#7C3AED' },
 ];
 
-export default function StrukturMasjidPage() {
+export default function StrukturUpzDesaPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Users size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Users size={20} className="text-[#EFB100]" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Struktur Masjid</h1>
-          <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Struktur organisasi kepengurusan masjid</p>
+          <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Struktur UPZ Desa</h1>
+          <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Struktur organisasi kepengurusan UPZ desa</p>
         </div>
       </div>
 
@@ -28,7 +28,7 @@ export default function StrukturMasjidPage() {
         {/* Level 1 - Ketua */}
         <div className="flex justify-center mb-8">
           <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-[#28A71A] flex items-center justify-center text-white text-lg font-semibold mx-auto mb-2">
+            <div className="w-16 h-16 rounded-full bg-[#EFB100] flex items-center justify-center text-white text-lg font-semibold mx-auto mb-2">
               {strukturData[0].jabatan.charAt(0)}
             </div>
             <p className="text-sm font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{strukturData[0].nama}</p>

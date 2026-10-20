@@ -70,7 +70,7 @@ export default function SejarahProfilPage() {
     {
       key: 'status_aktif', label: 'Status',
       render: (d) => (
-        <span className={`badge-xs ${d.status_aktif ? 'bg-[#E6F9F0] text-[#006844]' : 'bg-[#F0F4F8] text-[#555]'}`}>
+        <span className={`badge-xs ${d.status_aktif ? 'bg-[#FDF3C0] text-[#7D5A00]' : 'bg-[#F0F4F8] text-[#555]'}`}>
           {d.status_aktif ? 'Aktif' : 'Tidak Aktif'}
         </span>
       ),
@@ -90,7 +90,7 @@ export default function SejarahProfilPage() {
     <div className="space-y-6">
       <Link
         to="/microfinance"
-        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#28A71A] transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#EFB100] transition-colors"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <ArrowLeft size={16} />
@@ -98,12 +98,12 @@ export default function SejarahProfilPage() {
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <FileText size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <FileText size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Sejarah dan Profil Microfinance</h1>
-          <p className="text-sm text-[#555]">Pengesahan program BMM untuk masjid ini</p>
+          <p className="text-sm text-[#555]">Pengesahan program BMD untuk UPZ desa ini</p>
         </div>
       </div>
 
@@ -127,7 +127,7 @@ export default function SejarahProfilPage() {
                 <select
                   value={formData.id_bmfi_kategori_pengesahan_microfinance || ''}
                   onChange={(e) => setFormData({ ...formData, id_bmfi_kategori_pengesahan_microfinance: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]"
                 >
                   <option value="">Pilih</option>
                   {kategoriOptions.map((k: any) => (
@@ -141,32 +141,32 @@ export default function SejarahProfilPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Judul</label>
                   <input value={formData.judul || ''} onChange={(e) => setFormData({ ...formData, judul: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Tahun Pengesahan</label>
                   <input value={formData.tahun_pengesahan || ''} onChange={(e) => setFormData({ ...formData, tahun_pengesahan: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Jumlah Peserta Awal</label>
                   <input type="number" value={formData.jumlah_peserta_awal_pengesahan || ''} onChange={(e) => setFormData({ ...formData, jumlah_peserta_awal_pengesahan: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Tanggal</label>
                   <input type="date" value={formData.tgl_bmfi_sejarah_dan_profil_microfinance || ''} onChange={(e) => setFormData({ ...formData, tgl_bmfi_sejarah_dan_profil_microfinance: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Nominal Saldo Awal</label>
                   <input type="number" value={formData.nominal_saldo_awal_pengesahan || ''} onChange={(e) => setFormData({ ...formData, nominal_saldo_awal_pengesahan: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#303030] mb-1.5">Nomor Kerangka Acuan Kerja</label>
                   <input value={formData.nomor_kerangka_acuan_kerja || ''} onChange={(e) => setFormData({ ...formData, nomor_kerangka_acuan_kerja: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]" />
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]" />
                 </div>
               </div>
               <div>
@@ -174,7 +174,7 @@ export default function SejarahProfilPage() {
                 <select
                   value={formData.status_aktif ?? 1}
                   onChange={(e) => setFormData({ ...formData, status_aktif: Number(e.target.value) })}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A]"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100]"
                 >
                   <option value={1}>Aktif</option>
                   <option value={0}>Tidak Aktif</option>
@@ -183,7 +183,7 @@ export default function SejarahProfilPage() {
               <div>
                 <label className="block text-sm font-medium text-[#303030] mb-1.5">Keterangan</label>
                 <textarea value={formData.keterangan || ''} onChange={(e) => setFormData({ ...formData, keterangan: e.target.value })} rows={3}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] resize-none" />
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] resize-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6 justify-end">

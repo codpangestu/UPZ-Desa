@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Wallet, Building2, Megaphone, BookOpen, Users, Calendar, Settings, TrendingUp, TrendingDown, MapPin, Loader2 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
-import { masjidService } from '../../services/masjidService';
+import { upzDesaService } from '../../services/upzDesaService';
 import GrafikKasBulanan from '../../components/shared/GrafikKasBulanan';
 
 const quickLinks = [
@@ -10,17 +10,17 @@ const quickLinks = [
     label: 'Buku Kas',
     icon: Wallet,
     path: '/buku-kas/penerimaan',
-    color: '#28A71A',
-    bgColor: '#EAF6E8',
+    color: '#EFB100',
+    bgColor: '#FEF9E7',
     description: 'Kelola penerimaan & pengeluaran',
   },
   {
-    label: 'Data Masjid',
+    label: 'Data UPZ Desa',
     icon: Building2,
-    path: '/data-masjid/profil',
+    path: '/data-upz-desa/profil',
     color: '#2B7FFF',
     bgColor: '#EAF2FF',
-    description: 'Profil & detail masjid',
+    description: 'Profil & detail UPZ Desa',
   },
   {
     label: 'Menu Publikasi',
@@ -33,18 +33,18 @@ const quickLinks = [
   {
     label: 'Data Pengurus',
     icon: Users,
-    path: '/info-masjid/data-pengurus',
+    path: '/info-upz-desa/data-pengurus',
     color: '#D97706',
     bgColor: '#FFFBEB',
-    description: 'Kelola pengurus masjid',
+    description: 'Kelola pengurus UPZ Desa',
   },
   {
     label: 'Kegiatan',
     icon: Calendar,
-    path: '/kegiatan-masjid',
+    path: '/kegiatan-upz-desa',
     color: '#E11D48',
     bgColor: '#FFF1F2',
-    description: 'Data kegiatan masjid',
+    description: 'Data kegiatan UPZ Desa',
   },
   {
     label: 'Buku Aset',
@@ -52,7 +52,7 @@ const quickLinks = [
     path: '/buku-aset',
     color: '#0891B2',
     bgColor: '#ECFEFF',
-    description: 'Pencatatan aset masjid',
+    description: 'Pencatatan aset UPZ Desa',
   },
   {
     label: 'Setting Akun',
@@ -69,34 +69,34 @@ function formatCurrency(val: number | undefined | null): string {
   return `Rp ${Number(val).toLocaleString('id-ID')}`;
 }
 
-export default function DashboardAdminMasjid() {
+export default function DashboardAdminUpzDesa() {
   const { user } = useAuthStore();
-  // id masjid user: login admin-masjid mengisi id_jalur_akses = id_masjid (kode org)
-  const idMasjid = user?.id_jalur_akses || user?.id_masjid;
+  // id upz_desa user: login admin-upz-desa mengisi id_jalur_akses = id_upz_desa (kode org)
+  const idUpzDesa = user?.id_jalur_akses || user?.id_upz_desa;
 
-  const { data: masjidData, isLoading: masjidLoading } = useQuery({
-    queryKey: ['dashboard-masjid-detail', idMasjid],
+  const { data: upzDesaData, isLoading: upzDesaLoading } = useQuery({
+    queryKey: ['dashboard-upz-desa-detail', idUpzDesa],
     queryFn: async () => {
-      if (!idMasjid) return null;
-      const res = await masjidService.getMasjidDetail(idMasjid);
+      if (!idUpzDesa) return null;
+      const res = await upzDesaService.getUpzDesaDetail(idUpzDesa);
       return res?.data ?? null;
     },
-    enabled: !!idMasjid,
+    enabled: !!idUpzDesa,
   });
 
   const { data: rekapData } = useQuery({
-    queryKey: ['dashboard-masjid-rekap', idMasjid],
+    queryKey: ['dashboard-upz-desa-rekap', idUpzDesa],
     queryFn: async () => {
-      if (!idMasjid) return null;
-      const res = await masjidService.getRekapByMasjid(idMasjid);
+      if (!idUpzDesa) return null;
+      const res = await upzDesaService.getRekapByUpzDesa(idUpzDesa);
       return res?.data ?? null;
     },
-    enabled: !!idMasjid,
+    enabled: !!idUpzDesa,
   });
 
-  const masjid = masjidData as (typeof masjidData & { nama_masjid?: string; alamat_masjid?: string }) | null;
-  const namaMasjid = masjid?.nama_masjid || user?.nama_masjid || '';
-  const alamatMasjid = masjid?.alamat_masjid || '';
+  const upzDesa = upzDesaData as (typeof upzDesaData & { nama_upz_desa?: string; alamat_upz_desa?: string }) | null;
+  const namaUpzDesa = upzDesa?.nama_upz_desa || user?.nama_upz_desa || '';
+  const alamatUpzDesa = upzDesa?.alamat_upz_desa || '';
   const totalPenerimaan = rekapData?.total_penerimaan;
   const totalPengeluaran = rekapData?.total_pengeluaran;
   const saldo =
@@ -107,41 +107,41 @@ export default function DashboardAdminMasjid() {
   return (
     <div className="space-y-6">
       {/* Welcome Card */}
-      <div className="bg-gradient-to-r from-[#1C7712] to-[#28A71A] rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-[#C99400] to-[#EFB100] rounded-2xl p-6 text-white">
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-xl font-semibold mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Selamat Datang, {user?.nama || 'Admin'}!
             </h1>
             <p className="text-sm text-white/80" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Anda login sebagai <span className="font-medium text-white">Admin Masjid</span>
+              Anda login sebagai <span className="font-medium text-white">Admin UPZ Desa</span>
             </p>
           </div>
-          {masjidLoading ? (
+          {upzDesaLoading ? (
             <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 text-right flex items-center gap-2">
               <Loader2 size={14} className="animate-spin" />
               <span className="text-sm">Memuat...</span>
             </div>
-          ) : namaMasjid ? (
+          ) : namaUpzDesa ? (
             <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 text-right">
-              <p className="text-xs text-white/70">Masjid</p>
-              <p className="text-sm font-medium">{namaMasjid}</p>
+              <p className="text-xs text-white/70">UPZ Desa</p>
+              <p className="text-sm font-medium">{namaUpzDesa}</p>
             </div>
           ) : (
             <Link
-              to="/data-masjid/profil"
+              to="/data-upz-desa/profil"
               className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 text-right transition-colors"
             >
-              <p className="text-xs text-white/70">Masjid</p>
+              <p className="text-xs text-white/70">UPZ Desa</p>
               <p className="text-sm font-medium">Lengkapi profil →</p>
             </Link>
           )}
         </div>
-        {/* Alamat masjid dari API */}
-        {alamatMasjid && (
+        {/* Alamat UPZ Desa dari API */}
+        {alamatUpzDesa && (
           <div className="mt-3 flex items-center gap-1.5 text-xs text-white/80" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             <MapPin size={13} />
-            <span className="line-clamp-1">{alamatMasjid}</span>
+            <span className="line-clamp-1">{alamatUpzDesa}</span>
           </div>
         )}
       </div>
@@ -152,7 +152,7 @@ export default function DashboardAdminMasjid() {
           <Link
             key={link.path}
             to={link.path}
-            className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)] hover:shadow-md hover:border-[#28A71A]/30 transition-all duration-200 group"
+            className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)] hover:shadow-md hover:border-[#EFB100]/30 transition-all duration-200 group"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <div className="flex items-start gap-4">
@@ -172,19 +172,19 @@ export default function DashboardAdminMasjid() {
       </div>
 
       {/* Grafik Penerimaan vs Pengeluaran per Bulan (FR-2.5–2.7) */}
-      <GrafikKasBulanan idMasjid={idMasjid} />
+      <GrafikKasBulanan idUpzDesa={idUpzDesa} />
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)]">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Total Penerimaan</p>
-            <TrendingUp size={16} className="text-[#28A71A]" />
+            <TrendingUp size={16} className="text-[#EFB100]" />
           </div>
           <p className="text-2xl font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {formatCurrency(totalPenerimaan)}
           </p>
-          <span className="badge-xs mt-2 inline-flex bg-[#E6F9F0] text-[#006844]">Seluruh waktu</span>
+          <span className="badge-xs mt-2 inline-flex bg-[#FDF3C0] text-[#7D5A00]">Seluruh waktu</span>
         </div>
         <div className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)]">
           <div className="flex items-center justify-between mb-2">
@@ -199,12 +199,12 @@ export default function DashboardAdminMasjid() {
         <div className="bg-white rounded-xl p-5 border border-[rgba(0,0,0,0.1)]">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Saldo Akhir</p>
-            <Wallet size={16} className="text-[#28A71A]" />
+            <Wallet size={16} className="text-[#EFB100]" />
           </div>
           <p className="text-2xl font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {formatCurrency(saldo)}
           </p>
-          <span className="badge-xs mt-2 inline-flex bg-[#EAF6E8] text-[#1C7712]">Tersedia</span>
+          <span className="badge-xs mt-2 inline-flex bg-[#FEF9E7] text-[#C99400]">Tersedia</span>
         </div>
       </div>
     </div>

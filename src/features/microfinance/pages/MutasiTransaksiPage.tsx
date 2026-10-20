@@ -30,7 +30,7 @@ export default function MutasiTransaksiPage() {
     <div className="space-y-6">
       <Link
         to="/microfinance"
-        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#28A71A] transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-[#555] hover:text-[#EFB100] transition-colors"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <ArrowLeft size={16} />
@@ -38,12 +38,12 @@ export default function MutasiTransaksiPage() {
       </Link>
 
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Receipt size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Receipt size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h1 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Mutasi Transaksi Microfinance</h1>
-          <p className="text-sm text-[#555]">Ringkasan saldo & riwayat ledger BMM masjid ini</p>
+          <p className="text-sm text-[#555]">Ringkasan saldo & riwayat ledger BMD UPZ desa ini</p>
         </div>
       </div>
 

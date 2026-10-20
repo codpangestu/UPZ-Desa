@@ -4,8 +4,8 @@ import { Heart, Gift } from 'lucide-react';
 const donationPrograms = [
   {
     id: 1,
-    title: 'Pembangunan Masjid',
-    description: 'Bantu pembangunan dan renovasi masjid di daerah yang membutuhkan.',
+    title: 'Pemberdayaan UPZ Desa',
+    description: 'Bantu pengembangan dan operasional UPZ desa di daerah yang membutuhkan.',
     target: 'Rp 500.000.000',
     collected: 'Rp 325.000.000',
     percentage: 65,
@@ -23,7 +23,7 @@ const donationPrograms = [
   {
     id: 3,
     title: 'Bantuan Air Bersih',
-    description: 'Salurkan air bersih untuk masjid di daerah kekeringan.',
+    description: 'Salurkan air bersih untuk masyarakat di daerah kekeringan.',
     target: 'Rp 150.000.000',
     collected: 'Rp 97.500.000',
     percentage: 65,
@@ -31,8 +31,8 @@ const donationPrograms = [
   },
   {
     id: 4,
-    title: 'Paket Sembako Marbot',
-    description: 'Bantu kebutuhan sehari-hari para marbot masjid.',
+    title: 'Paket Sembako Pengurus',
+    description: 'Bantu kebutuhan sehari-hari para pengurus UPZ desa.',
     target: 'Rp 100.000.000',
     collected: 'Rp 75.000.000',
     percentage: 75,
@@ -50,7 +50,7 @@ const donationPrograms = [
   {
     id: 6,
     title: 'Kurban Berkualitas',
-    description: 'Salurkan hewan kurban ke masjid-masjid di pelosok negeri.',
+    description: 'Salurkan hewan kurban melalui UPZ desa di pelosok negeri.',
     target: 'Rp 350.000.000',
     collected: 'Rp 245.000.000',
     percentage: 70,
@@ -98,7 +98,7 @@ export default function DonasiPage() {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-4xl">{program.image}</span>
-                    <span className="badge-xs bg-[#E6F9F0] text-[#006844] text-xs">
+                    <span className="badge-xs bg-[#FDF3C0] text-[#7D5A00] text-xs">
                       {program.percentage}%
                     </span>
                   </div>
@@ -113,7 +113,7 @@ export default function DonasiPage() {
                     </div>
                     <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#28A71A] to-[#6FC466] rounded-full transition-all duration-500"
+                        className="h-full bg-gradient-to-r from-[#EFB100] to-[#F5CC4D] rounded-full transition-all duration-500"
                         style={{ width: `${program.percentage}%` }}
                       />
                     </div>
@@ -158,8 +158,8 @@ export default function DonasiPage() {
                   }}
                   className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all border-2 font-sans ${
                     selectedNominal === nominal
-                      ? 'border-[#28A71A] bg-[#EAF6E8] text-[#28A71A]'
-                      : 'border-gray-200 text-[#555] hover:border-[#28A71A]/50 hover:text-[#28A71A]'
+                      ? 'border-[#EFB100] bg-[#FEF9E7] text-[#EFB100]'
+                      : 'border-gray-200 text-[#555] hover:border-[#EFB100]/50 hover:text-[#EFB100]'
                   }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
@@ -183,7 +183,7 @@ export default function DonasiPage() {
                     setCustomNominal(e.target.value.replace(/[^0-9]/g, ''));
                     setSelectedNominal(null);
                   }}
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-[#28A71A] focus:outline-none text-lg font-semibold text-[#303030]"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-200 focus:border-[#EFB100] focus:outline-none text-lg font-semibold text-[#303030]"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 />
               </div>

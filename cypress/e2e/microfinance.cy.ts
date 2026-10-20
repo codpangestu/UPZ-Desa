@@ -5,15 +5,15 @@
 // Prasyarat:
 //   1. Vite dev server → http://localhost:3000
 //   2. 5 backend service (8001–8005) + DB lokal
-//   3. Akun uji BMM dkmalhidayah0107@gmail.com (masjid "Jami Al-Hidayah
-//      Kubang Sepat", M367230004042023872) — satu-satunya masjid dengan
+//   3. Akun uji BMM dkmalhidayah0107@gmail.com (UPZ Desa "Jami Al-Hidayah
+//      Kubang Sepat", M367230004042023872) — satu-satunya UPZ Desa dengan
 //      seed data microfinance (50 peserta, saldo, skema). Verifikasi data:
-//      CONTEXT.md Fix History #47. Password: menara23
+//      CONTEXT.md Fix History #47. Password: upzdesa23
 // =====================================================================
 
-const AKUN_BMM = { email: 'dkmalhidayah0107@gmail.com', password: 'menara23' };
+const AKUN_BMM = { email: 'dkmalhidayah0107@gmail.com', password: 'upzdesa23' };
 
-describe('Microfinance / BMM (login Admin Masjid BMM)', () => {
+describe('Microfinance / BMM (login Admin UPZ Desa BMM)', () => {
   beforeEach(() => {
     cy.loginViaUi(AKUN_BMM.email, AKUN_BMM.password);
     cy.url({ timeout: 15000 }).should('include', '/dashboard');

@@ -1,7 +1,7 @@
 import { adminApi, contentApi } from '../../services/api';
 import type { PublikasiItem } from './types';
 
-const API_KEY = 'menara23apikey';
+const API_KEY = 'upzdesa23apikey';
 const API_KEY_HEADER = { 'x-api-key': API_KEY };
 
 function endpoints(jenis: string) {

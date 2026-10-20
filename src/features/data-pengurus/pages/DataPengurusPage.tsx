@@ -110,7 +110,7 @@ export default function DataPengurusPage() {
       label: 'Nama',
       render: (item) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#EAF6E8] flex items-center justify-center text-[#28A71A] text-sm font-semibold flex-shrink-0">
+          <div className="w-9 h-9 rounded-full bg-[#FEF9E7] flex items-center justify-center text-[#EFB100] text-sm font-semibold flex-shrink-0">
             {item.nama?.charAt(0)?.toUpperCase() || '?'}
           </div>
           <div>
@@ -129,7 +129,7 @@ export default function DataPengurusPage() {
       label: 'Jabatan',
       render: (item) => (
         <span className="inline-flex items-center gap-1.5 text-sm text-[#303030] bg-[#F0F4F8] px-2.5 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          <Shield size={12} className="text-[#28A71A]" />
+          <Shield size={12} className="text-[#EFB100]" />
           {item.jabatan || '-'}
         </span>
       ),
@@ -175,7 +175,7 @@ export default function DataPengurusPage() {
         <div className="flex items-center justify-end gap-2">
           <button
             onClick={() => handleEdit(item)}
-            className="p-1.5 rounded-lg text-text-gray hover:bg-[#F0F4F8] hover:text-[#28A71A] transition-colors"
+            className="p-1.5 rounded-lg text-text-gray hover:bg-[#F0F4F8] hover:text-[#EFB100] transition-colors"
             title="Edit"
           >
             <Pencil size={15} />
@@ -196,8 +196,8 @@ export default function DataPengurusPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <Users size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <Users size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h2 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>

@@ -1,11 +1,11 @@
-import { adminApi, masjidApi, authApi } from './api';
+import { adminApi, upzDesaApi, authApi } from './api';
 import type {
   ApiResponse,
-  PengajuanMasjid,
+  PengajuanUpzDesa,
   PengajuanFormData,
   PaginatedResponse,
   UserListItem,
-  MasjidOption,
+  UpzDesaOption,
   UpdateUserResponse,
   StatusPengajuan,
 } from '../types';
@@ -39,19 +39,22 @@ export const adminService = {
     return response.data;
   },
 
-  // Daftar masjid untuk dropdown promosi admin masjid (Masjid Service 8002)
-  getMasjidOptions: async () => {
-    const response = await masjidApi.get<ApiResponse<MasjidOption[]>>('/api/v1/masjid/list', {
+  // Daftar UPZ Desa untuk dropdown promosi admin UPZ Desa (UPZ Desa Service 8002)
+  // Catatan: path backend masih /api/v1/masjid/... (belum di-rename di backend).
+  getUpzDesaOptions: async () => {
+    const response = await upzDesaApi.get<ApiResponse<UpzDesaOption[]>>('/api/v1/masjid/list', {
       params: { page: 1, per_page: 100 },
     });
     return response.data;
   },
 
-  // Pengajuan Masjid (langkah 1) — status default 'pending' agar konsisten dengan key
-  // frontend. Backend menerbitkan kode masjid + slug LANGSUNG saat pengajuan dibuat
+  // Pengajuan UPZ Desa (langkah 1) — status default 'pending' agar konsisten dengan key
+  // frontend. Backend menerbitkan kode UPZ Desa + slug LANGSUNG saat pengajuan dibuat
   // (dikembalikan di `data`), dipakai pemohon untuk lanjut ke langkah 2 (daftar admin).
+  // Payload ditulis dengan nama app-facing (`nama_upz_desa`, dst.) — adapter di
+  // services/api.ts yang menerjemahkannya ke nama kolom backend (`nama_masjid`).
   submitPengajuan: async (data: PengajuanFormData) => {
-    const response = await adminApi.post<ApiResponse<PengajuanMasjid & { kode_org_baznas?: string; slug_masjid?: string }>>(
+    const response = await adminApi.post<ApiResponse<{ id: number; kode_org_baznas?: string; slug_upz_desa?: string }>>(
       '/api/v1/admin/pengajuan/create',
       { ...data, status_pengajuan: 'pending' }
     );
@@ -61,7 +64,7 @@ export const adminService = {
   /**
    * Langkah 2 — simpan data admin pemohon ke pengajuan yang sama
    * (tanpa mengubah status). Backend menyimpan nama/email/jk/nohp/alamat pemohon
-   * di pengajuan; saat Admin BAZNAS menyetujui, masjid + akun admin dibuat sekaligus.
+   * di pengajuan; saat Admin BAZNAS menyetujui, UPZ Desa + akun admin dibuat sekaligus.
    */
   updatePengajuanAdmin: async (
     id: number,
@@ -92,7 +95,7 @@ export const adminService = {
   },
 
   getPengajuanList: async (page = 1, perPage = 10) => {
-    const response = await adminApi.get<PaginatedResponse<PengajuanMasjid>>(
+    const response = await adminApi.get<PaginatedResponse<PengajuanUpzDesa>>(
       '/api/v1/admin/pengajuan/list',
       { params: { page, per_page: perPage } }
     );
@@ -100,12 +103,12 @@ export const adminService = {
   },
 
   /**
-   * Update status pengajuan. Saat disetujui, backend menerbitkan kode masjid
+   * Update status pengajuan. Saat disetujui, backend menerbitkan kode UPZ Desa
    * (kode_org_baznas) yang dikembalikan di `data` — dipakai untuk memberi tahu
-   * pemohon agar bisa mendaftar sebagai Admin Masjid.
+   * pemohon agar bisa mendaftar sebagai Admin UPZ Desa.
    */
   updatePengajuan: async (id: number, data: { status_pengajuan: string; keterangan?: string }) => {
-    const response = await adminApi.put<ApiResponse<PengajuanMasjid & { kode_org_baznas?: string }>>(
+    const response = await adminApi.put<ApiResponse<PengajuanUpzDesa & { kode_org_baznas?: string }>>(
       `/api/v1/admin/pengajuan/update/${id}`,
       data
     );
@@ -119,28 +122,28 @@ export const adminService = {
     return response.data;
   },
 
-  // Wilayah — using masjidApi (Masjid Service port 8002) per PRD section 11.2
+  // Wilayah — using upzDesaApi (UPZ Desa Service port 8002) per PRD section 11.2
   getProvinsi: async () => {
-    const response = await masjidApi.get<ApiResponse<any[]>>('/api/v1/provinsi');
+    const response = await upzDesaApi.get<ApiResponse<any[]>>('/api/v1/provinsi');
     return response.data;
   },
 
   getKabupatenKota: async (idProvinsi: number) => {
-    const response = await masjidApi.get<ApiResponse<any[]>>('/api/v1/kabupaten-kota', {
+    const response = await upzDesaApi.get<ApiResponse<any[]>>('/api/v1/kabupaten-kota', {
       params: { id_provinsi: idProvinsi },
     });
     return response.data;
   },
 
   getKecamatan: async (idKabupatenKota: number) => {
-    const response = await masjidApi.get<ApiResponse<any[]>>('/api/v1/kecamatan', {
+    const response = await upzDesaApi.get<ApiResponse<any[]>>('/api/v1/kecamatan', {
       params: { id_kabupaten_kota: idKabupatenKota },
     });
     return response.data;
   },
 
   getKelurahanDesa: async (idKecamatan: number) => {
-    const response = await masjidApi.get<ApiResponse<any[]>>('/api/v1/kelurahan-desa', {
+    const response = await upzDesaApi.get<ApiResponse<any[]>>('/api/v1/kelurahan-desa', {
       params: { id_kecamatan: idKecamatan },
     });
     return response.data;

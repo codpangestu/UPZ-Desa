@@ -13,10 +13,10 @@ interface KuitansiData {
   nama_jenis_dana?: string;
   nama_jenis_harta?: string;
   nama_label_info_dana?: string;
-  /** Nama masjid (from auth store) */
-  namaMasjid?: string;
-  /** Kode masjid */
-  kodeMasjid?: string;
+  /** Nama UPZ Desa (from auth store) */
+  namaUpzDesa?: string;
+  /** Kode UPZ Desa */
+  kodeUpzDesa?: string;
   id?: number;
 }
 
@@ -39,9 +39,9 @@ export function generateKuitansiPDF(data: KuitansiData) {
   // Header
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text(data.namaMasjid || 'Masjid', 14, 15);
-  if (data.kodeMasjid) {
-    doc.text(`Kode: ${data.kodeMasjid}`, 14, 21);
+  doc.text(data.namaUpzDesa || 'UPZ Desa', 14, 15);
+  if (data.kodeUpzDesa) {
+    doc.text(`Kode: ${data.kodeUpzDesa}`, 14, 21);
   }
 
   doc.setFontSize(14);
@@ -125,7 +125,7 @@ export function generateKuitansiPDF(data: KuitansiData) {
   doc.setFont('helvetica', 'italic');
   doc.setTextColor(150);
   doc.text(
-    'Dokumen ini dicetak secara otomatis oleh Sistem MENARA Masjid BAZNAS',
+    'Dokumen ini dicetak secara otomatis oleh Sistem UPZ Desa BAZNAS',
     pageWidth / 2,
     doc.internal.pageSize.getHeight() - 10,
     { align: 'center' }

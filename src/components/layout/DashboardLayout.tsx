@@ -33,11 +33,10 @@ interface SidebarItem {
 }
 
 const sidebarMenu: SidebarItem[] = [
-  {
-    label: 'Beranda',
+  {      label: 'Beranda',
     icon: LayoutDashboard,
     path: '/dashboard',
-    roles: ['admin-masjid'],
+    roles: ['admin-upz-desa'],
   },
   {
     label: 'Dashboard BAZNAS',
@@ -63,78 +62,68 @@ const sidebarMenu: SidebarItem[] = [
     path: '/dashboard-kua',
     roles: ['admin-kua'],
   },
-  {
-    label: 'Data Masjid',
+  {      label: 'Data UPZ Desa',
     icon: Building2,
-    path: '/data-masjid/profil',
-    roles: ['admin-masjid'],
+    path: '/data-upz-desa/profil',
+    roles: ['admin-upz-desa'],
   },
   {
-    // Admin BAZNAS + anak-anaknya (Daerah/Kab/KUA): halaman daftar masjid
+    // Admin BAZNAS + anak-anaknya (Daerah/Kab/KUA): halaman daftar UPZ Desa
     // (nasional untuk BAZNAS, otomatis ter-scope wilayah untuk 3 role lainnya)
-    label: 'Data Masjid',
+    label: 'Data UPZ Desa',
     icon: Building2,
-    path: '/data-masjid/daftar',
+    path: '/data-upz-desa/daftar',
     roles: ['admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua'],
   },
-  {
-    label: 'Info Masjid',
+  {      label: 'Info UPZ Desa',
     icon: FileText,
-    path: '/info-masjid/data-pengurus',
-    roles: ['admin-masjid'],
+    path: '/info-upz-desa/data-pengurus',
+    roles: ['admin-upz-desa'],
   },
-  {
-    label: 'Menu Publikasi',
+  {      label: 'Menu Publikasi',
     icon: Megaphone,
     path: '/menu-publikasi/postingan',
-    roles: ['admin-masjid'],
+    roles: ['admin-upz-desa'],
   },
-  {
-    label: 'Buku Kas',
+  {      label: 'Buku Kas',
     icon: Wallet,
     path: '/buku-kas/penerimaan',
-    roles: ['admin-masjid'],
+    roles: ['admin-upz-desa'],
   },
-  {
-    label: 'Buku Aset',
+  {      label: 'Buku Aset',
     icon: BookOpen,
     path: '/buku-aset',
-    roles: ['admin-masjid'],
+    roles: ['admin-upz-desa'],
   },
-  {
-    label: 'Data Pengurus',
+  {      label: 'Data Pengurus',
     icon: Users,
-    path: '/info-masjid/data-pengurus',
-    roles: ['admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua'],
+    path: '/info-upz-desa/data-pengurus',
+    roles: ['admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua'],
   },
-  {
-    label: 'Data Anggota',
+  {      label: 'Data Anggota',
     icon: Users,
-    path: '/info-masjid/data-anggota',
-    roles: ['admin-masjid'],
+    path: '/info-upz-desa/data-anggota',
+    roles: ['admin-upz-desa'],
   },
-  {
-    label: 'Kegiatan Masjid',
+  {      label: 'Kegiatan UPZ Desa',
     icon: Calendar,
-    path: '/kegiatan-masjid',
-    roles: ['admin-masjid'],
+    path: '/kegiatan-upz-desa',
+    roles: ['admin-upz-desa'],
   },
-  {
-    label: 'Microfinance',
+  {      label: 'Microfinance',
     icon: HandCoins,
     path: '/microfinance',
-    roles: ['admin-masjid'],
+    roles: ['admin-upz-desa'],
   },
   {
     label: 'Setting Akun',
     icon: Settings,
     path: '/setting-akun',
-    roles: ['admin-masjid', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua'],
+    roles: ['admin-upz-desa', 'admin-baznas', 'admin-daerah', 'admin-kab', 'admin-kua'],
   },
-  {
-    label: 'Pengajuan Masjid',
+  {      label: 'Pengajuan UPZ Desa',
     icon: ClipboardCheck,
-    path: '/pengajuan-masjid',
+    path: '/pengajuan-upz-desa',
     roles: ['admin-baznas'],
   },
   {
@@ -146,7 +135,7 @@ const sidebarMenu: SidebarItem[] = [
 ];
 
 const roleBadgeColors: Record<UserRole, string> = {
-  'admin-masjid': 'bg-[#E6F9F0] text-[#006844]',
+  'admin-upz-desa': 'bg-[#FDF3C0] text-[#7D5A00]',
   'admin-baznas': 'bg-[#F3E8FF] text-[#7C3AED]',
   'admin-daerah': 'bg-[#E0F2FE] text-[#0369A1]',
   'admin-kab': 'bg-[#FEF3C7] text-[#B45309]',
@@ -154,7 +143,7 @@ const roleBadgeColors: Record<UserRole, string> = {
 };
 
 const roleBadgeLabels: Record<UserRole, string> = {
-  'admin-masjid': 'Admin Masjid',
+  'admin-upz-desa': 'Admin UPZ Desa',
   'admin-baznas': 'Admin BAZNAS',
   'admin-daerah': 'Admin Daerah',
   'admin-kab': 'Admin Kab',
@@ -185,14 +174,12 @@ export default function DashboardLayout() {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-[rgba(0,0,0,0.08)]">
-        <div className="w-8 h-8 bg-[#28A71A] rounded-lg flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-            <path d="M4 20V13.5L2 14V8L6.5 5.5L10 8V14L8 13.5V20H4ZM13 20V14L11 13.5V7.5L15.5 5L20 7.5V13.5L18 14V20H13ZM15 13V9L14 8.5V13H15ZM18 13V9L17 8.5V13H18Z" />
-          </svg>
+        <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+          <img src="/assets/icons/logo-upzDesa2.webp" alt="UPZ Desa Logo" className="w-full h-full object-contain" />
         </div>
         {!sidebarCollapsed && (
           <span className="text-sm font-semibold text-[#303030] whitespace-nowrap" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            MENARA Masjid
+            UPZ Desa
           </span>
         )}
       </div>
@@ -201,7 +188,7 @@ export default function DashboardLayout() {
       {!sidebarCollapsed && (
         <div className="px-4 py-3 border-b border-[rgba(0,0,0,0.08)]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#28A71A] flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+            <div className="w-9 h-9 rounded-full bg-[#EFB100] flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
               {user?.nama?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             <div className="min-w-0 flex-1">
@@ -232,7 +219,7 @@ export default function DashboardLayout() {
               onClick={() => setMobileSidebarOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                 isActive
-                  ? 'bg-[#28A71A]/10 text-[#28A71A] font-medium'
+                  ? 'bg-[#EFB100]/10 text-[#EFB100] font-medium'
                   : 'text-[#555] hover:bg-[#F0F4F8] hover:text-[#303030]'
               }`}
               title={sidebarCollapsed ? item.label : undefined}
@@ -320,12 +307,12 @@ export default function DashboardLayout() {
             </div>
 
             <div className="flex items-center gap-3">
-              {user?.nama_masjid && (
+              {user?.nama_upz_desa && (
                 <span className="hidden sm:block text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {user.nama_masjid}
+                  {user.nama_upz_desa}
                 </span>
               )}
-              <div className="w-8 h-8 rounded-full bg-[#28A71A]/10 flex items-center justify-center text-[#28A71A] text-sm font-semibold">
+              <div className="w-8 h-8 rounded-full bg-[#EFB100]/10 flex items-center justify-center text-[#EFB100] text-sm font-semibold">
                 {user?.nama?.charAt(0)?.toUpperCase() || 'U'}
               </div>
             </div>

@@ -43,7 +43,7 @@ const passwordSchema = z
 type PasswordFormValues = z.infer<typeof passwordSchema>;
 
 const inputClass =
-  'w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#28A71A]/20 focus:border-[#28A71A] transition-all';
+  'w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EFB100]/20 focus:border-[#EFB100] transition-all';
 const labelStyle = { fontFamily: "'Plus Jakarta Sans', sans-serif" } as const;
 
 export default function SettingAkunPage() {
@@ -101,8 +101,8 @@ export default function SettingAkunPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#EAF6E8] rounded-xl flex items-center justify-center">
-          <User size={20} className="text-[#28A71A]" />
+        <div className="w-10 h-10 bg-[#FEF9E7] rounded-xl flex items-center justify-center">
+          <User size={20} className="text-[#EFB100]" />
         </div>
         <div>
           <h1 className="text-lg font-semibold text-[#303030]" style={labelStyle}>
@@ -125,7 +125,7 @@ export default function SettingAkunPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === tab.key
-                ? 'bg-white text-[#28A71A] shadow-sm'
+                ? 'bg-white text-[#EFB100] shadow-sm'
                 : 'text-[#555] hover:text-[#303030]'
             }`}
             style={labelStyle}
@@ -142,7 +142,7 @@ export default function SettingAkunPage() {
           {/* Avatar */}
           <div className="flex items-center gap-4 pb-5 border-b border-[rgba(0,0,0,0.06)]">
             <div className="relative">
-              <div className="w-16 h-16 rounded-full bg-[#28A71A] flex items-center justify-center text-white text-xl font-semibold">
+              <div className="w-16 h-16 rounded-full bg-[#EFB100] flex items-center justify-center text-white text-xl font-semibold">
                 {(personalForm.watch('nama') || 'U').charAt(0).toUpperCase()}
               </div>
               <button

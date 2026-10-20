@@ -15,12 +15,13 @@ import type {
 // terpisah dari "Admin BAZNAS". Admin Daerah (11) & Admin Kab (12) TIDAK punya
 // opsi login sendiri — keduanya login lewat opsi "Admin BAZNAS", lalu di-infer
 // ulang dari response (lihat inferRoleFromUser).
-export type LoginableRole = 'admin-masjid' | 'admin-baznas' | 'admin-kua';
+export type LoginableRole = 'admin-upz-desa' | 'admin-baznas' | 'admin-kua';
 
 // Map role to login endpoint (sesuai kontrak Auth Service 8001)
 // Role 'admin-baznas' tetap memanggil endpoint backend /admin-pusat (nama endpoint backend tidak berubah).
 const ROLE_ENDPOINT: Record<LoginableRole, string> = {
-  'admin-masjid': '/api/v1/login/admin-masjid',
+  // Path backend masih /login/admin-masjid (belum di-rename di backend).
+  'admin-upz-desa': '/api/v1/login/admin-masjid',
   'admin-baznas': '/api/v1/login/admin-pusat',
   'admin-kua': '/api/v1/login/admin-kua',
 };
@@ -48,13 +49,13 @@ export const authService = {
   },
 
   /**
-   * Register admin masjid — POST /api/v1/register/user.
-   * Flow baru: WAJIB mengisi kode_org_baznas (kode masjid yang keluar setelah
-   * pengajuan masjid disetujui Admin BAZNAS). Backend memvalidasi kode tsb
-   * terhadap tabel masjid — register ditolak jika masjid belum disetujui.
+   * Register admin UPZ Desa — POST /api/v1/register/user.
+   * Flow baru: WAJIB mengisi kode_org_baznas (kode UPZ Desa yang keluar setelah
+   * pengajuan UPZ Desa disetujui Admin BAZNAS). Backend memvalidasi kode tsb
+   * terhadap tabel UPZ Desa — register ditolak jika UPZ Desa belum disetujui.
    * Butuh header x-api-key (sudah diset di authApi).
    * Catatan: backend tidak menerima password, akun baru berpassword default
-   * 'menara23' yang bisa diubah lewat Setting Akun.
+   * 'upzdesa23' yang bisa diubah lewat Setting Akun.
    */
   register: async (data: RegisterRequest) => {
     const payload: RegisterRequest = {
@@ -65,7 +66,7 @@ export const authService = {
       email: data.email,
       nohp: data.nohp || '',
       kode_org_baznas: data.kode_org_baznas || '',
-      id_labels: data.id_labels ?? 1, // 1 = Admin (Admin Masjid di flow baru)
+      id_labels: data.id_labels ?? 1, // 1 = Admin (Admin UPZ Desa di flow baru)
       catatan: data.catatan || '',
     };
     const response = await authApi.post<RegisterResponse>('/api/v1/register/user', payload);

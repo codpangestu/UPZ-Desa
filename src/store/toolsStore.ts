@@ -33,7 +33,7 @@ export const useTasbihStore = create<TasbihState>()(
       reset: () => set({ counter: 0 }),
       setTarget: (target) => set({ target }),
     }),
-    { name: 'menara-tasbih-storage', partialize: (state) => ({ counter: state.counter, target: state.target, history: state.history }) }
+    { name: 'upzdesa-tasbih-storage', partialize: (state) => ({ counter: state.counter, target: state.target, history: state.history }) }
   )
 );
 
@@ -91,6 +91,6 @@ export const useTodoStore = create<TodoState>()(
           todos: state.todos.filter((todo) => !todo.completed),
         })),
     }),
-    { name: 'menara-todo-storage' }
+    { name: 'upzdesa-todo-storage' }
   )
 );
