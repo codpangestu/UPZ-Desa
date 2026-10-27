@@ -4,7 +4,7 @@ import { Search, MapPin, ChevronRight, Star, Users, Share2, Filter, Loader2, Ale
 import { upzDesaService } from '../services/upzDesaService';
 import type { Provinsi } from '../types';
 
-/** Field UPZ Desa dari endpoint publik GET /content 8003 /masjid/search (Fix #48). */
+/** Field UPZ Desa dari endpoint publik GET /content 8003 /upz-desa/search (Fix #48). */
 interface PublikUpzDesa {
   id_upz_desa: string;
   nama_upz_desa: string | null;

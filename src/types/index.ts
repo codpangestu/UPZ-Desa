@@ -156,7 +156,7 @@ export interface LoginResponse {
 /**
  * Profile pengguna — field mengikuti response asli Auth Service (8001).
  * Login umum `/login` mengembalikan id_level + id_labels + nohp,
- * login admin-masjid tanpa nohp, login admin-pusat minimal.
+ * login admin-upz-desa tanpa nohp, login admin-pusat minimal.
  * `role` tidak pernah dikirim backend — di-infer dari `jalur_akses` + `id_level`.
  */
 export interface UserProfile {
@@ -276,7 +276,7 @@ export interface UserListItem {
   id_upz_desa?: string;
 }
 
-/** Item minimal daftar UPZ Desa untuk dropdown `GET /api/v1/masjid/list` (nama path backend). */
+/** Item minimal daftar UPZ Desa untuk dropdown `GET /api/v1/upz-desa/list` (nama path backend). */
 export interface UpzDesaOption {
   id_upz_desa: string;
   nama_upz_desa: string;
@@ -324,7 +324,7 @@ export interface RekapPengeluaran {
   jumlah_transaksi?: number;
 }
 
-/** Response `GET /api/v1/rekap/by-masjid/{id}` (nama path backend) — rekap per UPZ Desa. */
+/** Response `GET /api/v1/rekap/by-upz-desa/{id}` (nama path backend) — rekap per UPZ Desa. */
 export interface RekapByUpzDesa {
   id_upz_desa: string;
   total_penerimaan?: number;

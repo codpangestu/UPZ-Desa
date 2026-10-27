@@ -44,10 +44,10 @@ const testimoniData = [
 ];
 
 const quickAccessData = [
-  { icon: (<svg width="24" height="20" viewBox="0 0 24 20" fill="none"><path d="M0 0V20H24V0H0ZM22 2V4H2V2H22ZM2 18V6H22V18H2Z" fill="#EFB100"/><path d="M5 8H9V12H5V8ZM11 8H15V12H11V8ZM17 8H19V12H17V8ZM5 13H9V17H5V13ZM11 13H15V17H11V13ZM17 13H19V17H17V13Z" fill="#EFB100"/></svg>), title: 'Data UPZ Desa', subtitle: 'Lihat data UPZ desa', buttonText: 'Selengkapnya' },
-  { icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EFB100" strokeWidth="1.5"/><path d="M12 7V12L15 15" stroke="#EFB100" strokeWidth="1.5" strokeLinecap="round"/></svg>), title: 'History Transaksi', subtitle: 'Lihat riwayat transaksi', buttonText: 'Selengkapnya' },
-  { icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H12" stroke="#EFB100" strokeWidth="1.5" strokeLinecap="round"/></svg>), title: 'Publikasi', subtitle: 'Baca artikel terbaru', buttonText: 'Selengkapnya' },
-  { icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EFB100" strokeWidth="1.5"/><path d="M12 7V12L15 15" stroke="#EFB100" strokeWidth="1.5" strokeLinecap="round"/></svg>), title: 'Doa & Amalan', subtitle: 'Kumpulan doa harian', buttonText: 'Selengkapnya' },
+  { icon: (<svg width="24" height="20" viewBox="0 0 24 20" fill="none"><path d="M0 0V20H24V0H0ZM22 2V4H2V2H22ZM2 18V6H22V18H2Z" fill="#EFB100" /><path d="M5 8H9V12H5V8ZM11 8H15V12H11V8ZM17 8H19V12H17V8ZM5 13H9V17H5V13ZM11 13H15V17H11V13ZM17 13H19V17H17V13Z" fill="#EFB100" /></svg>), title: 'Data UPZ Desa', subtitle: 'Lihat data UPZ desa', buttonText: 'Selengkapnya' },
+  { icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EFB100" strokeWidth="1.5" /><path d="M12 7V12L15 15" stroke="#EFB100" strokeWidth="1.5" strokeLinecap="round" /></svg>), title: 'History Transaksi', subtitle: 'Lihat riwayat transaksi', buttonText: 'Selengkapnya' },
+  { icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H12" stroke="#EFB100" strokeWidth="1.5" strokeLinecap="round" /></svg>), title: 'Publikasi', subtitle: 'Baca artikel terbaru', buttonText: 'Selengkapnya' },
+  { icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EFB100" strokeWidth="1.5" /><path d="M12 7V12L15 15" stroke="#EFB100" strokeWidth="1.5" strokeLinecap="round" /></svg>), title: 'Doa & Amalan', subtitle: 'Kumpulan doa harian', buttonText: 'Selengkapnya' },
 ];
 
 const filterKategori = ['Semua', 'Zakat', 'Infak', 'Sedekah', 'Kajian', 'Berita', 'Artikel', 'Pengumuman', 'Lainnya'];
@@ -77,7 +77,7 @@ export default function HomePage() {
 
             {/* Sub Heading */}
             <p className="text-base leading-6 text-[#303030] max-w-[640px] max-md:text-sm">
-              Platform digital Unit Pengumpul Zakat (UPZ) Desa untuk pengelolaan ZIS DSKL yang transparan, 
+              Platform digital Unit Pengumpul Zakat (UPZ) Desa untuk pengelolaan ZIS DSKL yang transparan,
               akuntabel, dan efisien terintegrasi dengan BAZNAS.
             </p>
 
@@ -109,31 +109,27 @@ export default function HomePage() {
           {infoStats.map((item, index) => (
             <div
               key={index}
-              className={`${
-                item.bgGreen
-                  ? 'bg-gradient-to-br from-[#EFB100] to-[#9B5E3E] text-white'
-                  : 'bg-white border border-[rgba(0,0,0,0.06)]'
-              } rounded-2xl p-5 flex flex-col items-start gap-2 transition-all hover:shadow-md`}
+              className={`${item.bgGreen
+                ? 'bg-gradient-to-br from-[#EFB100] to-[#9B5E3E] text-white'
+                : 'bg-white border border-[rgba(0,0,0,0.06)]'
+                } rounded-2xl p-5 flex flex-col items-start gap-2 transition-all hover:shadow-md`}
             >
               <div
-                className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  item.bgGreen ? 'bg-white/20 text-white' : 'bg-[#FDF3C0] text-[#EFB100]'
-                }`}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.bgGreen ? 'bg-white/20 text-white' : 'bg-[#FDF3C0] text-[#EFB100]'
+                  }`}
               >
                 {item.icon}
               </div>
               <span
-                className={`text-2xl font-bold ${
-                  item.bgGreen ? 'text-white' : 'text-[#303030]'
-                }`}
+                className={`text-2xl font-bold ${item.bgGreen ? 'text-white' : 'text-[#303030]'
+                  }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {item.title}
               </span>
               <span
-                className={`text-sm ${
-                  item.bgGreen ? 'text-white/80' : 'text-[#666]'
-                }`}
+                className={`text-sm ${item.bgGreen ? 'text-white/80' : 'text-[#666]'
+                  }`}
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {item.subtitle}
@@ -165,9 +161,8 @@ export default function HomePage() {
               {filterKategori.map((k, i) => (
                 <button
                   key={i}
-                  className={`text-sm font-medium leading-5 px-4 py-2 rounded-full whitespace-nowrap transition-all ${
-                    i === 0 ? 'bg-[#EFB100] text-white' : 'border border-[#EFB100] text-[#EFB100] hover:bg-[#FEF9E7]'
-                  }`}
+                  className={`text-sm font-medium leading-5 px-4 py-2 rounded-full whitespace-nowrap transition-all ${i === 0 ? 'bg-[#EFB100] text-white' : 'border border-[#EFB100] text-[#EFB100] hover:bg-[#FEF9E7]'
+                    }`}
                 >
                   {k}
                 </button>
@@ -255,7 +250,7 @@ export default function HomePage() {
 
           <div className="w-[714px] max-w-full rounded-3xl">
             <img
-              src="/images/poster.svg"
+              src="/images/posterp.webp"
               alt="Poster UPZ Desa"
               className="w-full h-auto"
             />
@@ -282,7 +277,7 @@ export default function HomePage() {
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#EFB100">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                   ))}
                 </div>

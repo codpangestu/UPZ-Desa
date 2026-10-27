@@ -17,7 +17,7 @@ export interface SejarahProfilMicrofinance {
   keterangan: string | null;
   status_aktif: number | null;
   id_bmfi_kategori_pengesahan_microfinance: number | null;
-  id_masjid: string | null;
+  id_upz_desa: string | null;
 }
 
 export interface SaldoMicrofinance {
@@ -120,7 +120,7 @@ export interface PemutihanPenghapusbukuan {
   peserta_program_bmfi_pemutihan_penghapusbukuan: string | null;
   pendamping_bmfi_pemutihan_penghapusbukuan: string | null;
   id_user: number;
-  id_masjid: string | null;
+  id_upz_desa: string | null;
 }
 
 export interface BmmLabelInfoDanaKasOperasional {

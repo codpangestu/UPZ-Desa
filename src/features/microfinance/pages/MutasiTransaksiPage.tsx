@@ -10,10 +10,10 @@ const formatRupiah = (v: string | number | null) => `Rp ${Number(v || 0).toLocal
 
 export default function MutasiTransaksiPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<TransaksiMicrofinance>('transaksi', idMasjid);
-  const { data: summaryRes } = useMutasiSummary(idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<TransaksiMicrofinance>('transaksi', idUpzDesa);
+  const { data: summaryRes } = useMutasiSummary(idUpzDesa);
 
   const data = listRes?.data || [];
   const summary = summaryRes?.data;

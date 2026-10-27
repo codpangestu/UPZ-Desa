@@ -16,45 +16,9 @@ interface CreateApiClientOptions {
 }
 
 // ============================================================================
-// Adapter nama field `masjid` ↔ `upz_desa`
-// ----------------------------------------------------------------------------
-// Kontrak backend BELUM di-rename: kolom tabel & response API masih memakai
-// nama lama (`nama_masjid`, `id_masjid`, `alamat_masjid`, `slug_masjid`, dst.),
-// sedangkan seluruh kode frontend sudah memakai nama baru (`*_upz_desa`).
-// Translasi dilakukan SEKALI di sini supaya tidak tersebar di tiap service:
-//   • response masuk : nama_masjid → nama_upz_desa (dan sejenisnya)
-//   • payload keluar : nama_upz_desa → nama_masjid (kebalikannya)
-// Payload keluar WAJIB diterjemahkan: backend membuang key yang tidak dikenal
-// (create_record/update_record memakai hasattr), jadi mengirim `nama_upz_desa`
-// membuat data tersimpan kosong tanpa error.
-// Hanya KEY objek yang diubah — value seperti `jalur_akses: 'Masjid'` tidak disentuh.
+// Kontrak API memakai nama field `*_upz_desa` langsung (backend sudah di-rename
+// lewat migration 007), jadi tidak ada lagi adapter nama field di sini.
 // ============================================================================
-const FIELD_LAST = 'masjid';
-const FIELD_NEW = 'upz_desa';
-
-function translateKeys(value: unknown, from: string, to: string): unknown {
-  if (Array.isArray(value)) {
-    return value.map((item) => translateKeys(item, from, to));
-  }
-  // Hanya plain object (bukan File/Blob/Map/Date) yang key-nya diterjemahkan.
-  if (value && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
-    const out: Record<string, unknown> = {};
-    for (const [key, val] of Object.entries(value as Record<string, unknown>)) {
-      const nextKey = key.split(from).join(to);
-      out[nextKey] = translateKeys(val, from, to);
-    }
-    return out;
-  }
-  return value;
-}
-
-/** Response backend (nama lama) → nama field app-facing. */
-export const toAppShape = <T,>(data: T): T =>
-  translateKeys(data, FIELD_LAST, FIELD_NEW) as T;
-
-/** Payload/params app-facing → nama field yang dikenal backend. */
-export const toApiShape = <T,>(data: T): T =>
-  translateKeys(data, FIELD_NEW, FIELD_LAST) as T;
 
 function createApiClient(baseURL: string, options: CreateApiClientOptions = {}) {
   const client = axios.create({
@@ -77,14 +41,6 @@ function createApiClient(baseURL: string, options: CreateApiClientOptions = {}) 
     } else {
       delete config.headers.Authorization;
     }
-    // Terjemahkan payload & query params ke nama field yang dikenal backend
-    // (lihat catatan adapter di atas). FormData (upload file) dilewatkan apa adanya.
-    if (config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
-      config.data = toApiShape(config.data);
-    }
-    if (config.params && typeof config.params === 'object') {
-      config.params = toApiShape(config.params);
-    }
     return config;
   });
 
@@ -93,19 +49,15 @@ function createApiClient(baseURL: string, options: CreateApiClientOptions = {}) 
   // adalah error normal (mis. password salah) yang ditangani halaman login.
   const AUTH_PUBLIC_PATHS = [
     '/api/v1/login',
-    // Path backend masih /login/admin-masjid (dipakai opsi "Admin UPZ Desa").
-    '/api/v1/login/admin-masjid',
+    // Endpoint login opsi "Admin UPZ Desa" (path backend sudah di-rename).
+    '/api/v1/login/admin-upz-desa',
     '/api/v1/login/admin-pusat',
     '/api/v1/login/admin-kua',
     '/api/v1/register/user',
     '/api/v1/logout',
   ];
   client.interceptors.response.use(
-    (res) => {
-      // Normalisasi nama field response backend → nama app-facing (lihat adapter).
-      res.data = toAppShape(res.data);
-      return res;
-    },
+    (res) => res,
     (error) => {
       const status = error?.response?.status;
       const url: string = error?.config?.url || '';

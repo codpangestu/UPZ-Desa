@@ -5,19 +5,19 @@ import type { MicrofinanceTipe } from '../api';
 
 const isSuccess = (statusCode: string) => statusCode === '000';
 
-export function useMicrofinanceList<T>(tipe: MicrofinanceTipe, idMasjid: string | undefined) {
+export function useMicrofinanceList<T>(tipe: MicrofinanceTipe, idUpzDesa: string | undefined) {
   return useQuery({
-    queryKey: ['microfinance', tipe, idMasjid],
-    queryFn: () => microfinanceApi.list<T>(tipe, { id_masjid: idMasjid, per_page: 100 }),
-    enabled: !!idMasjid,
+    queryKey: ['microfinance', tipe, idUpzDesa],
+    queryFn: () => microfinanceApi.list<T>(tipe, { id_upz_desa: idUpzDesa, per_page: 100 }),
+    enabled: !!idUpzDesa,
   });
 }
 
-export function useMutasiSummary(idMasjid: string | undefined) {
+export function useMutasiSummary(idUpzDesa: string | undefined) {
   return useQuery({
-    queryKey: ['microfinance-mutasi-summary', idMasjid],
-    queryFn: () => microfinanceApi.mutasiSummary(idMasjid as string),
-    enabled: !!idMasjid,
+    queryKey: ['microfinance-mutasi-summary', idUpzDesa],
+    queryFn: () => microfinanceApi.mutasiSummary(idUpzDesa as string),
+    enabled: !!idUpzDesa,
   });
 }
 
@@ -66,7 +66,7 @@ export function useCreateMicrofinance(tipe: MicrofinanceTipe, successMessage = '
         queryClient.invalidateQueries({ queryKey: ['microfinance', tipe] });
         queryClient.invalidateQueries({ queryKey: ['microfinance-mutasi-summary'] });
         // Transaksi (pencairan/pengembalian) juga mengubah sisa_dana_pengembalian
-        // peserta & nominal_saldo_microfinance masjid di backend (side effect) —
+        // peserta & nominal_saldo_microfinance UPZ Desa di backend (side effect) —
         // invalidate keduanya juga supaya tabel Peserta Program & Saldo ikut refresh.
         if (tipe === 'transaksi') {
           queryClient.invalidateQueries({ queryKey: ['microfinance', 'peserta-program'] });

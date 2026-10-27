@@ -53,9 +53,9 @@ type KoordinatSource = 'rumah' | 'usaha';
 
 export default function PetaSebaranPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<PesertaProgram>('peserta-program', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<PesertaProgram>('peserta-program', idUpzDesa);
   const [activeId, setActiveId] = useState<number | null>(null);
   const [source, setSource] = useState<KoordinatSource>('usaha');
 

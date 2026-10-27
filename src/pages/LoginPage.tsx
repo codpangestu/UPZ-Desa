@@ -144,11 +144,10 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setRoleMenuOpen((v) => !v)}
-                  className={`w-full flex items-center gap-3 p-3 bg-white border rounded-xl transition-all duration-200 text-left ${
-                    roleMenuOpen
-                      ? 'border-[#EFB100] ring-2 ring-[#EFB100]/20'
-                      : 'border-gray-200 hover:border-[#EFB100]/50 hover:bg-[#FAFFFA]'
-                  }`}
+                  className={`w-full flex items-center gap-3 p-3 bg-white border rounded-xl transition-all duration-200 text-left ${roleMenuOpen
+                    ? 'border-[#EFB100] ring-2 ring-[#EFB100]/20'
+                    : 'border-gray-200 hover:border-[#EFB100]/50 hover:bg-[#FAFFFA]'
+                    }`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <span className="w-9 h-9 rounded-lg bg-[#FEF9E7] flex items-center justify-center flex-shrink-0">
@@ -177,15 +176,13 @@ export default function LoginPage() {
                             setSelectedRole(role);
                             setRoleMenuOpen(false);
                           }}
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 transition-colors text-left ${
-                            active ? 'bg-[#FEF9E7]' : 'hover:bg-[#FAFAFA]'
-                          }`}
+                          className={`w-full flex items-center gap-3 px-3 py-2.5 transition-colors text-left ${active ? 'bg-[#FEF9E7]' : 'hover:bg-[#FAFAFA]'
+                            }`}
                           style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                         >
                           <span
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              active ? 'bg-[#EFB100] text-white' : 'bg-[#FEF9E7] text-[#EFB100]'
-                            }`}
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${active ? 'bg-[#EFB100] text-white' : 'bg-[#FEF9E7] text-[#EFB100]'
+                              }`}
                           >
                             <Icon size={16} />
                           </span>
@@ -267,8 +264,8 @@ export default function LoginPage() {
                   <div
                     onClick={() => setRememberMe(!rememberMe)}
                     className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 ${rememberMe
-                        ? 'bg-[#EFB100] border-[#EFB100]'
-                        : 'border-gray-300 group-hover:border-[#EFB100]'
+                      ? 'bg-[#EFB100] border-[#EFB100]'
+                      : 'border-gray-300 group-hover:border-[#EFB100]'
                       }`}
                   >
                     {rememberMe && <Check size={10} className="text-white" strokeWidth={3} />}
@@ -331,7 +328,7 @@ export default function LoginPage() {
       <div className="w-1/2 h-full flex items-center justify-center bg-[#FAFAFA] overflow-hidden">
         <div className="w-[570px] h-[904px] max-h-[90vh] rounded-[40px] overflow-hidden shadow-xl bg-[#D9D9D9]">
           <img
-            src="/images/banner-login.svg"
+            src="/images/posterlogin.webp"
             alt="UPZ Desa Login"
             className="w-full h-full object-cover"
           />

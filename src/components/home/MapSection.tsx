@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Search, Navigation } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -13,13 +13,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-// Custom mosque icons by type
+// Custom marker icons by type
 function makeIcon(type: string, active: boolean): L.DivIcon {
-  const isMasjid = type === 'Masjid';
-  const bgColor = isMasjid
+  const isUpzDesa = type === 'UPZ Desa';
+  const bgColor = isUpzDesa
     ? 'linear-gradient(135deg, #EFB100, #1f8a13)'
     : 'linear-gradient(135deg, #FF8C00, #E67E00)';
-  const shadowColor = isMasjid ? 'rgba(40,167,26,0.4)' : 'rgba(255,140,0,0.4)';
+  const shadowColor = isUpzDesa ? 'rgba(40,167,26,0.4)' : 'rgba(255,140,0,0.4)';
   const size = active ? 44 : 36;
   const fontSize = active ? 20 : 16;
   const scale = active ? 1.15 : 1;
@@ -56,61 +56,61 @@ function makeIcon(type: string, active: boolean): L.DivIcon {
   });
 }
 
-// Extended mosque data with coordinates
-const MOSQUE_DATA = [
+// Contoh data UPZ Desa dengan koordinat
+const UPZ_DESA_DATA = [
   {
-    id: 'M001',
-    name: 'Masjid Istiqlal',
-    address: 'Jl. Taman Wijaya Kusuma, Jakarta Pusat',
-    type: 'Masjid',
+    id: 'UPZ-3173011001',
+    name: 'UPZ Desa Cengkareng Barat',
+    address: 'Kec. Cengkareng, Jakarta Barat',
+    type: 'UPZ Desa',
     lat: -6.1701,
     lng: 106.8311,
-    fasilitas: ['Taman', 'Parkir Luas', 'Perpustakaan', 'Kantin'],
+    fasilitas: ['Kantor UPZ', 'Aula', 'Gudang Logistik', 'Parkir'],
   },
   {
-    id: 'M002',
-    name: 'Masjid Raya Al-Markaz',
-    address: 'Jl. Masjid Raya No. 1, Makassar',
-    type: 'Masjid',
-    lat: -5.1328,
-    lng: 119.4219,
-    fasilitas: ['Taman', 'Parkir Luas', 'Perpustakaan'],
-  },
-  {
-    id: 'M003',
-    name: 'Masjid Raya Baiturrahman',
-    address: 'Jl. Muhammad Jam No. 1, Banda Aceh',
-    type: 'Masjid',
-    lat: 5.5533,
-    lng: 95.3172,
-    fasilitas: ['Taman', 'Parkir Luas', 'Museum'],
-  },
-  {
-    id: 'M004',
-    name: 'Musholla At-Taqwa',
-    address: 'Jl. Asia Afrika, Bandung',
-    type: 'Musholla',
+    id: 'UPZ-3202132003',
+    name: 'UPZ Desa Al-Muhajirin',
+    address: 'Kec. Cianjur, Kab. Cianjur',
+    type: 'UPZ Desa',
     lat: -6.9217,
     lng: 107.6071,
-    fasilitas: ['AC', 'Tempat Wudhu', 'Parkir'],
+    fasilitas: ['Kantor UPZ', 'Aula', 'Gudang Logistik'],
   },
   {
-    id: 'M005',
-    name: 'Masjid Al-Akbar',
-    address: 'Jl. Masjid Al-Akbar, Surabaya',
-    type: 'Masjid',
+    id: 'UPZ-3374011001',
+    name: 'UPZ Kelurahan Al-Istiqomah',
+    address: 'Kec. Semarang Tengah, Kota Semarang',
+    type: 'UPZ Kelurahan',
+    lat: -6.9932,
+    lng: 110.4203,
+    fasilitas: ['Kantor UPZ', 'Aula', 'Parkir'],
+  },
+  {
+    id: 'UPZ-3578011001',
+    name: 'UPZ Kelurahan Baiturrahman',
+    address: 'Kec. Genteng, Kota Surabaya',
+    type: 'UPZ Kelurahan',
     lat: -7.3177,
     lng: 112.7297,
-    fasilitas: ['AC', 'Taman', 'Parkir Luas'],
+    fasilitas: ['Kantor UPZ', 'Aula', 'Gudang Logistik'],
   },
   {
-    id: 'M006',
-    name: 'Masjid Agung Demak',
-    address: 'Jl. Sultan Fatah, Demak',
-    type: 'Masjid',
-    lat: -6.8948,
-    lng: 110.6372,
-    fasilitas: ['Taman', 'Museum', 'Parkir Luas'],
+    id: 'UPZ-3672011001',
+    name: 'UPZ Desa Jami Al-Hidayah',
+    address: 'Kec. Citangkil, Kota Cilegon',
+    type: 'UPZ Desa',
+    lat: -6.0113,
+    lng: 106.0322,
+    fasilitas: ['Kantor UPZ', 'Aula', 'Gudang Logistik'],
+  },
+  {
+    id: 'UPZ-6472011001',
+    name: 'UPZ Desa Nurul Iman',
+    address: 'Kec. Samarinda Ulu, Kota Samarinda',
+    type: 'UPZ Desa',
+    lat: -0.4948,
+    lng: 117.1456,
+    fasilitas: ['Kantor UPZ', 'Aula', 'Parkir'],
   },
 ];
 
@@ -128,10 +128,10 @@ export default function MapSection() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
-  const filteredMosques = useMemo(() => {
-    if (!searchQuery.trim()) return MOSQUE_DATA;
+  const filteredUpzDesa = useMemo(() => {
+    if (!searchQuery.trim()) return UPZ_DESA_DATA;
     const q = searchQuery.toLowerCase();
-    return MOSQUE_DATA.filter(
+    return UPZ_DESA_DATA.filter(
       (m) =>
         m.name.toLowerCase().includes(q) ||
         m.address.toLowerCase().includes(q) ||
@@ -169,10 +169,10 @@ export default function MapSection() {
             <span>Peta Sebaran</span>
           </div>
           <h2 className="text-display-lg max-md:text-[32px] max-md:leading-[40px]">
-            Sebaran Masjid & Musholla di Indonesia
+            Sebaran UPZ Desa di Indonesia
           </h2>
           <p className="text-base leading-6 text-[#303030] w-full text-justify max-md:text-sm">
-            Temukan dan jelajahi masjid & musholla yang tersebar di seluruh Indonesia.
+            Temukan dan jelajahi UPZ Desa & UPZ Kelurahan di seluruh Indonesia.
             Klik marker atau kartu untuk detail lokasi.
           </p>
         </div>
@@ -187,7 +187,7 @@ export default function MapSection() {
                 <Search size={16} className="text-[#888] shrink-0" />
                 <input
                   type="text"
-                  placeholder="Cari masjid, kota, atau provinsi..."
+                  placeholder="Cari UPZ Desa, kota, atau provinsi..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full text-sm text-[#303030] placeholder:text-[#aaa] focus:outline-none bg-transparent"
@@ -240,7 +240,7 @@ export default function MapSection() {
                   </Marker>
                 )}
 
-                {/* Mosque markers */}                  {filteredMosques.map((m) => {
+                {/* Marker UPZ Desa */}                  {filteredUpzDesa.map((m) => {
                   const isActive = activeId === m.id;
                   return (
                     <Marker
@@ -292,7 +292,7 @@ export default function MapSection() {
 
                 {/* Fly to active marker */}
                 {activeId && (() => {
-                  const m = filteredMosques.find((x) => x.id === activeId);
+                  const m = filteredUpzDesa.find((x) => x.id === activeId);
                   if (!m) return null;
                   return <FlyToMarker lat={m.lat} lng={m.lng} />;
                 })()}
@@ -314,19 +314,19 @@ export default function MapSection() {
                 <span className="text-[10px] text-[#666]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Lokasi Saya</span>
               </div>
               <span className="text-[10px] text-[#aaa] ml-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                {filteredMosques.length} lokasi
+                {filteredUpzDesa.length} lokasi
               </span>
             </div>
           </div>
 
-          {/* List Masjid */}
+          {/* List UPZ Desa */}
           <div className="flex flex-col gap-4 flex-1 w-full max-h-[560px] overflow-y-auto pr-1">
             <div className="flex justify-between items-center w-full sticky top-0 bg-[#FAFAFA] py-2 z-10">
               <span className="text-lg font-medium leading-7 text-[#303030]">UPZ Desa Terdekat</span>
-              <div className="badge-xs">{filteredMosques.length} ditemukan</div>
+              <div className="badge-xs">{filteredUpzDesa.length} ditemukan</div>
             </div>
 
-            {filteredMosques.length === 0 ? (
+            {filteredUpzDesa.length === 0 ? (
               <div className="text-center py-8">
                 <div className="text-4xl mb-2 opacity-30">🔍</div>
                 <p className="text-sm text-[#888]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -334,13 +334,13 @@ export default function MapSection() {
                 </p>
               </div>
             ) : (
-              filteredMosques.map((masjid) => {
-                const isActive = activeId === masjid.id;
+              filteredUpzDesa.map((upzDesa) => {
+                const isActive = activeId === upzDesa.id;
                 return (
                   <div
-                    key={masjid.id}
-                    onClick={() => handleCardClick(masjid.id)}
-                    className={`masjid-card w-full cursor-pointer transition-all ${
+                    key={upzDesa.id}
+                    onClick={() => handleCardClick(upzDesa.id)}
+                    className={`upz-desa-card w-full cursor-pointer transition-all ${
                       isActive
                         ? 'ring-2 ring-[#EFB100] ring-offset-2 bg-[#F0FDF0]'
                         : 'hover:bg-[#F0FDF0]'
@@ -362,17 +362,17 @@ export default function MapSection() {
                     <div className="flex flex-col items-start gap-3 flex-1 min-w-0">
                       <div className="flex justify-between items-start gap-4 w-full">
                         <div className="flex flex-col flex-1 min-w-0">
-                          <span className="text-sm font-medium leading-5 text-black">{masjid.name}</span>
-                          <span className="text-sm leading-5 text-[#888]">{masjid.address}</span>
+                          <span className="text-sm font-medium leading-5 text-black">{upzDesa.name}</span>
+                          <span className="text-sm leading-5 text-[#888]">{upzDesa.address}</span>
                         </div>
-                        {masjid.type === 'Musholla' ? (
+                        {upzDesa.type === 'UPZ Kelurahan' ? (
                           <div className="px-2.5 py-0.5 bg-[#FFF3E0] text-[#E65100] rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap">UPZ Kelurahan</div>
                         ) : (
                           <div className="px-2.5 py-0.5 bg-[#FDF3C0] text-[#EFB100] rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap">UPZ Desa</div>
                         )}
                       </div>
                       <div className="flex flex-row gap-2 flex-wrap">
-                        {masjid.fasilitas.map((fas, i) => (
+                        {upzDesa.fasilitas.map((fas, i) => (
                           <div key={i} className="badge-sm">{fas}</div>
                         ))}
                       </div>

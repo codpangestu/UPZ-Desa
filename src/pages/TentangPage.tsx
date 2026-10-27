@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { HeroTentang } from '../components/shared/illustrations';
+import { UserCheck, ArrowRight } from 'lucide-react';
 
 const milestones = [
   { year: '2020', title: 'Awal Pengembangan', description: 'BAZNAS memulai pengembangan aplikasi UPZ Desa untuk digitalisasi zakat desa.' },
@@ -875,6 +877,93 @@ export default function TentangPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Banner Founder Section */}
+          <div
+            style={{
+              marginTop: 56,
+              background: 'linear-gradient(135deg, #FEF9E7 0%, #FFFFFF 100%)',
+              border: '1px solid rgba(239, 177, 0, 0.35)',
+              borderRadius: 24,
+              padding: '32px 40px',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 24,
+              flexWrap: 'wrap',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 16,
+                  background: '#EFB100',
+                  color: '#FFFFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  boxShadow: '0 4px 12px rgba(239, 177, 0, 0.3)',
+                }}
+              >
+                <UserCheck size={28} />
+              </div>
+              <div>
+                <span
+                  style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#C99400',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  Founder Menara Masjid
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontWeight: 600,
+                    fontSize: 20,
+                    color: '#303030',
+                    margin: '4px 0',
+                  }}
+                >
+                  Muhammad Romadhona Kusuma, A.Md.Kom., S.Kom., M.Kom.
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontSize: 14,
+                    color: '#555555',
+                    margin: 0,
+                  }}
+                >
+                  Kisah inspiratif di balik ikhtiar amal jariyah &amp; perjalanan berdirinya aplikasi sejak 23 Februari 2020.
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/founder"
+              className="btn-primary-green"
+              style={{
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '12px 24px',
+                borderRadius: 99,
+              }}
+            >
+              <span>Lihat Halaman Founder</span>
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>

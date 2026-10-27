@@ -31,10 +31,10 @@ type TransaksiMode = 'pencairan' | 'pengembalian';
 
 export default function PesertaProgramPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<PesertaProgram>('peserta-program', idMasjid);
-  const { data: pendampingRes } = useMicrofinanceList<Pendamping>('pendamping', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<PesertaProgram>('peserta-program', idUpzDesa);
+  const { data: pendampingRes } = useMicrofinanceList<Pendamping>('pendamping', idUpzDesa);
   const createMutation = useCreateMicrofinance('peserta-program');
   const updateMutation = useUpdateMicrofinance('peserta-program');
   const deleteMutation = useDeleteMicrofinance('peserta-program');
@@ -52,7 +52,7 @@ export default function PesertaProgramPage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setFormData({ ...emptyForm, parent_id: idMasjid, kode_org_baznas: idMasjid });
+    setFormData({ ...emptyForm, parent_id: idUpzDesa, kode_org_baznas: idUpzDesa });
     setShowForm(true);
   };
 
@@ -95,7 +95,7 @@ export default function PesertaProgramPage() {
       keterangan_transaksi: txForm.keterangan,
       id_bmfi_peserta_program: txModal.peserta.id_peserta_program_bmfi_asesmen,
       id_bmfi_pendamping: txModal.peserta.id_pendamping_bmfi_asesmen,
-      id_jalur_akses: idMasjid,
+      id_jalur_akses: idUpzDesa,
       ...(txModal.mode === 'pencairan'
         ? { nominal_peminjaman: txForm.nominal }
         : { nominal_pengembalian: txForm.nominal, infak_peserta: txForm.infak || '0' }),

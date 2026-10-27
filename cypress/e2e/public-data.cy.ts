@@ -15,7 +15,7 @@ describe('Halaman publik — data asli dari API (Fix #48)', () => {
   it('Pencarian UPZ Desa menampilkan data asli + search server-side bekerja', () => {
     cy.visit('/upz-desa');
 
-    // Kartu UPZ Desa terisi dari GET /api/v1/masjid/search (data asli, bukan mock)
+    // Kartu UPZ Desa terisi dari GET /api/v1/upz-desa/search (data asli, bukan mock)
     cy.get('.card-hover', { timeout: 15000 }).should('have.length.at.least', 1);
 
     // Search server-side (debounced) → nama asli muncul

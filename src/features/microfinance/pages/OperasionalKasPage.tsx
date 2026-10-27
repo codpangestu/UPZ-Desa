@@ -37,12 +37,12 @@ const emptyPengeluaran = {
 
 export default function OperasionalKasPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
   const [tab, setTab] = useState<Tab>('penerimaan');
 
-  const { data: listMasuk, isLoading: loadingMasuk } = useMicrofinanceList<OperasionalKasPenerimaan>('operasional-kas-penerimaan', idMasjid);
-  const { data: listKeluar, isLoading: loadingKeluar } = useMicrofinanceList<OperasionalKasPengeluaran>('operasional-kas-pengeluaran', idMasjid);
+  const { data: listMasuk, isLoading: loadingMasuk } = useMicrofinanceList<OperasionalKasPenerimaan>('operasional-kas-penerimaan', idUpzDesa);
+  const { data: listKeluar, isLoading: loadingKeluar } = useMicrofinanceList<OperasionalKasPengeluaran>('operasional-kas-pengeluaran', idUpzDesa);
   const createMasuk = useCreateMicrofinance('operasional-kas-penerimaan', 'Penerimaan kas operasional berhasil dicatat');
   const updateMasuk = useUpdateMicrofinance('operasional-kas-penerimaan');
   const deleteMasuk = useDeleteMicrofinance('operasional-kas-penerimaan');
@@ -77,8 +77,8 @@ export default function OperasionalKasPage() {
     const base = { ...(tab === 'penerimaan' ? emptyPenerimaan : emptyPengeluaran) };
     setFormData({
       ...base,
-      id_jalur_akses: idMasjid,
-      jalur_akses: 'Masjid',
+      id_jalur_akses: idUpzDesa,
+      jalur_akses: 'UPZ Desa',
     });
     setShowForm(true);
   };
@@ -91,14 +91,14 @@ export default function OperasionalKasPage() {
 
   const handleSubmit = async () => {
     if (tab === 'penerimaan') {
-      const payload = { ...formData, id_jalur_akses: idMasjid, jalur_akses: 'Masjid' };
+      const payload = { ...formData, id_jalur_akses: idUpzDesa, jalur_akses: 'UPZ Desa' };
       if (editItem) {
         await updateMasuk.mutateAsync({ id: (editItem as OperasionalKasPenerimaan).id_bmfi_bmm_operasional_kas_penerimaan, data: payload });
       } else {
         await createMasuk.mutateAsync(payload);
       }
     } else {
-      const payload = { ...formData, id_jalur_akses: idMasjid, jalur_akses: 'Masjid' };
+      const payload = { ...formData, id_jalur_akses: idUpzDesa, jalur_akses: 'UPZ Desa' };
       if (editItem) {
         await updateKeluar.mutateAsync({ id: (editItem as OperasionalKasPengeluaran).id_bmfi_bmm_operasional_kas_pengeluaran, data: payload });
       } else {

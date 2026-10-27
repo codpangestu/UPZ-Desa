@@ -15,9 +15,9 @@ const emptyForm = { nama_pilihan_skema_pinjaman: '', jumlah_nominal: '', keteran
 
 export default function PilihanSkemaPinjamanPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<PilihanSkemaPinjaman>('pilihan-skema-pinjaman', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<PilihanSkemaPinjaman>('pilihan-skema-pinjaman', idUpzDesa);
   const createMutation = useCreateMicrofinance('pilihan-skema-pinjaman');
   const updateMutation = useUpdateMicrofinance('pilihan-skema-pinjaman');
   const deleteMutation = useDeleteMicrofinance('pilihan-skema-pinjaman');
@@ -30,7 +30,7 @@ export default function PilihanSkemaPinjamanPage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setFormData({ ...emptyForm, parent_id: idMasjid });
+    setFormData({ ...emptyForm, parent_id: idUpzDesa });
     setShowForm(true);
   };
 

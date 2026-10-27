@@ -1,5 +1,4 @@
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 interface KuitansiData {
   /** 'penerimaan' or 'pengeluaran' */

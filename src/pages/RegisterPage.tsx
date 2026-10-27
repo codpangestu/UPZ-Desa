@@ -196,7 +196,7 @@ export default function RegisterPage() {
     }
   };
 
-  /** Langkah 2 — Daftar Admin Masjid: simpan data admin ke pengajuan yang sama. */
+  /** Langkah 2 — Daftar Admin UPZ Desa: simpan data admin ke pengajuan yang sama. */
   const handleSubmitAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');

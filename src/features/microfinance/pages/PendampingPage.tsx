@@ -19,9 +19,9 @@ const emptyForm = {
 
 export default function PendampingPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<Pendamping>('pendamping', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<Pendamping>('pendamping', idUpzDesa);
   const createMutation = useCreateMicrofinance('pendamping');
   const updateMutation = useUpdateMicrofinance('pendamping');
   const deleteMutation = useDeleteMicrofinance('pendamping');
@@ -34,7 +34,7 @@ export default function PendampingPage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setFormData({ ...emptyForm, parent_id: idMasjid });
+    setFormData({ ...emptyForm, parent_id: idUpzDesa });
     setShowForm(true);
   };
 

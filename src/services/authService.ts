@@ -20,8 +20,8 @@ export type LoginableRole = 'admin-upz-desa' | 'admin-baznas' | 'admin-kua';
 // Map role to login endpoint (sesuai kontrak Auth Service 8001)
 // Role 'admin-baznas' tetap memanggil endpoint backend /admin-pusat (nama endpoint backend tidak berubah).
 const ROLE_ENDPOINT: Record<LoginableRole, string> = {
-  // Path backend masih /login/admin-masjid (belum di-rename di backend).
-  'admin-upz-desa': '/api/v1/login/admin-masjid',
+  // Path backend masih /login/admin-upz-desa (belum di-rename di backend).
+  'admin-upz-desa': '/api/v1/login/admin-upz-desa',
   'admin-baznas': '/api/v1/login/admin-pusat',
   'admin-kua': '/api/v1/login/admin-kua',
 };

@@ -4,15 +4,15 @@ import type { UpzDesaDetail, BankInfo, Medsos } from '../../types';
 const API_KEY = 'upzdesa23apikey';
 const API_KEY_HEADER = { 'x-api-key': API_KEY };
 
-// Catatan: path API di bawah masih memakai nama backend `/api/v1/masjid/...`
+// Catatan: path API di bawah masih memakai nama backend `/api/v1/upz-desa/...`
 // (route backend belum di-rename). Nama field di payload/response ditangani
 // otomatis oleh adapter di services/api.ts.
-const BASE = '/api/v1/admin/masjid';
+const BASE = '/api/v1/admin/upz-desa';
 
 export const profilUpzDesaApi = {
   getDetail: async (id: string) => {
     const response = await upzDesaApi.get<{ status: boolean; data: UpzDesaDetail }>(
-      `/api/v1/masjid/detail/${id}`
+      `/api/v1/upz-desa/detail/${id}`
     );
     return response.data;
   },

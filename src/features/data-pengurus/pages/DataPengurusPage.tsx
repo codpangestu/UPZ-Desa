@@ -201,10 +201,10 @@ export default function DataPengurusPage() {
         </div>
         <div>
           <h2 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Data Pengurus Masjid
+            Data Pengurus UPZ Desa
           </h2>
           <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Kelola data pengurus kepengurusan masjid
+            Kelola data pengurus UPZ Desa
           </p>
         </div>
       </div>

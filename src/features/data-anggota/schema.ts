@@ -8,35 +8,40 @@ const baseFields = {
     .refine((val) => /^0[0-9]{8,12}$/.test(val.replace(/[\s-]/g, '')), 'Format nomor HP tidak valid'),
   alamat: z.string().min(1, 'Alamat wajib diisi'),
   jenis_kelamin: z.string().min(1, 'Jenis kelamin wajib dipilih'),
-  keterangan: z.string().optional().default(''),
+  keterangan: z.string(),
 };
 
-export const ustadzSchema = z.object({
+/**
+ * Satu skema untuk SEMUA jenis anggota (ustadz/marbot/jamaah).
+ *
+ * Field khusus jenis tetap ada di objek (agar form bisa register semua field),
+ * tetapi kewajibannya divalidasi per jenis lewat `getSchemaForJenis`. Dengan
+ * begitu tipe input & output skema identik sehingga `zodResolver` cocok
+ * langsung dengan `useForm` tanpa cast tipe.
+ */
+export const anggotaFormSchema = z.object({
   ...baseFields,
-  bidang_keahlian: z.string().min(1, 'Bidang keahlian wajib dipilih'),
+  bidang_keahlian: z.string(),
+  tugas: z.string(),
+  status_keaktifan: z.string(),
 });
 
-export const marbotSchema = z.object({
-  ...baseFields,
-  tugas: z.string().min(1, 'Tugas wajib dipilih'),
-});
+export type AnggotaFormValues = z.infer<typeof anggotaFormSchema>;
 
-export const jamaahSchema = z.object({
-  ...baseFields,
-  status_keaktifan: z.string().min(1, 'Status keaktifan wajib dipilih'),
-});
-
-export type UstadzFormValues = z.infer<typeof ustadzSchema>;
-export type MarbotFormValues = z.infer<typeof marbotSchema>;
-export type JamaahFormValues = z.infer<typeof jamaahSchema>;
-
-export type AnggotaFormValues = UstadzFormValues | MarbotFormValues | JamaahFormValues;
+const JENIS_FIELD: Record<
+  string,
+  { field: 'bidang_keahlian' | 'tugas' | 'status_keaktifan'; message: string }
+> = {
+  ustadz: { field: 'bidang_keahlian', message: 'Bidang keahlian wajib dipilih' },
+  marbot: { field: 'tugas', message: 'Tugas wajib dipilih' },
+  jamaah: { field: 'status_keaktifan', message: 'Status keaktifan wajib dipilih' },
+};
 
 export function getSchemaForJenis(jenis: string) {
-  switch (jenis) {
-    case 'ustadz': return ustadzSchema;
-    case 'marbot': return marbotSchema;
-    case 'jamaah': return jamaahSchema;
-    default: return ustadzSchema;
-  }
+  const { field, message } = JENIS_FIELD[jenis] ?? JENIS_FIELD.ustadz;
+  return anggotaFormSchema.superRefine((values, ctx) => {
+    if (!values[field]) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: [field], message });
+    }
+  });
 }

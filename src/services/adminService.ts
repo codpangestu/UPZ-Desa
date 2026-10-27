@@ -40,9 +40,9 @@ export const adminService = {
   },
 
   // Daftar UPZ Desa untuk dropdown promosi admin UPZ Desa (UPZ Desa Service 8002)
-  // Catatan: path backend masih /api/v1/masjid/... (belum di-rename di backend).
+  // Catatan: path backend masih /api/v1/upz-desa/... (belum di-rename di backend).
   getUpzDesaOptions: async () => {
-    const response = await upzDesaApi.get<ApiResponse<UpzDesaOption[]>>('/api/v1/masjid/list', {
+    const response = await upzDesaApi.get<ApiResponse<UpzDesaOption[]>>('/api/v1/upz-desa/list', {
       params: { page: 1, per_page: 100 },
     });
     return response.data;
@@ -52,7 +52,7 @@ export const adminService = {
   // frontend. Backend menerbitkan kode UPZ Desa + slug LANGSUNG saat pengajuan dibuat
   // (dikembalikan di `data`), dipakai pemohon untuk lanjut ke langkah 2 (daftar admin).
   // Payload ditulis dengan nama app-facing (`nama_upz_desa`, dst.) — adapter di
-  // services/api.ts yang menerjemahkannya ke nama kolom backend (`nama_masjid`).
+  // services/api.ts yang menerjemahkannya ke nama kolom backend (`nama_upz_desa`).
   submitPengajuan: async (data: PengajuanFormData) => {
     const response = await adminApi.post<ApiResponse<{ id: number; kode_org_baznas?: string; slug_upz_desa?: string }>>(
       '/api/v1/admin/pengajuan/create',

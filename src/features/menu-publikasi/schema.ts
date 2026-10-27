@@ -2,15 +2,15 @@ import { z } from 'zod';
 
 const baseFields = {
   judul: z.string().min(1, 'Judul wajib diisi'),
-  keterangan: z.string().optional().default(''),
-  status_aktif: z.string().optional().default('1'),
+  keterangan: z.string(),
+  status_aktif: z.string(),
 };
 
 export const postinganSchema = z.object({
   ...baseFields,
   konten: z.string().min(1, 'Konten wajib diisi'),
   kategori: z.string().min(1, 'Kategori wajib dipilih'),
-  gambar: z.string().optional().default(''),
+  gambar: z.string(),
 });
 
 export const khutbahSchema = z.object({
@@ -44,7 +44,7 @@ export const ceritaSchema = z.object({
   ...baseFields,
   konten: z.string().min(1, 'Konten wajib diisi'),
   penulis: z.string().min(1, 'Penulis wajib diisi'),
-  gambar: z.string().optional().default(''),
+  gambar: z.string(),
 });
 
 export const donasiSchema = z.object({

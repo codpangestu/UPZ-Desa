@@ -24,14 +24,14 @@ interface ApiEnvelope<T> {
 }
 
 export const microfinanceApi = {
-  list: async <T>(tipe: MicrofinanceTipe, params: { id_masjid?: string; page?: number; per_page?: number }) => {
+  list: async <T>(tipe: MicrofinanceTipe, params: { id_upz_desa?: string; page?: number; per_page?: number }) => {
     const response = await transactionApi.get<ApiEnvelope<T[]>>(`/api/v1/microfinance/${tipe}/list`, { params });
     return response.data;
   },
 
-  mutasiSummary: async (id_masjid: string) => {
+  mutasiSummary: async (id_upz_desa: string) => {
     const response = await transactionApi.get<ApiEnvelope<MutasiSummary>>('/api/v1/microfinance/mutasi/summary', {
-      params: { id_masjid },
+      params: { id_upz_desa },
     });
     return response.data;
   },

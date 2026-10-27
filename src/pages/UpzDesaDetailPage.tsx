@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, MapPin, Phone, Mail, Users, Loader2, AlertCircle, Building2, Calendar } from 'lucide-react';
 import { upzDesaService } from '../services/upzDesaService';
 
-/** Shape response GET /api/v1/masjid/{slug} (Content Service 8003) setelah
+/** Shape response GET /api/v1/upz-desa/{slug} (Content Service 8003) setelah
  * normalisasi nama field oleh adapter di services/api.ts (backend mengirim
- * `nama_masjid`, app memakai `nama_upz_desa`). */
+ * `nama_upz_desa`, app memakai `nama_upz_desa`). */
 interface PublikUpzDesaDetail {
   id_upz_desa?: string;
   nama_upz_desa?: string | null;
@@ -228,7 +228,7 @@ export default function UpzDesaDetailPage() {
               )}
             </div>
 
-            {/* Kajian & Acara Terbaru dari masjid ini (data asli) */}
+            {/* Kajian & Acara Terbaru dari UPZ Desa ini (data asli) */}
             <div className="md:col-span-2 bg-white border border-[rgba(0,0,0,0.1)] rounded-2xl p-6">
               <div className="badge-green mb-4 w-fit">
                 <Users size={14} />

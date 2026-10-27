@@ -17,21 +17,21 @@ import type {
 export const upzDesaService = {
   // UPZ Desa
   getUpzDesaList: async (page = 1, perPage = 10) => {
-    const response = await upzDesaApi.get<PaginatedResponse<UpzDesa>>('/api/v1/masjid/list', {
+    const response = await upzDesaApi.get<PaginatedResponse<UpzDesa>>('/api/v1/upz-desa/list', {
       params: { page, per_page: perPage },
     });
     return response.data;
   },
 
   getUpzDesaDetail: async (id: string) => {
-    const response = await upzDesaApi.get<ApiResponse<UpzDesaDetail>>(`/api/v1/masjid/detail/${id}`);
+    const response = await upzDesaApi.get<ApiResponse<UpzDesaDetail>>(`/api/v1/upz-desa/detail/${id}`);
     return response.data;
   },
 
   getUpzDesaBySlug: async (slug: string) => {
-    // Detail publik UPZ Desa ada di CONTENT SERVICE (8003) — route /masjid/{slug}
+    // Detail publik UPZ Desa ada di CONTENT SERVICE (8003) — route /upz-desa/{slug}
     // (bukan UPZ Desa Service 8002 yang butuh auth). Lihat CONTEXT.md Fix #48.
-    const response = await contentApi.get<ApiResponse<UpzDesaDetail>>(`/api/v1/masjid/${slug}`);
+    const response = await contentApi.get<ApiResponse<UpzDesaDetail>>(`/api/v1/upz-desa/${slug}`);
     return response.data;
   },
 
@@ -47,14 +47,14 @@ export const upzDesaService = {
     // Pencarian UPZ Desa PUBLIK ada di CONTENT SERVICE (8003) — route /upz-desa/search.
     // Bug pra-eksisting (Fix #48): dulu memanggil upzDesaApi (8002) yang tidak punya
     // route ini → 404; dan route /upz-desa/search di 8003 tertangkap /upz-desa/{slug}.
-    const response = await contentApi.get<ApiResponse<UpzDesa[]>>('/api/v1/masjid/search', {
+    const response = await contentApi.get<ApiResponse<UpzDesa[]>>('/api/v1/upz-desa/search', {
       params,
     });
     return response.data;
   },
 
   getUpzDesaByWilayah: async (idProvinsi: number, page = 1, perPage = 10) => {
-    const response = await upzDesaApi.get<PaginatedResponse<UpzDesa>>('/api/v1/masjid/by-wilayah', {
+    const response = await upzDesaApi.get<PaginatedResponse<UpzDesa>>('/api/v1/upz-desa/by-wilayah', {
       params: { id_provinsi: idProvinsi, page, per_page: perPage },
     });
     return response.data;
@@ -100,7 +100,7 @@ export const upzDesaService = {
 
   /** Rekap per UPZ Desa (untuk dashboard Admin UPZ Desa). */
   getRekapByUpzDesa: async (idUpzDesa: string) => {
-    const response = await upzDesaApi.get<ApiResponse<RekapByUpzDesa>>(`/api/v1/rekap/by-masjid/${idUpzDesa}`);
+    const response = await upzDesaApi.get<ApiResponse<RekapByUpzDesa>>(`/api/v1/rekap/by-upz-desa/${idUpzDesa}`);
     return response.data;
   },
 

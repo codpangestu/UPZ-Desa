@@ -38,7 +38,7 @@ export default function PengajuanUpzDesaApproval() {
       if (res.status && Array.isArray(res.data)) {
         // Normalisasi status backend ('Menunggu') ke key frontend ('pending').
         // Nama field response sudah dinormalisasi oleh adapter di services/api.ts
-        // (backend mengirim `nama_masjid`, app memakai `nama_upz_desa`).
+        // (backend mengirim `nama_upz_desa`, app memakai `nama_upz_desa`).
         setPengajuanList(
           res.data.map((item) => ({
             id: item.id,
@@ -248,7 +248,7 @@ export default function PengajuanUpzDesaApproval() {
               </div>
             </div>
 
-            {/* Data Admin Masjid (dikonfirmasi sekaligus dengan masjid) */}
+            {/* Data Admin UPZ Desa (dikonfirmasi sekaligus dengan UPZ Desa) */}
             {(selectedItem.nama_pemohon || selectedItem.email_pemohon) && (
               <div className="p-4 bg-[#F0F4F8]/60 border border-[#F0F4F8] rounded-xl">
                 <p className="text-xs font-semibold text-[#303030] mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -274,7 +274,7 @@ export default function PengajuanUpzDesaApproval() {
               </div>
             )}
 
-            {/* Kode Masjid (jika sudah disetujui) */}
+            {/* Kode UPZ Desa (jika sudah disetujui) */}
             {selectedItem.status_pengajuan === 'disetujui' && selectedItem.kode_org_baznas && (
               <div className="p-4 bg-[#FDF3C0] border border-[#7D5A00]/20 rounded-xl flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -429,7 +429,7 @@ export default function PengajuanUpzDesaApproval() {
         </div>
       )}
 
-      {/* Modal Kode Masjid Diterbitkan */}
+      {/* Modal Kode UPZ Desa Diterbitkan */}
       {issuedCode && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setIssuedCode(null)} />
@@ -445,10 +445,10 @@ export default function PengajuanUpzDesaApproval() {
                 <KeyRound size={26} className="text-[#7D5A00]" />
               </div>
               <h3 className="text-lg font-semibold text-[#303030]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Masjid Disetujui!
+                UPZ Desa Disetujui!
               </h3>
               <p className="text-sm text-text-gray mt-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Kode masjid untuk <b className="text-[#303030]">{issuedCode.nama}</b>
+                Kode UPZ Desa untuk <b className="text-[#303030]">{issuedCode.nama}</b>
               </p>
             </div>
 

@@ -17,6 +17,10 @@ import KontakPage from './pages/KontakPage';
 import ToolsPage from './pages/ToolsPage';
 import AjukanUpzDesaPage from './pages/AjukanUpzDesaPage';
 import UpzDesaDetailPage from './pages/UpzDesaDetailPage';
+import KebijakanPrivasiPage from './pages/KebijakanPrivasiPage';
+import DisclaimerPage from './pages/DisclaimerPage';
+import FounderPage from './pages/FounderPage';
+import SyaratKetentuanPage from './pages/SyaratKetentuanPage';
 import PengajuanUpzDesaApproval from './pages/dashboard/PengajuanUpzDesaApproval';
 import DataUpzDesaBaznasPage from './pages/dashboard/DataUpzDesaBaznasPage';
 import KelolaPenggunaPage from './pages/dashboard/KelolaPenggunaPage';
@@ -100,6 +104,16 @@ function App() {
           <Route path="ajukan-upz-desa" element={<AjukanUpzDesaPage />} />
           <Route path="kalkulator-pinjaman" element={<KalkulatorPinjamanPage />} />
           <Route path="skoring-pinjaman" element={<SkoringPinjamanPage />} />
+          <Route path="kebijakan-privasi" element={<KebijakanPrivasiPage />} />
+          <Route path="kebijakan/kebijakan-privasi" element={<KebijakanPrivasiPage />} />
+          <Route path="disclaimer" element={<DisclaimerPage />} />
+          <Route path="disclaimer/disclaimer" element={<DisclaimerPage />} />
+          <Route path="founder" element={<FounderPage />} />
+          <Route path="halaman-founder" element={<FounderPage />} />
+          <Route path="tentang/founder" element={<FounderPage />} />
+          <Route path="syarat-ketentuan" element={<SyaratKetentuanPage />} />
+          <Route path="syarat-dan-ketentuan" element={<SyaratKetentuanPage />} />
+          <Route path="ketentuan-penggunaan" element={<SyaratKetentuanPage />} />
         </Route>
 
         {/* ========== AUTH ========== */}

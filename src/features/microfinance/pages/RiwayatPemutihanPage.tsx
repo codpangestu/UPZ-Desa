@@ -31,9 +31,9 @@ const emptyForm = {
 
 export default function RiwayatPemutihanPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<PemutihanPenghapusbukuan>('pemutihan', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<PemutihanPenghapusbukuan>('pemutihan', idUpzDesa);
   const createMutation = useCreateMicrofinance('pemutihan', 'Riwayat pemutihan berhasil dicatat');
   const updateMutation = useUpdateMicrofinance('pemutihan');
   const deleteMutation = useDeleteMicrofinance('pemutihan');
@@ -53,7 +53,7 @@ export default function RiwayatPemutihanPage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setFormData({ ...emptyForm, id_masjid: idMasjid, id_user: user?.id_user });
+    setFormData({ ...emptyForm, id_upz_desa: idUpzDesa, id_user: user?.id_user });
     setShowForm(true);
   };
 
@@ -67,7 +67,7 @@ export default function RiwayatPemutihanPage() {
     if (editItem) {
       await updateMutation.mutateAsync({ id: editItem.id_bmfi_pemutihan_penghapusbukuan, data: formData });
     } else {
-      await createMutation.mutateAsync({ ...formData, id_masjid: idMasjid, id_user: user?.id_user });
+      await createMutation.mutateAsync({ ...formData, id_upz_desa: idUpzDesa, id_user: user?.id_user });
     }
     setShowForm(false);
   };

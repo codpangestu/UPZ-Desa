@@ -14,7 +14,7 @@ interface MenuCard {
 }
 
 const menuItems: MenuCard[] = [
-  { label: 'Sejarah dan Profil Microfinance', description: 'Pengesahan program BMM masjid', icon: FileText, path: '/microfinance/sejarah-profil', available: true },
+  { label: 'Sejarah dan Profil Microfinance', description: 'Pengesahan program BMM', icon: FileText, path: '/microfinance/sejarah-profil', available: true },
   { label: 'Saldo Microfinance', description: 'Dana bergulir program BMM', icon: Wallet, path: '/microfinance/saldo', available: true },
   { label: 'Pilihan Jumlah Pinjaman', description: 'Skema nominal pinjaman (maks Rp3.000.000)', icon: HandCoins, path: '/microfinance/pilihan-skema-pinjaman', available: true },
   { label: 'Pendamping', description: 'Data pendamping program BMM', icon: UserRound, path: '/microfinance/pendamping', available: true },
@@ -39,7 +39,7 @@ export default function MicrofinanceMenuPage() {
             Microfinance
           </h1>
           <p className="text-sm text-[#555]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            BMM — BAZNAS Microfinance Masjid: layanan pinjaman modal usaha tanpa bunga (qardhul hasan) untuk jamaah masjid
+            BMM — BAZNAS Microfinance Masjid: layanan pinjaman modal usaha tanpa bunga (qardhul hasan) untuk warga
           </p>
         </div>
       </div>

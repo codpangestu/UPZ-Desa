@@ -21,9 +21,9 @@ const emptyForm = {
 
 export default function SejarahProfilPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<SejarahProfilMicrofinance>('sejarah-profil', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<SejarahProfilMicrofinance>('sejarah-profil', idUpzDesa);
   const { data: kategoriRes } = useKategoriPengesahan();
   const createMutation = useCreateMicrofinance('sejarah-profil');
   const updateMutation = useUpdateMicrofinance('sejarah-profil');
@@ -38,7 +38,7 @@ export default function SejarahProfilPage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setFormData({ ...emptyForm, id_masjid: idMasjid });
+    setFormData({ ...emptyForm, id_upz_desa: idUpzDesa });
     setShowForm(true);
   };
 

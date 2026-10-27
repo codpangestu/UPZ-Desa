@@ -103,7 +103,7 @@ export default function ArahKiblat() {
             setLocationName(`${latitude.toFixed(4)}°, ${longitude.toFixed(4)}°`);
           });
       },
-      (err) => {
+      () => {
         setLocationError('Akses lokasi ditolak. Gunakan lokasi default (Jakarta).');
         // Default to Jakarta
         setLocation({ lat: -6.2088, lng: 106.8456 });

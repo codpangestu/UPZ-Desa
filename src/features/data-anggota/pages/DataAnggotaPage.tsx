@@ -258,7 +258,7 @@ export default function DataAnggotaPage() {
             Data Anggota
           </h2>
           <p className="text-sm text-text-gray" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Kelola data Ustadz, Marbot, dan Jamaah masjid
+            Kelola data Ustadz, Marbot, dan Jamaah UPZ Desa
           </p>
         </div>
       </div>

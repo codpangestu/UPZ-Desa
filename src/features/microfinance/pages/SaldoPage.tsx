@@ -19,9 +19,9 @@ const emptyForm = {
 
 export default function SaldoPage() {
   const { user } = useAuthStore();
-  const idMasjid = user?.id_jalur_akses;
+  const idUpzDesa = user?.id_jalur_akses;
 
-  const { data: listRes, isLoading } = useMicrofinanceList<SaldoMicrofinance>('saldo', idMasjid);
+  const { data: listRes, isLoading } = useMicrofinanceList<SaldoMicrofinance>('saldo', idUpzDesa);
   const createMutation = useCreateMicrofinance('saldo');
   const updateMutation = useUpdateMicrofinance('saldo');
   const deleteMutation = useDeleteMicrofinance('saldo');
@@ -34,7 +34,7 @@ export default function SaldoPage() {
 
   const openCreate = () => {
     setEditItem(null);
-    setFormData({ ...emptyForm, parent_id: idMasjid });
+    setFormData({ ...emptyForm, parent_id: idUpzDesa });
     setShowForm(true);
   };
 
